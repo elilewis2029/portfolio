@@ -19,3 +19,4 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 9. **Deploys.** Vercel project `portfolio` is git-linked to `elilewis2029/portfolio`, production branch `main`. The feature branch gets an automatic preview deployment on push; production was deployed from the CLI (`vercel --prod`) so the live site carries this work before the PR merges. Merging the PR to `main` redeploys the same code.
 10. **Home page copy.** Added one explanatory sentence under the headline and a "Featured work" label; no new sections. Header shows the copyable email on desktop only (space on phones), the footer carries it everywhere.
 11. **Favicon**: `app/icon.png` is the same 192 px icon as the PWA icon, to stop the 404 on `/favicon.ico`.
+12. **Function timeout lives in the root layout** (`maxDuration = 60`). The intake action runs under whichever page the "+" sheet was opened on, so a per-page setting on `/add` alone would not cover it.
