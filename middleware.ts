@@ -1,8 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-// Refreshes the Supabase auth session cookie on owner pages.
+// Refreshes the Supabase auth session cookie, so owner mode works on every page.
 export async function middleware(request: NextRequest) {
+  // Visitors carry no auth cookie: nothing to refresh, no network call.
+  if (!request.cookies.getAll().some((c) => c.name.startsWith("sb-") && c.name.includes("-auth-token"))) {
+    return NextResponse.next({ request });
+  }
   let response = NextResponse.next({ request });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,4 +26,6 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/add/:path*", "/review/:path*", "/login", "/auth/:path*"] };
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|api/|icon-|manifest\\.webmanifest|favicon\\.ico).*)"],
+};

@@ -9,6 +9,7 @@ import { slugify } from "@/lib/slug";
 
 function refresh(slug?: string) {
   revalidatePath("/", "layout");
+  revalidatePath("/review");
   if (slug) revalidatePath(`/work/${slug}`);
 }
 
@@ -51,9 +52,13 @@ export async function updateProject(id: string, f: FormData) {
     audience: list(f, "audience").filter((a) => ["pd", "mech", "mfg"].includes(a)),
     links,
   }).eq("id", id);
-  if (error) redirect(`/review/${id}?error=${encodeURIComponent(error.message)}`);
-  refresh(slug);
-  redirect(`/review/${id}?saved=1`);
+  if (error) {
+    const cur = await projectByIdAdmin(id);
+    redirect(`/work/${cur?.slug}?edit=1&error=${encodeURIComponent(error.message)}`);
+  }
+  const p = await projectByIdAdmin(id);
+  refresh(p?.slug);
+  redirect(`/work/${p?.slug ?? slug}?edit=1&saved=1`);
 }
 
 export async function setStatus(id: string, status: "draft" | "published") {
@@ -63,7 +68,6 @@ export async function setStatus(id: string, status: "draft" | "published") {
   await adminDb().from("projects").update(update).eq("id", id);
   const p = await projectByIdAdmin(id);
   refresh(p?.slug);
-  revalidatePath("/review");
 }
 
 export async function setFeatured(id: string, featured: boolean) {
@@ -71,14 +75,15 @@ export async function setFeatured(id: string, featured: boolean) {
   const db = adminDb();
   if (featured) {
     const p = await projectByIdAdmin(id);
-    if (!p || !isFeatureReady(p)) redirect(`/review/${id}?error=${encodeURIComponent("Needs a process, CAD or drawing photo before it can be featured.")}`);
-    if (p.status !== "published") redirect(`/review/${id}?error=${encodeURIComponent("Publish it first.")}`);
+    const fail = (msg: string) => redirect(`/work/${p?.slug}?error=${encodeURIComponent(msg)}`);
+    if (!p) redirect("/review");
+    if (!isFeatureReady(p)) fail("Needs a process, CAD or drawing photo before it can be featured.");
+    if (p.status !== "published") fail("Publish it first.");
     const { count } = await db.from("projects").select("id", { count: "exact", head: true }).eq("featured", true).neq("id", id);
-    if ((count ?? 0) >= 5) redirect(`/review/${id}?error=${encodeURIComponent("Five projects are already featured. Unfeature one first.")}`);
+    if ((count ?? 0) >= 5) fail("Five projects are already featured. Unfeature one first.");
   }
   await db.from("projects").update({ featured }).eq("id", id);
   refresh();
-  revalidatePath("/review");
 }
 
 export async function deleteProject(id: string) {
@@ -105,7 +110,6 @@ export async function updateMedia(projectId: string, mediaId: string, f: FormDat
   // Losing the last process photo also loses featured status.
   if (p?.featured && !isFeatureReady(p)) await adminDb().from("projects").update({ featured: false }).eq("id", projectId);
   refresh(p?.slug);
-  revalidatePath(`/review/${projectId}`);
 }
 
 export async function moveMedia(projectId: string, mediaId: string, dir: -1 | 1) {
@@ -119,7 +123,6 @@ export async function moveMedia(projectId: string, mediaId: string, dir: -1 | 1)
   const db = adminDb();
   await Promise.all(media.map((m, k) => db.from("media").update({ sort: k }).eq("id", m.id)));
   refresh(p?.slug);
-  revalidatePath(`/review/${projectId}`);
 }
 
 export async function setCover(projectId: string, mediaId: string) {
@@ -127,7 +130,6 @@ export async function setCover(projectId: string, mediaId: string) {
   await adminDb().from("projects").update({ cover_media: mediaId }).eq("id", projectId);
   const p = await projectByIdAdmin(projectId);
   refresh(p?.slug);
-  revalidatePath(`/review/${projectId}`);
 }
 
 export async function deleteMedia(projectId: string, mediaId: string) {
@@ -140,5 +142,4 @@ export async function deleteMedia(projectId: string, mediaId: string) {
   const p = await projectByIdAdmin(projectId);
   if (p?.featured && !isFeatureReady(p)) await db.from("projects").update({ featured: false }).eq("id", projectId);
   refresh(p?.slug);
-  revalidatePath(`/review/${projectId}`);
 }

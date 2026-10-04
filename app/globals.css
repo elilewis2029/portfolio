@@ -21,6 +21,11 @@ body { @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:tex
 .input { @apply w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700; }
 mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
 
+/* Owner-mode bottom sheet (native <dialog>) */
+dialog.sheet { max-height: 92vh; }
+dialog.sheet[open] { animation: sheet-in 180ms ease-out; }
+@keyframes sheet-in { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
 /* Print: each project page on one or two pages, no chrome. */
 @media print {
   @page { margin: 12mm; }

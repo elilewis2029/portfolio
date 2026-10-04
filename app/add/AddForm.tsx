@@ -1,10 +1,12 @@
 "use client";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { prepareUploads, submitIntake, type IntakeOutcome } from "./actions";
 
-export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string; anonKey: string }) {
+export default function AddForm({ supabaseUrl, anonKey, onDone }: { supabaseUrl: string; anonKey: string; onDone?: () => void }) {
+  const router = useRouter();
   const storage = useMemo(() => createClient(supabaseUrl, anonKey).storage.from("portfolio"), [supabaseUrl, anonKey]);
   const [files, setFiles] = useState<File[]>([]);
   const [note, setNote] = useState("");
@@ -35,6 +37,7 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
       setResult(r);
       if (r.ok) {
         setFiles([]); setNote(""); setRoleKind(null); setMetric(""); setChange(""); setShowMetric(false); setShowChange(false);
+        router.refresh(); // grids now show the new draft
       }
     } catch (e) {
       setResult({ ok: false, error: e instanceof Error ? e.message : "Upload failed" });
@@ -51,6 +54,7 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
         <span className="btn w-full py-6 text-base">{files.length ? `${files.length} photo${files.length > 1 ? "s" : ""} selected` : "Choose photos"}</span>
         <input
           type="file" accept="image/*" multiple className="sr-only"
+          onClick={(e) => { (e.target as HTMLInputElement).value = ""; }}
           onChange={(e) => setFiles(Array.from(e.target.files ?? []).slice(0, 12))}
         />
       </label>
@@ -91,13 +95,13 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
           {result.note && <span className="block text-neutral-500">{result.note}</span>}
           {result.action === "new" ? "New draft: " : result.action === "saved" ? "Saved for chat: " : `Added ${result.photos} photo(s) to `}
           <strong>{result.title}</strong>.{" "}
-          <Link href={`/review/${result.projectId}`} className="text-accent underline">Review →</Link>
+          <Link href={`/work/${result.slug}?edit=1`} className="text-accent underline" onClick={onDone}>Open →</Link>
         </div>
       ) : (
         <p className="rounded-md border border-red-600/40 p-3 text-sm text-red-600">{result.error}</p>
       ))}
 
-      <p className="pt-4 text-center text-sm"><Link href="/review" className="text-accent">All drafts →</Link></p>
+      <p className="pt-2 text-center text-sm"><Link href="/review" className="text-accent" onClick={onDone}>All drafts →</Link></p>
     </div>
   );
 }
