@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = { themeColor: "#c2410c", viewportFit: "cover" };
+// The "+" intake action (image processing + Claude call, ~25 s) runs under whichever page opened the sheet.
+export const maxDuration = 60;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const email = contactEmail();
