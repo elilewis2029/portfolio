@@ -2,16 +2,22 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Md from "@/components/Md";
+import OwnerToolbar from "@/components/owner/OwnerToolbar";
+import ProjectEditor from "@/components/owner/ProjectEditor";
 import { contactEmail, projectBySlug, publicUrl } from "@/lib/projects";
+import { isOwner } from "@/lib/owner";
 import { CATEGORY_LABEL, heroOf, type Media } from "@/lib/types";
 
-export const revalidate = 60;
-
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ edit?: string; saved?: string; error?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = await projectBySlug((await params).slug);
-  return p ? { title: p.title, description: p.tagline ?? p.summary ?? undefined } : {};
+  const p = await projectBySlug((await params).slug, await isOwner());
+  if (!p) return {};
+  return {
+    title: p.title,
+    description: p.tagline ?? p.summary ?? undefined,
+    robots: p.status === "draft" ? { index: false } : undefined,
+  };
 }
 
 function Figure({ m, sizes }: { m: Media; sizes: string }) {
@@ -41,9 +47,11 @@ function Fact({ label, children }: { label: string; children: React.ReactNode })
   );
 }
 
-export default async function ProjectPage({ params }: Props) {
-  const p = await projectBySlug((await params).slug);
+export default async function ProjectPage({ params, searchParams }: Props) {
+  const [{ slug }, { edit, saved, error }, owner] = await Promise.all([params, searchParams, isOwner()]);
+  const p = await projectBySlug(slug, owner);
   if (!p) notFound();
+  const editing = owner && edit === "1";
 
   const media = p.media ?? [];
   const hero = heroOf(p);
@@ -55,117 +63,129 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-3xl">
-      <div className="print-only mb-3 text-xs">
-        Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
-      </div>
+      {owner && <OwnerToolbar p={p} editing={editing} />}
+      {owner && !editing && error && <p className="no-print mb-4 rounded-md border border-red-600/40 p-2 text-sm text-red-600">{error}</p>}
 
-      {/* 1. Impact title + tagline */}
-      <header className="mb-6">
-        <p className="text-xs uppercase tracking-wide text-accent">
-          {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
-        </p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">{p.title}</h1>
-        {p.tagline && <p className="mt-2 text-lg text-neutral-700 dark:text-neutral-300">{p.tagline}</p>}
-      </header>
+      {editing ? (
+        <>
+          <h1 className="mb-4 text-xl font-semibold">Edit project</h1>
+          <ProjectEditor p={p} saved={saved === "1"} error={error} />
+        </>
+      ) : (
+        <>
+          <div className="print-only mb-3 text-xs">
+            Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
+          </div>
 
-      {/* 2. Hero */}
-      {hero && (
-        <div className="print-hero mb-6">
-          <Image
-            src={hero.path}
-            alt={hero.caption || p.title}
-            width={hero.width ?? 1600}
-            height={hero.height ?? 1200}
-            priority
-            sizes="(min-width: 768px) 768px, 100vw"
-            className="h-auto w-full rounded-lg"
-          />
-        </div>
-      )}
-
-      {/* 3. Outcome summary */}
-      {p.summary && <p className="mb-6 text-lg leading-relaxed">{p.summary}</p>}
-
-      {/* 4. Quick facts */}
-      <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
-        <Fact label="Role">
-          {p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : "—"}
-          {p.role && <span className="block text-neutral-600 dark:text-neutral-400">{p.role}</span>}
-        </Fact>
-        <Fact label="Duration">{p.duration || "—"}</Fact>
-        <Fact label="Tools">{p.tools.length ? p.tools.join(", ") : "—"}</Fact>
-        <Fact label="Skills">{p.skills.length ? p.skills.join(", ") : "—"}</Fact>
-      </dl>
-
-      {/* 5. Goal & constraints */}
-      {p.goal_constraints && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">Goal &amp; constraints</h2>
-          <Md>{p.goal_constraints}</Md>
-        </section>
-      )}
-
-      {/* 6. Process */}
-      {(p.process_md || process.length > 0) && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">Process</h2>
-          <Md>{p.process_md}</Md>
-          {process.length > 0 && (
-            <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
-              {process.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* 7. Result */}
-      {(p.result_metric || results.length > 0) && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">Result</h2>
-          {p.result_metric && (
-            <p className="inline-block rounded-md bg-accent-soft px-3 py-2 text-xl font-semibold text-accent dark:bg-accent/15">
-              {p.result_metric}
+          {/* 1. Impact title + tagline */}
+          <header className="mb-6">
+            <p className="text-xs uppercase tracking-wide text-accent">
+              {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
             </p>
-          )}
-          {results.length > 0 && (
-            <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
-              {results.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
+            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{p.title}</h1>
+            {p.tagline && <p className="mt-2 text-lg text-neutral-700 dark:text-neutral-300">{p.tagline}</p>}
+          </header>
+
+          {/* 2. Hero */}
+          {hero && (
+            <div className="print-hero mb-6">
+              <Image
+                src={hero.path}
+                alt={hero.caption || p.title}
+                width={hero.width ?? 1600}
+                height={hero.height ?? 1200}
+                priority
+                sizes="(min-width: 768px) 768px, 100vw"
+                className="h-auto w-full rounded-xl bg-neutral-100 dark:bg-neutral-900"
+              />
             </div>
           )}
-        </section>
-      )}
 
-      {/* 8. What I'd change */}
-      {p.lesson && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">What I&rsquo;d change</h2>
-          <p>{p.lesson}</p>
-        </section>
-      )}
+          {/* 3. Outcome summary */}
+          {p.summary && <p className="mb-6 text-lg leading-relaxed">{p.summary}</p>}
 
-      {/* Optional free text (e.g. imported write-ups) */}
-      {p.body_md && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">Notes</h2>
-          <Md>{p.body_md}</Md>
-        </section>
-      )}
+          {/* 4. Quick facts */}
+          <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
+            <Fact label="Role">
+              {p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : "—"}
+              {p.role && <span className="block text-neutral-600 dark:text-neutral-400">{p.role}</span>}
+            </Fact>
+            <Fact label="Duration">{p.duration || "—"}</Fact>
+            <Fact label="Tools">{p.tools.length ? p.tools.join(", ") : "—"}</Fact>
+            <Fact label="Skills">{p.skills.length ? p.skills.join(", ") : "—"}</Fact>
+          </dl>
 
-      {/* 9. Links */}
-      {links.length > 0 && (
-        <section className="mb-8">
-          <h2 className="mb-2 text-lg font-semibold">Links</h2>
-          <ul className="flex flex-wrap gap-4">
-            {links.map(([label, url]) => (
-              <li key={label}><a href={url} className="text-accent underline underline-offset-2">{label}</a></li>
-            ))}
-          </ul>
-        </section>
-      )}
+          {/* 5. Goal & constraints */}
+          {p.goal_constraints && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">Goal &amp; constraints</h2>
+              <Md>{p.goal_constraints}</Md>
+            </section>
+          )}
 
-      <p className="no-print mt-10 text-sm text-neutral-500">
-        Printing this page gives a one-to-two page PDF.
-      </p>
+          {/* 6. Process */}
+          {(p.process_md || process.length > 0) && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">Process</h2>
+              <Md>{p.process_md}</Md>
+              {process.length > 0 && (
+                <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
+                  {process.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* 7. Result */}
+          {(p.result_metric || results.length > 0) && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">Result</h2>
+              {p.result_metric && (
+                <p className="inline-block rounded-md bg-accent-soft px-3 py-2 text-xl font-semibold text-accent dark:bg-accent/15">
+                  {p.result_metric}
+                </p>
+              )}
+              {results.length > 0 && (
+                <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
+                  {results.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* 8. What I'd change */}
+          {p.lesson && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">What I&rsquo;d change</h2>
+              <p>{p.lesson}</p>
+            </section>
+          )}
+
+          {/* Optional free text (e.g. imported write-ups) */}
+          {p.body_md && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">Notes</h2>
+              <Md>{p.body_md}</Md>
+            </section>
+          )}
+
+          {/* 9. Links */}
+          {links.length > 0 && (
+            <section className="mb-8">
+              <h2 className="mb-2 text-lg font-semibold">Links</h2>
+              <ul className="flex flex-wrap gap-4">
+                {links.map(([label, url]) => (
+                  <li key={label}><a href={url} className="text-accent underline underline-offset-2">{label}</a></li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <p className="no-print mt-10 text-sm text-neutral-500">
+            Printing this page gives a one-to-two page PDF.
+          </p>
+        </>
+      )}
     </article>
   );
 }

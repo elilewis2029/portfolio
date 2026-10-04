@@ -4,6 +4,7 @@ import AddForm from "./AddForm";
 export const metadata = { title: "Add", robots: { index: false } };
 export const maxDuration = 60; // image processing + model call
 
+/** Alias of the "+" sheet, kept as a page so it can live on the phone's home screen. */
 export default async function AddPage() {
   await requireOwner("/add");
   return (

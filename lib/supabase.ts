@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -39,8 +40,12 @@ export async function authClient() {
   });
 }
 
-export async function ownerEmail(): Promise<string | null> {
+/** The signed-in owner's email, or null. Cached per request (layout + page + actions all ask). */
+export const ownerEmail = cache(async (): Promise<string | null> => {
+  const store = await cookies();
+  // No Supabase auth cookie at all: skip the network round-trip visitors would otherwise pay.
+  if (!store.getAll().some((c) => c.name.startsWith("sb-") && c.name.includes("-auth-token"))) return null;
   const { data } = await (await authClient()).auth.getUser();
   const email = data.user?.email?.toLowerCase();
   return email && email === process.env.OWNER_EMAIL?.toLowerCase() ? email : null;
-}
+});

@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
     loaderFile: "./lib/image-loader.ts",
   },
   serverExternalPackages: ["sharp"],
-  // The intake system prompt is read from disk at runtime.
-  outputFileTracingIncludes: { "/add": ["./prompts/**/*"] },
+  // The intake system prompt is read from disk at runtime; the intake action can run from any page (the "+" sheet).
+  outputFileTracingIncludes: { "/**": ["./prompts/**/*"] },
 };
 
 export default nextConfig;

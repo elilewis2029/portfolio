@@ -18,18 +18,22 @@ export async function featuredProjects(): Promise<Project[]> {
   return sortMedia((data ?? []) as Project[]);
 }
 
-export async function listProjects(era: "current" | "archive"): Promise<Project[]> {
-  const { data, error } = await publicDb()
-    .from("projects").select(SELECT)
-    .eq("status", "published").eq("era", era)
+/** Published projects of an era; in owner mode drafts are included (first, so they get finished). */
+export async function listProjects(era: "current" | "archive", owner = false): Promise<Project[]> {
+  let q = (owner ? adminDb() : publicDb()).from("projects").select(SELECT).eq("era", era);
+  if (!owner) q = q.eq("status", "published");
+  const { data, error } = await q
+    .order("status", { ascending: true }) // draft < published
     .order("featured", { ascending: false })
-    .order("year", { ascending: false, nullsFirst: false });
+    .order("year", { ascending: false, nullsFirst: false })
+    .order("updated_at", { ascending: false });
   if (error) console.error(error);
   return sortMedia((data ?? []) as Project[]);
 }
 
-export async function projectBySlug(slug: string): Promise<Project | null> {
-  const { data } = await publicDb().from("projects").select(SELECT).eq("slug", slug).maybeSingle();
+/** A project by slug. Visitors only ever get published rows (RLS); the owner also sees drafts. */
+export async function projectBySlug(slug: string, owner = false): Promise<Project | null> {
+  const { data } = await (owner ? adminDb() : publicDb()).from("projects").select(SELECT).eq("slug", slug).maybeSingle();
   return data ? sortMedia([data as Project])[0] : null;
 }
 
