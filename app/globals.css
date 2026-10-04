@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #c2410c;
+  --color-accent-soft: #fff1e8;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root { color-scheme: light dark; }
+body { @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100; }
+
+.prose-lite ul { @apply list-disc space-y-1 pl-5; }
+.prose-lite ol { @apply list-decimal space-y-1 pl-5; }
+.prose-lite p + p { @apply mt-3; }
+.prose-lite a { @apply text-accent underline underline-offset-2; }
+
+.chip { @apply inline-block rounded-full border border-neutral-300 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-neutral-700 dark:text-neutral-300; }
+.chip-on { @apply border-accent bg-accent text-white dark:text-white; }
+.btn { @apply inline-flex items-center justify-center rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium hover:bg-neutral-100 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800; }
+.btn-primary { @apply border-accent bg-accent text-white hover:bg-accent/90 dark:hover:bg-accent/90; }
+.input { @apply w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700; }
+mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
+
+/* Print: each project page on one or two pages, no chrome. */
+@media print {
+  @page { margin: 12mm; }
+  html, body { background: white !important; color: black !important; font-size: 10.5pt; }
+  .no-print, header.site, footer.site { display: none !important; }
+  .print-only { display: block !important; }
+  a { color: black !important; text-decoration: none; }
+  section, figure, .avoid-break { break-inside: avoid; }
+  .print-hero img { max-height: 90mm; width: auto !important; object-fit: contain; }
+  .print-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 4mm !important; }
+  .print-grid img { max-height: 45mm; object-fit: contain; }
+  main { max-width: none !important; padding: 0 !important; }
+}
+.print-only { display: none; }
