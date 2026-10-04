@@ -29,7 +29,7 @@ export async function prepareUploads(names: string[]) {
 }
 
 export type IntakeOutcome =
-  | { ok: true; action: "new" | "append"; projectId: string; slug: string; title: string; photos: number }
+  | { ok: true; action: "new" | "append" | "saved"; note?: string; projectId: string; slug: string; title: string; photos: number }
   | { ok: false; error: string };
 
 /** Step 2: process uploaded originals, ask Claude for the draft, write rows. */
@@ -38,6 +38,8 @@ export async function submitIntake(input: {
   paths: string[];
   note: string;
   taps: Taps;
+  /** "now" = Claude API drafts it; "chat" = save for drafting later in a Claude Code chat. */
+  mode: "now" | "chat";
 }): Promise<IntakeOutcome> {
   await requireOwner("/add");
   const db = adminDb();
@@ -66,13 +68,48 @@ export async function submitIntake(input: {
     const { data: existing } = await db.from("projects").select("id, slug, title");
     const projects = existing ?? [];
 
-    // 3. Claude drafts the entry.
-    const r = await runIntake({
-      note: note.trim(),
-      taps: input.taps,
-      images: processed.map((p) => p.forModel),
-      projects: projects.map(({ slug, title }) => ({ slug, title })),
-    });
+    // 3. Save for chat (by choice, no API key, or API failure), else Claude drafts the entry now.
+    const saveForChat = async (why?: string): Promise<IntakeOutcome> => {
+      const title = note.trim().split(/\s+/).slice(0, 7).join(" ") || "Untitled draft";
+      const { data: proj, error } = await db.from("projects").insert({
+        slug: uniqueSlug(`draft ${title}`, new Set(projects.map((p) => p.slug))),
+        title,
+        role_kind: input.taps.roleKind,
+        status: "draft",
+        era: "current",
+        needs_drafting: true,
+        intake_note: note.trim() || null,
+        intake_taps: input.taps,
+        year: processed.map((p) => p.takenAt?.getFullYear()).find((y): y is number => typeof y === "number") ?? null,
+      }).select("id, slug").single();
+      if (error || !proj) throw new Error(error?.message ?? "insert failed");
+      const { data: media, error: mErr } = await db.from("media").insert(
+        processed.map((p, i) => ({
+          project_id: proj.id, path: p.path, original_path: p.original, width: p.width, height: p.height,
+          taken_at: p.takenAt?.toISOString() ?? null, sort: i,
+        })),
+      ).select("id, sort");
+      if (mErr) throw new Error(mErr.message);
+      const first = media?.find((m) => m.sort === 0);
+      if (first) await db.from("projects").update({ cover_media: first.id }).eq("id", proj.id);
+      revalidatePath("/review");
+      return { ok: true, action: "saved", note: why, projectId: proj.id, slug: proj.slug, title, photos: processed.length };
+    };
+
+    if (input.mode === "chat") return await saveForChat();
+    if (!process.env.ANTHROPIC_API_KEY) return await saveForChat("No API key is set, so it was saved for chat.");
+    let r: Awaited<ReturnType<typeof runIntake>>;
+    try {
+      r = await runIntake({
+        note: note.trim(),
+        taps: input.taps,
+        images: processed.map((p) => p.forModel),
+        projects: projects.map(({ slug, title }) => ({ slug, title })),
+      });
+    } catch (e) {
+      console.error("intake model call failed", e);
+      return await saveForChat("Claude couldn't draft it right now, so it was saved for chat.");
+    }
 
     const mediaRows = (projectId: string, startSort: number) =>
       processed.map((p, i) => ({

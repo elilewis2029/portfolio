@@ -28,6 +28,7 @@ function Row({ p }: { p: Project }) {
           <span className="chip">{p.status}</span>
           {p.era === "archive" && <span className="chip">archive</span>}
           {p.featured && <span className="chip chip-on">featured</span>}
+          {p.needs_drafting && <span className="chip border-blue-500 text-blue-700 dark:text-blue-400">needs drafting in chat</span>}
           {!ready && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">needs a process photo</span>}
           {n > 0 && <mark className="todo text-xs">{n} TODO</mark>}
         </div>

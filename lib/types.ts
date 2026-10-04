@@ -51,6 +51,9 @@ export type Project = {
   skills: string[];
   audience: string[];
   links: Record<string, string>;
+  needs_drafting: boolean;
+  intake_note: string | null;
+  intake_taps: { roleKind: "solo" | "team" | null; metric: string; change: string } | null;
   created_at: string;
   updated_at: string;
   media?: Media[];

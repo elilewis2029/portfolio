@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "import-wix": "tsx scripts/import-wix.ts"
+    "import-wix": "tsx scripts/import-wix.ts",
+    "portfolio": "tsx --conditions=react-server scripts/portfolio.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

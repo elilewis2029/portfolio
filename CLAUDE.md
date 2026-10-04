@@ -21,4 +21,5 @@ Next.js App Router + TypeScript + Tailwind, deployed on Vercel. Data in Supabase
 - Keep it simple: no CMS, no animations library, no client-side state libraries. Server components by default.
 - Writes go through the service-role key on the server only. Public pages read with the anon key under RLS.
 - Images: upload original to `inbox/{uuid}/`, store a 1600px webp alongside; serve via next/image + Supabase transforms.
+- Drafting entries in chat (pending "Save for chat" batches, photos attached in chat): follow `.claude/skills/portfolio-entry/SKILL.md`.
 - Commit after each working step with a one-line message. When done with a prompt, print the Vercel env vars needed and anything the owner must click in a dashboard.

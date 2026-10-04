@@ -57,7 +57,8 @@ export default async function EditProject({ params, searchParams }: Props) {
         <h1 className="mr-2 text-xl font-semibold"><HighlightTodo text={p.title} /></h1>
         <span className="chip">{p.status}</span>
         {p.featured && <span className="chip chip-on">featured</span>}
-        {!ready && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">needs a process photo</span>}
+        {p.needs_drafting && <span className="chip border-blue-500 text-blue-700 dark:text-blue-400">needs drafting in chat</span>}
+          {!ready && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">needs a process photo</span>}
       </div>
 
       {saved && <p className="mb-4 rounded-md border border-green-600/40 p-2 text-sm">Saved.</p>}

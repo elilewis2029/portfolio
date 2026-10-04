@@ -18,7 +18,7 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
 
   const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
 
-  async function send() {
+  async function send(mode: "now" | "chat") {
     if (!files.length) return;
     setResult(null);
     try {
@@ -30,8 +30,8 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
           if (error) throw new Error(error.message);
         }),
       );
-      setBusy("Drafting with Claude…");
-      const r = await submitIntake({ batch, paths: uploads.map((u) => u.path), note, taps: { roleKind, metric, change } });
+      setBusy(mode === "now" ? "Drafting with Claude…" : "Saving…");
+      const r = await submitIntake({ batch, paths: uploads.map((u) => u.path), note, taps: { roleKind, metric, change }, mode });
       setResult(r);
       if (r.ok) {
         setFiles([]); setNote(""); setRoleKind(null); setMetric(""); setChange(""); setShowMetric(false); setShowChange(false);
@@ -79,13 +79,17 @@ export default function AddForm({ supabaseUrl, anonKey }: { supabaseUrl: string;
         <input value={change} onChange={(e) => setChange(e.target.value)} className="input text-base" placeholder="One line" />
       )}
 
-      <button type="button" className="btn btn-primary w-full py-3 text-base" disabled={!files.length || !!busy} onClick={send}>
+      <button type="button" className="btn btn-primary w-full py-3 text-base" disabled={!files.length || !!busy} onClick={() => send("now")}>
         {busy ?? "Send"}
+      </button>
+      <button type="button" className="btn w-full" disabled={!files.length || !!busy} onClick={() => send("chat")}>
+        Save for chat (draft it later with Claude Code)
       </button>
 
       {result && (result.ok ? (
         <div className="rounded-md border border-green-600/40 p-3 text-sm">
-          {result.action === "new" ? "New draft: " : `Added ${result.photos} photo(s) to `}
+          {result.note && <span className="block text-neutral-500">{result.note}</span>}
+          {result.action === "new" ? "New draft: " : result.action === "saved" ? "Saved for chat: " : `Added ${result.photos} photo(s) to `}
           <strong>{result.title}</strong>.{" "}
           <Link href={`/review/${result.projectId}`} className="text-accent underline">Review →</Link>
         </div>
