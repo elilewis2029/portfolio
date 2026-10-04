@@ -11,7 +11,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<SP
       <h1 className="mb-4 text-xl font-semibold">Owner sign-in</h1>
       {sent ? (
         <form action={verifyCode} className="space-y-3">
-          <p className="text-sm">Check your email. Tap the link, or type the 6-digit code here.</p>
+          <p className="text-sm">Check your email. Tap the link, or type the code from the email here.</p>
           <input type="hidden" name="next" value={next} />
           <input name="email" type="email" required defaultValue={email} className="input" />
           <input name="token" inputMode="numeric" autoComplete="one-time-code" placeholder="123456" className="input" required />
