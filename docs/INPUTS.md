@@ -5,7 +5,8 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 ## Profile (`content/profile.ts`)
 
 - [ ] **headshot** — headshot photo
-- [ ] **seeking** — what you're looking for, e.g. “Seeking a Summer 2027 mechanical / product-design engineering internship”
+- [ ] **tagline** — one line in your own words about what you make, e.g. “I build things and document how they’re made.”
+- [ ] **seeking** — what you're looking for, e.g. “Seeking a Summer 2027 manufacturing / product-design engineering internship”
 - [ ] **location** — city, e.g. “Evanston, IL”
 - [ ] **bio[0]** — paragraph 1 — who you are and what you like building (2–3 sentences)
 - [ ] **bio[1]** — paragraph 2 — how you got into making things; the shop, restorations, electronics
@@ -15,7 +16,7 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **links.linkedin** — LinkedIn profile URL
 - [ ] **links.github** — GitHub URL, or delete this line if you don't want one shown
 - [ ] **education.gpa** — GPA, or leave blank to omit
-- [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC / EDI design courses, statics, materials, CAD
+- [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials
 - [ ] **education.honors[0]** — honors, scholarships, dean's list — or leave empty
 - [ ] **experience[0].dates** — months, e.g. “Jun–Aug 2026”
 - [ ] **experience[0].location** — city
@@ -51,7 +52,7 @@ Recruiters read a single project as a hobby site; three to five featured is the 
 - [ ] **Ely Tool fixture / tooling** (`/work/todo-ely-tool-fixture`) — clear customer parts with the shop owner first
 - [ ] **Northwestern course or club project** (`/work/todo-northwestern-course-project`)
 - [ ] **1970s drill press restoration** (`/work/todo-drill-press-restoration`) — from the old Wix site
-- [ ] **Carbon fiber journal** (`/work/todo-carbon-fiber-journal`) — from the old Wix site
+- [ ] **Carbon Fiber Book 2** (`/work/carbon-fiber-book-2`) — photos of the build and of book 1 for comparison, one sentence on what changed
 - [ ] Optional from the old site: customizable car kit, metal notebook v2, scrap-monitor builds, resin table (Work); crafts, pens, sketchbook, makerspace write-up (Archive)
 
 ## Decisions only you can make

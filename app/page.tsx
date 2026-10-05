@@ -25,10 +25,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
     <>
       {/* Hero: name, headline, pitch, the ask, CTAs */}
       <section className="mb-12 grid gap-8 pt-4 sm:grid-cols-[1fr_auto] sm:items-center sm:pt-10">
-        <div className="max-w-2xl">
+        <div className="rise max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{profile.name}</h1>
           <p className="mt-3 text-xl leading-snug text-neutral-800 dark:text-neutral-200">{profile.headline}</p>
-          <p className="mt-3 text-neutral-600 dark:text-neutral-400">{profile.tagline}</p>
+          <p className="mt-3 text-neutral-600 dark:text-neutral-400"><Field value={profile.tagline} owner={owner} /></p>
           <p className="mt-3 font-medium text-accent">
             <Field value={profile.seeking} owner={owner} />
           </p>
@@ -40,7 +40,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
           </div>
         </div>
         {(profile.headshot || owner) && (
-          <div className="relative mx-auto h-40 w-40 overflow-hidden rounded-full bg-neutral-100 ring-1 ring-neutral-900/10 sm:h-48 sm:w-48 dark:bg-neutral-900 dark:ring-white/10">
+          <div className="rise rise-2 relative mx-auto h-40 w-40 overflow-hidden rounded-full bg-neutral-100 ring-1 ring-neutral-900/10 sm:h-48 sm:w-48 dark:bg-neutral-900 dark:ring-white/10">
             {profile.headshot ? (
               <Image src={profile.headshot} alt={profile.name} fill sizes="192px" className="object-cover" priority />
             ) : (
@@ -65,7 +65,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
           </p>
         ) : (
           <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((p, i) => <ProjectCard key={p.id} p={p} priority={i < 3} />)}
+            {featured.map((p, i) => <ProjectCard key={p.id} p={p} priority={i < 3} banner={i === 0} />)}
           </div>
         )}
         {owner && featured.length < 3 && (
@@ -78,7 +78,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
         <div className="sm:col-span-2">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">About</h2>
           <p className="mt-3 text-neutral-700 dark:text-neutral-300">
-            {bio[0] ?? <Field value={profile.bio[0]} owner={owner} fallback={`${profile.headline}. ${profile.tagline}`} />}
+            {bio[0] ?? <Field value={profile.bio[0]} owner={owner} fallback={profile.headline} />}
           </p>
           <p className="mt-3"><Link href="/about" className="text-accent hover:underline">More about me →</Link></p>
         </div>

@@ -15,7 +15,7 @@ export const SITE_URL = "https://elilewisportfolio.info";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${profile.name} — Engineering portfolio`, template: `%s · ${profile.name}` },
-  description: `${profile.headline}. ${profile.tagline}`,
+  description: [profile.headline, filled(profile.tagline)].filter(Boolean).join(". "),
   openGraph: { type: "website", siteName: `${profile.name} — Engineering portfolio`, locale: "en_US" },
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: profile.name, statusBarStyle: "default" },
@@ -51,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         </header>
 
-        <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>
+        <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
 
         <footer className="site no-print border-t border-neutral-200 text-sm text-neutral-500 dark:border-neutral-800">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-6">
