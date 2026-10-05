@@ -20,3 +20,12 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 10. **Home page copy.** Added one explanatory sentence under the headline and a "Featured work" label; no new sections. Header shows the copyable email on desktop only (space on phones), the footer carries it everywhere.
 11. **Favicon**: `app/icon.png` is the same 192 px icon as the PWA icon, to stop the 404 on `/favicon.ico`.
 12. **Function timeout lives in the root layout** (`maxDuration = 60`). The intake action runs under whichever page the "+" sheet was opened on, so a per-page setting on `/add` alone would not cover it.
+
+## 2026-10-05 — reviewer pass, profile content, placeholders
+
+13. **Independent review first.** A separate reviewer agent compared the site with 12 real engineering-student portfolio sites and three career-centre guides (MIT CommLab, USU, Duke). Its checklist drove this round: About, experience with dates, education with coursework, grouped skills, social links, 3+ projects, share images, 404, sitemap/robots, a public manifest that was named "Add project".
+14. **Profile content lives in `content/profile.ts`**, a typed object in the repo, not in Supabase. It changes a few times a year, is edited in chat or a text editor, and is reviewed in git. Projects stay in Supabase because they are added from a phone.
+15. **Placeholders are `[TODO: …]` strings** in that file. `components/Todo.tsx → Field` renders them highlighted for the signed-in owner and hides them from visitors, so the live site is never embarrassing while it is incomplete; a section whose every value is a TODO disappears for visitors. `docs/INPUTS.md` lists every open TODO with the question to answer.
+16. **Placeholder projects are real draft rows** (`todo-*` slugs, `needs_drafting = true`) so they show as Draft cards with "No photo yet" in owner mode; adding photos through "+" with the project named in the note appends to them. Delete any you don't want.
+17. **Framing.** Ely Tool was a summer job: it lives in Experience with dates, the headline says "Mechanical engineering student, Northwestern ’29", and the hero carries the ask ("seeking …") because reviewed sites put it first. `docs/RESEARCH.md` was corrected so the old headline cannot be copied back.
+18. **Share images are generated** (`app/opengraph-image.tsx`, `app/work/[slug]/opengraph-image.tsx` from the hero photo) rather than uploaded, so they never go stale.
