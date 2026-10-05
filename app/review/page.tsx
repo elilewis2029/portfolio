@@ -31,6 +31,7 @@ function Row({ p }: { p: Project }) {
           {p.featured && <span className="chip chip-on">featured</span>}
           {p.needs_drafting && <span className="chip border-blue-500 text-blue-700 dark:text-blue-400">needs drafting in chat</span>}
           {!ready && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">needs a process photo</span>}
+          {p.role_kind === "team" && !p.role && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">team project: say what you owned</span>}
           {n > 0 && <mark className="todo text-xs">{n} TODO</mark>}
         </div>
         <Link href={`/work/${p.slug}?edit=1`} className="mt-1 inline-block text-xs text-accent">Edit</Link>

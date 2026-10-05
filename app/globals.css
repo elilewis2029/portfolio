@@ -8,6 +8,7 @@
 
 :root { color-scheme: light dark; }
 body { @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100; }
+:focus-visible { @apply outline-2 outline-offset-2 outline-accent; }
 
 .prose-lite ul { @apply list-disc space-y-1 pl-5; }
 .prose-lite ol { @apply list-decimal space-y-1 pl-5; }
