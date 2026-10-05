@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Md from "@/components/Md";
+import Lightbox from "@/components/Lightbox";
 import OwnerToolbar from "@/components/owner/OwnerToolbar";
 import ProjectEditor from "@/components/owner/ProjectEditor";
 import { contactEmail, projectBySlug, publicUrl } from "@/lib/projects";
@@ -23,16 +24,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function Figure({ m, sizes }: { m: Media; sizes: string }) {
   return (
     <figure className="avoid-break">
-      <a href={publicUrl(m.path)} target="_blank" rel="noreferrer" className="block">
-        <Image
-          src={m.path}
-          alt={m.caption || ""}
-          width={m.width ?? 1600}
-          height={m.height ?? 1200}
-          sizes={sizes}
-          className="h-auto w-full rounded-md bg-neutral-100 dark:bg-neutral-900"
-        />
-      </a>
+      <Lightbox src={publicUrl(m.path)} alt={m.caption || ""}>
+        <span className="zoom block overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
+          <Image
+            src={m.path}
+            alt={m.caption || ""}
+            width={m.width ?? 1600}
+            height={m.height ?? 1200}
+            sizes={sizes}
+            className="h-auto w-full"
+          />
+        </span>
+      </Lightbox>
       {m.caption && <figcaption className="mt-1.5 text-sm text-neutral-600 dark:text-neutral-400">{m.caption}</figcaption>}
     </figure>
   );
@@ -62,7 +65,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const email = contactEmail();
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="mx-auto max-w-4xl">
       {owner && <OwnerToolbar p={p} editing={editing} />}
       {owner && !editing && error && <p className="no-print mb-4 rounded-md border border-red-600/40 p-2 text-sm text-red-600">{error}</p>}
 
@@ -78,7 +81,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           </div>
 
           {/* 1. Impact title + tagline */}
-          <header className="mb-6">
+          <header className="rise mb-6">
             <p className="text-xs uppercase tracking-wide text-accent">
               {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
             </p>
@@ -88,21 +91,24 @@ export default async function ProjectPage({ params, searchParams }: Props) {
 
           {/* 2. Hero */}
           {hero && (
-            <div className="print-hero mb-6">
-              <Image
-                src={hero.path}
-                alt={hero.caption || p.title}
-                width={hero.width ?? 1600}
-                height={hero.height ?? 1200}
-                priority
-                sizes="(min-width: 768px) 768px, 100vw"
-                className="h-auto w-full rounded-xl bg-neutral-100 dark:bg-neutral-900"
-              />
+            <div className="print-hero rise rise-2 mb-8">
+              <Lightbox src={publicUrl(hero.path)} alt={hero.caption || p.title}>
+                <Image
+                  src={hero.path}
+                  alt={hero.caption || p.title}
+                  width={hero.width ?? 1600}
+                  height={hero.height ?? 1200}
+                  priority
+                  sizes="(min-width: 1024px) 896px, 100vw"
+                  className="h-auto w-full rounded-2xl bg-neutral-100 dark:bg-neutral-900"
+                />
+              </Lightbox>
+              {hero.caption && <p className="mt-2 text-sm text-neutral-500">{hero.caption}</p>}
             </div>
           )}
 
           {/* 3. Outcome summary */}
-          {p.summary && <p className="mb-6 text-lg leading-relaxed">{p.summary}</p>}
+          {p.summary && <p className="rise rise-3 mb-6 max-w-3xl text-lg leading-relaxed sm:text-xl">{p.summary}</p>}
 
           {/* 4. Quick facts */}
           <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
@@ -129,8 +135,12 @@ export default async function ProjectPage({ params, searchParams }: Props) {
               <h2 className="mb-2 text-lg font-semibold">Process</h2>
               <Md>{p.process_md}</Md>
               {process.length > 0 && (
-                <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
-                  {process.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
+                <div className="print-grid mt-5 grid gap-5 sm:grid-cols-2">
+                  {process.map((m, i) => (
+                    <div key={m.id} className={process.length % 2 === 1 && i === 0 ? "sm:col-span-2" : ""}>
+                      <Figure m={m} sizes={process.length % 2 === 1 && i === 0 ? "(min-width: 1024px) 896px, 100vw" : "(min-width: 1024px) 440px, 100vw"} />
+                    </div>
+                  ))}
                 </div>
               )}
             </section>
@@ -146,8 +156,8 @@ export default async function ProjectPage({ params, searchParams }: Props) {
                 </p>
               )}
               {results.length > 0 && (
-                <div className="print-grid mt-4 grid gap-4 sm:grid-cols-2">
-                  {results.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 768px) 384px, 100vw" />)}
+                <div className="print-grid mt-5 grid gap-5 sm:grid-cols-2">
+                  {results.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 1024px) 440px, 100vw" />)}
                 </div>
               )}
             </section>

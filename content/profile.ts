@@ -32,11 +32,11 @@ export type Involvement = { org: string; role: string; dates: string; note?: str
 export const profile = {
   name: "Eli Lewis",
   /** Under the name on the home page and in share images. */
-  headline: "Mechanical engineering student, Northwestern ’29",
+  headline: "Manufacturing & Design Engineering student, Northwestern ’29",
   /** The one-line pitch: what he builds. */
-  tagline: "I design and build things, from machined fixtures to electronics, and I show the process, not just the result.",
+  tagline: "[TODO: one line in your own words about what you make, e.g. “I build things and document how they’re made.”]",
   /** The ask. Recruiters look for this first. */
-  seeking: "[TODO: what you're looking for, e.g. “Seeking a Summer 2027 mechanical / product-design engineering internship”]",
+  seeking: "[TODO: what you're looking for, e.g. “Seeking a Summer 2027 manufacturing / product-design engineering internship”]",
   location: "[TODO: city, e.g. “Evanston, IL”]",
 
   /** Bucket path (bucket `portfolio`), e.g. "profile/headshot.jpg". null = show a placeholder to the owner. */
@@ -62,11 +62,11 @@ export const profile = {
 
   education: {
     school: "Northwestern University",
-    degree: "B.S. Mechanical Engineering",
+    degree: "B.S. Manufacturing & Design Engineering (MaDE)",
     expected: "Expected 2029",
     location: "Evanston, IL",
     gpa: "[TODO: GPA, or leave blank to omit]",
-    coursework: ["[TODO: relevant coursework so far, e.g. DTC / EDI design courses, statics, materials, CAD]"],
+    coursework: ["[TODO: relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials]"],
     honors: ["[TODO: honors, scholarships, dean's list — or leave empty]"],
   } satisfies Education,
 

@@ -8,7 +8,7 @@ import { isOwner } from "@/lib/owner";
 import { profile } from "@/content/profile";
 import { filled, filledList, isTodo } from "@/lib/profile";
 
-export const metadata = { title: "About", description: "Who I am, what I've built, and what I'm looking for." };
+export const metadata = { title: "About", description: "Who I am, what I’ve built, and what I’m looking for." };
 
 function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-500">{children}</h2>;

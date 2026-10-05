@@ -46,7 +46,7 @@ Present fixtures as design projects: the part held and problem solved; drawing o
 Audience split: product design (IDEO, Dyson) -> lead with sketches, form exploration, user problem. Mech/manufacturing -> drawings, DFM, tolerances, test data.
 
 ## Home page
-- Headline: name + one line ("Mechanical engineering student, Northwestern '29") + what he builds + what he is looking for. Ely Tool was a summer job: it goes in Experience with dates, never in the headline.
+- Headline: name + one line ("Manufacturing & Design Engineering student, Northwestern '29") + what he builds + what he is looking for. Ely Tool was a summer job: it goes in Experience with dates, never in the headline.
 - 3-5 featured cards: hero image, impact title, 3 skill tags.
 - Resume PDF + copyable email in header; contact on every page.
 - Skill filter; "Archive" link for high-school, craft, scrap builds.
