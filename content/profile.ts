@@ -54,7 +54,7 @@ export const profile = {
 
   links: {
     email: "", // falls back to CONTACT_EMAIL / OWNER_EMAIL
-    linkedin: "[TODO: LinkedIn profile URL]",
+    linkedin: "https://www.linkedin.com/in/eli-lewis-758217330",
     github: "[TODO: GitHub URL, or delete this line if you don't want one shown]",
     instagram: "",
     youtube: "",

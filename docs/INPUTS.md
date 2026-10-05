@@ -13,7 +13,6 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **bio[2]** — paragraph 3 — what you're doing now at Northwestern and what you want to work on next
 - [ ] **currently** — what you're working on right now, e.g. a class project, a club build
 - [ ] **interests[0]** — interests outside engineering, 3–5 words each
-- [ ] **links.linkedin** — LinkedIn profile URL
 - [ ] **links.github** — GitHub URL, or delete this line if you don't want one shown
 - [ ] **education.gpa** — GPA, or leave blank to omit
 - [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials
