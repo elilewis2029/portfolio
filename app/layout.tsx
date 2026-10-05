@@ -9,7 +9,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Eli Lewis — Engineering portfolio", template: "%s · Eli Lewis" },
-  description: "Engineering student at Northwestern and machinist at Ely Tool building custom tooling.",
+  description: "Mechanical engineering student at Northwestern ('29). Projects in machining, electronics and product design, with process photos.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Eli Lewis", statusBarStyle: "default" },
   icons: { apple: "/icon-192.png" },

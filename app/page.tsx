@@ -19,11 +19,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Eli Lewis</h1>
         <p className="mt-4 text-xl leading-snug text-neutral-800 dark:text-neutral-200">
           Mechanical engineering student, Northwestern &rsquo;29.
-          <br className="hidden sm:block" /> Machinist at Ely Tool, building custom tooling.
+          <br className="hidden sm:block" /> I design and build things, from fixtures to electronics.
         </p>
         <p className="mt-4 text-neutral-600 dark:text-neutral-400">
-          I design, machine and build things that have to work: fixtures, electronics enclosures, restorations.
-          Each project below shows the process, not just the result.
+          Last summer I worked as a machinist at Ely Tool, a custom-tooling shop. Before that I restored, modded and
+          built things in my own shop. Each project below shows the process, not just the result.
         </p>
       </section>
 
