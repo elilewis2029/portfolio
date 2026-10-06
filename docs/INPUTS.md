@@ -17,15 +17,11 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **education.gpa** — GPA, or leave blank to omit
 - [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials
 - [ ] **education.honors[0]** — honors, scholarships, dean's list — or leave empty
-- [ ] **experience[0].dates** — months, e.g. “Jun–Aug 2026”
-- [ ] **experience[0].location** — city
-- [ ] **experience[0].bullets[0]** — what you actually ran and made: machines (manual/CNC mill, lathe), materials, part types
-- [ ] **experience[0].bullets[1]** — one number: tolerance held, parts made, setup time cut, scrap reduced
-- [ ] **experience[0].bullets[2]** — anything you designed: fixtures, soft jaws, process improvements
-- [ ] **experience[1].org** — other jobs, internships or makerspace roles — or delete this entry
-- [ ] **experience[1].title** — title
-- [ ] **experience[1].dates** — dates
-- [ ] **experience[1].bullets[0]** — 1–3 bullets
+- [ ] **experience[1].dates** — months, e.g. “Jun–Aug 2026”
+- [ ] **experience[1].location** — city
+- [ ] **experience[1].bullets[0]** — what you actually ran and made: machines (manual/CNC mill, lathe), materials, part types
+- [ ] **experience[1].bullets[1]** — one number: tolerance held, parts made, setup time cut, scrap reduced
+- [ ] **experience[1].bullets[2]** — anything you designed: fixtures, soft jaws, process improvements
 - [ ] **skills.CAD & CAM[0]** — e.g. Fusion 360, SolidWorks, Onshape; CAM for which machines
 - [ ] **skills.Fabrication[0]** — e.g. manual mill, manual lathe, CNC mill, TIG/MIG, 3D printing (FDM/resin), sheet metal, composites
 - [ ] **skills.Electronics[0]** — e.g. soldering/micro-soldering, Arduino, PCB layout (KiCad?)
