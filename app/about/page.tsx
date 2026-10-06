@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Field } from "@/components/Todo";
 import SocialLinks from "@/components/SocialLinks";
 import CopyEmail from "@/components/CopyEmail";
+import ExperienceList, { visibleExperience } from "@/components/ExperienceList";
 import { contactEmail } from "@/lib/projects";
 import { isOwner } from "@/lib/owner";
 import { profile } from "@/content/profile";
@@ -20,7 +21,7 @@ export default async function About() {
   const edu = profile.education;
   const show = (v: string | null | undefined) => owner ? !!v?.trim() : !!filled(v);
   const showList = (l: string[]) => owner ? l.some((s) => s.trim()) : filledList(l).length > 0;
-  const experience = profile.experience.filter((e) => show(e.org));
+  const experience = visibleExperience(owner);
   const involvement = profile.involvement.filter((e) => show(e.org));
   const skills = Object.entries(profile.skills).filter(([, l]) => showList(l));
   const List = ({ items }: { items: string[] }) => (
@@ -71,19 +72,7 @@ export default async function About() {
       {experience.length > 0 && (
         <section className="mb-10">
           <H2>Experience</H2>
-          <ul className="space-y-6">
-            {experience.map((e, i) => (
-              <li key={i} className="grid gap-1 sm:grid-cols-[9rem_1fr]">
-                <div className="text-sm text-neutral-500"><Field value={e.dates} owner={owner} fallback="" /></div>
-                <div>
-                  <p className="font-semibold"><Field value={e.title} owner={owner} /> · <Field value={e.org} owner={owner} />
-                    {show(e.location) && <span className="font-normal text-neutral-500"> · <Field value={e.location} owner={owner} /></span>}
-                  </p>
-                  {showList(e.bullets) && <div className="mt-1 text-sm"><List items={e.bullets} /></div>}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <ExperienceList owner={owner} />
         </section>
       )}
 

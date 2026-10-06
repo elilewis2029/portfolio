@@ -36,10 +36,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to content
         </a>
         <header className="site no-print sticky top-0 z-30 border-b border-neutral-200/80 bg-white/85 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/85">
-          <div className="mx-auto flex max-w-5xl items-center gap-x-5 px-4 py-3">
-            <Link href="/" className="font-semibold tracking-tight">{profile.name}</Link>
-            <nav className="flex gap-4 text-sm text-neutral-600 dark:text-neutral-300" aria-label="Main">
+          <div className="mx-auto flex max-w-5xl items-center gap-x-4 px-4 py-3 sm:gap-x-5">
+            <Link href="/" className="shrink-0 whitespace-nowrap font-semibold tracking-tight">{profile.name}</Link>
+            <nav className="flex gap-3 text-sm sm:gap-4 text-neutral-600 dark:text-neutral-300" aria-label="Main">
               <Link href="/work" className="hover:text-accent">Work</Link>
+              <Link href="/experience" className="hover:text-accent">Experience</Link>
               <Link href="/about" className="hover:text-accent">About</Link>
               <a href="/resume" className="hover:text-accent">Résumé</a>
             </nav>
