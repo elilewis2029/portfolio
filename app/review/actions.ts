@@ -6,6 +6,7 @@ import { requireOwner } from "@/lib/owner";
 import { projectByIdAdmin } from "@/lib/projects";
 import { CATEGORIES, MEDIA_KINDS, isFeatureReady, type Category, type MediaKind } from "@/lib/types";
 import { slugify } from "@/lib/slug";
+import { processImage } from "@/lib/images";
 
 function refresh(slug?: string) {
   revalidatePath("/", "layout");
@@ -142,4 +143,45 @@ export async function deleteMedia(projectId: string, mediaId: string) {
   const p = await projectByIdAdmin(projectId);
   if (p?.featured && !isFeatureReady(p)) await db.from("projects").update({ featured: false }).eq("id", projectId);
   refresh(p?.slug);
+}
+
+/** Photos uploaded straight from a project page (after prepareUploads): 1600px webp, appended after the last photo. */
+export async function addPhotos(id: string, batch: string, paths: string[]): Promise<{ ok: true; added: number } | { ok: false; error: string }> {
+  await requireOwner();
+  const db = adminDb();
+  const storage = db.storage.from("portfolio");
+  const p = await projectByIdAdmin(id);
+  if (!p) return { ok: false, error: "Project not found." };
+  const mine = paths.filter((path) => path.startsWith(`inbox/${batch}/`)).slice(0, 12);
+  if (mine.length === 0) return { ok: false, error: "No photos uploaded." };
+  try {
+    const processed = await Promise.all(
+      mine.map(async (path) => {
+        const { data, error } = await storage.download(path);
+        if (error || !data) throw new Error(`Download failed for ${path}: ${error?.message}`);
+        const img = await processImage(Buffer.from(await data.arrayBuffer()));
+        const webpPath = path.replace(/\.[^./]+$/, "") + ".webp";
+        const up = await storage.upload(webpPath, img.webp, { contentType: "image/webp", upsert: true });
+        if (up.error) throw new Error(up.error.message);
+        return { ...img, path: webpPath, original: path };
+      }),
+    );
+    const start = Math.max(-1, ...(p.media ?? []).map((m) => m.sort)) + 1;
+    const { data: rows, error } = await db.from("media").insert(
+      processed.map((img, i) => ({
+        project_id: id, path: img.path, original_path: img.original, width: img.width, height: img.height,
+        taken_at: img.takenAt?.toISOString() ?? null, kind: "process", caption: null, sort: start + i,
+      })),
+    ).select("id");
+    if (error) throw new Error(error.message);
+    // A project with no photos yet gets its first upload as the cover.
+    if (!p.cover_media && rows?.[0]) {
+      await db.from("media").update({ kind: "hero" }).eq("id", rows[0].id);
+      await db.from("projects").update({ cover_media: rows[0].id }).eq("id", id);
+    }
+    refresh(p.slug);
+    return { ok: true, added: processed.length };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Upload failed" };
+  }
 }

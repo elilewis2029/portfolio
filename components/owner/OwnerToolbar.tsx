@@ -3,8 +3,9 @@ import { deleteProject, setFeatured, setStatus } from "@/app/review/actions";
 import { isFeatureReady, type Project } from "@/lib/types";
 import { countTodos } from "@/components/Todo";
 import ConfirmSubmit from "./ConfirmSubmit";
+import AddPhotos from "./AddPhotos";
 
-/** Owner mode controls at the top of a project page: status, Edit, Publish, Feature, Delete. */
+/** Owner mode controls at the top of a project page: status, Edit, Add photos, Publish, Feature, Delete. */
 export default function OwnerToolbar({ p, editing }: { p: Project; editing: boolean }) {
   const ready = isFeatureReady(p);
   const todos = countTodos(p.title, p.tagline, p.summary, p.role, p.goal_constraints, p.process_md, p.result_metric, p.lesson, p.body_md);
@@ -24,6 +25,7 @@ export default function OwnerToolbar({ p, editing }: { p: Project; editing: bool
           ) : (
             <Link href={`/work/${p.slug}?edit=1`} className="btn btn-primary">Edit</Link>
           )}
+          <AddPhotos projectId={p.id} supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!} anonKey={process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
           {p.status === "draft" ? (
             <form action={setStatus.bind(null, p.id, "published")}><button className="btn">Publish</button></form>
           ) : (

@@ -129,7 +129,7 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         ))}
       </ul>
       <p className="mt-4 text-sm text-neutral-500">
-        To add photos, tap <strong>+</strong> and name this project in the note (“more {p.title} pics”).
+        To add photos, use <strong>Add photos</strong> at the top of this page. They land at the end as process photos.
       </p>
     </div>
   );
