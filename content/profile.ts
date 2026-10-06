@@ -72,6 +72,18 @@ export const profile = {
 
   experience: [
     {
+      org: "Northwestern University — Segal Prototyping & Fabrication Lab",
+      title: "Shop Trainer",
+      dates: "Sep 2026 – present",
+      location: "Evanston, IL",
+      bullets: [
+        "Train students on the mill, lathe and laser cutter, and supervise open-shop hours in Northwestern's main student machine shop.",
+        "Trained about 40 engineering students through required shop orientation and about 10 on the mill.",
+        "Focus my teaching on hand-tool fundamentals (hand-saw stance and stroke, filing, safe knife use), where new students struggle most.",
+        "Building a purchase-request form so trainers can report missing tools and propose equipment that would improve the shop.",
+      ],
+    },
+    {
       org: "Ely Tool",
       title: "Machinist (summer job)",
       dates: "[TODO: months, e.g. “Jun–Aug 2026”]",
@@ -81,12 +93,6 @@ export const profile = {
         "[TODO: one number: tolerance held, parts made, setup time cut, scrap reduced]",
         "[TODO: anything you designed: fixtures, soft jaws, process improvements]",
       ],
-    },
-    {
-      org: "[TODO: other jobs, internships or makerspace roles — or delete this entry]",
-      title: "[TODO: title]",
-      dates: "[TODO: dates]",
-      bullets: ["[TODO: 1–3 bullets]"],
     },
   ] as Experience[],
 
