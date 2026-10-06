@@ -36,3 +36,7 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 20. **Photo-first layout.** Wider page (max-w-6xl), the first featured project as a 21:9 banner card, project hero at full column width with caption, odd process photo sets lead with one full-width photo, and a native `<dialog>` lightbox (`components/Lightbox.tsx`) so a build photo opens full-size without leaving the page.
 21. **Motion is CSS-only and small**: a 0.6 s fade-and-rise on page load for the hero, title and summary; a slow zoom on image hover; a short fade for the lightbox. All of it is disabled under `prefers-reduced-motion`. A scroll-triggered reveal was built and removed: in full-page captures it left photos invisible, and every guide lists "projects buried behind animation" as a mistake. No page transitions, parallax or loaders.
 22. **Structure stays conventional on purpose.** The site reads like a detailed résumé with photos because reviewers spend 30–60 s and want contact, role, process, result in a known place. Personality comes from the photos, the captions and the bio in his own voice, not from layout novelty.
+
+## 2026-10-06 — photos from the project page
+
+23. **"Add photos" on every project page** (owner toolbar, draft or published, viewing or editing). It uploads straight to that project through the same signed-URL path as the "+" intake, skips the AI, and appends the photos as `process` at the end; a project with no photos gets its first upload as the cover. The "+" sheet still decides new vs. append from the note.
