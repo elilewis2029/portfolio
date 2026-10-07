@@ -107,6 +107,12 @@ export const profile = {
 
   involvement: [
     { org: "[TODO: clubs/teams at Northwestern — Formula Racing, Baja, robotics, Segal design groups…]", role: "[TODO: role]", dates: "[TODO: dates]" },
+    {
+      org: "Woodworking shop of John Hartman (retired piano repairman and professional woodworker)",
+      role: "[TODO: role, e.g. apprentice / shop helper]",
+      dates: "Spring 2025 – present",
+      note: "Built my first hand plane here as a senior project and keep coming back to help on his projects and learn fine woodworking: reference surfaces, flatness checks, jigs and joinery.",
+    },
     { org: "[TODO: community makerspace from high school]", role: "[TODO: role, e.g. leadership / teaching]", dates: "[TODO: dates]" },
   ] as Involvement[],
 

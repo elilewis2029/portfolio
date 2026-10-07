@@ -30,9 +30,11 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **involvement[0].org** — clubs/teams at Northwestern — Formula Racing, Baja, robotics, Segal design groups…
 - [ ] **involvement[0].role** — role
 - [ ] **involvement[0].dates** — dates
-- [ ] **involvement[1].org** — community makerspace from high school
-- [ ] **involvement[1].role** — role, e.g. leadership / teaching
-- [ ] **involvement[1].dates** — dates
+- [ ] **involvement[1].role** — role, e.g. apprentice / shop helper
+- [ ] **involvement[1].note** (add to it) — how often you go to John Hartman's shop, and one thing you've built or helped with since the plane
+- [ ] **involvement[2].org** — community makerspace from high school
+- [ ] **involvement[2].role** — role, e.g. leadership / teaching
+- [ ] **involvement[2].dates** — dates
 - [ ] **awards[0]** — awards, competition placings, certifications (e.g. CSWA) — or leave empty
 
 ## Photos
