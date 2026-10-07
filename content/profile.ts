@@ -108,10 +108,10 @@ export const profile = {
   involvement: [
     { org: "[TODO: clubs/teams at Northwestern — Formula Racing, Baja, robotics, Segal design groups…]", role: "[TODO: role]", dates: "[TODO: dates]" },
     {
-      org: "Woodworking shop of John Hartman (retired piano repairman and professional woodworker)",
-      role: "[TODO: role, e.g. apprentice / shop helper]",
+      org: "Fine-woodworking mentorship with John Hartman, professional woodworker",
+      role: "Mentee",
       dates: "Spring 2025 – present",
-      note: "Built my first hand plane here as a senior project and keep coming back to help on his projects and learn fine woodworking: reference surfaces, flatness checks, jigs and joinery.",
+      note: "Began with my hand-plane senior project; now working on a workbench and other furniture projects. Taught me to plan the order of operations, keep setups and reference surfaces consistent, and account for grain direction and wood movement, habits that carry straight into machining.",
     },
     { org: "[TODO: community makerspace from high school]", role: "[TODO: role, e.g. leadership / teaching]", dates: "[TODO: dates]" },
   ] as Involvement[],
