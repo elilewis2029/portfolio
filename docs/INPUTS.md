@@ -17,11 +17,7 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **education.gpa** — GPA, or leave blank to omit
 - [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials
 - [ ] **education.honors[0]** — honors, scholarships, dean's list — or leave empty
-- [ ] **experience[1].dates** — months, e.g. “Jun–Aug 2026”
-- [ ] **experience[1].location** — city
-- [ ] **experience[1].bullets[0]** — what you actually ran and made: machines (manual/CNC mill, lathe), materials, part types
-- [ ] **experience[1].bullets[1]** — one number: tolerance held, parts made, setup time cut, scrap reduced
-- [ ] **experience[1].bullets[2]** — anything you designed: fixtures, soft jaws, process improvements
+- [ ] **experience[1].location** — Ely Tool city and state
 - [ ] **skills.CAD & CAM[0]** — e.g. Fusion 360, SolidWorks, Onshape; CAM for which machines
 - [ ] **skills.Fabrication[0]** — e.g. manual mill, manual lathe, CNC mill, TIG/MIG, 3D printing (FDM/resin), sheet metal, composites
 - [ ] **skills.Electronics[0]** — e.g. soldering/micro-soldering, Arduino, PCB layout (KiCad?)
@@ -44,7 +40,7 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 
 Recruiters read a single project as a hobby site; three to five featured is the target. Each placeholder draft has an intake note saying what to photograph. Add photos with **+** and name the project in the note (e.g. “drill press pics”), or send the photos here.
 
-- [ ] **Ely Tool fixture / tooling** (`/work/todo-ely-tool-fixture`) — clear customer parts with the shop owner first
+- [ ] **Ely Tool placeholder** (`/work/todo-ely-tool-fixture`) — was based on the wrong “machinist” framing; repurpose it as the shop-layout page or delete it (see DECISIONS 24)
 - [ ] **Northwestern course or club project** (`/work/todo-northwestern-course-project`)
 - [ ] **1970s drill press restoration** (`/work/todo-drill-press-restoration`) — from the old Wix site
 - [ ] **Carbon Fiber Book 2** (`/work/carbon-fiber-book-2`) — photos of the build and of book 1 for comparison, one sentence on what changed

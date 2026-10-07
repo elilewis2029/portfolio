@@ -40,3 +40,7 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 ## 2026-10-06 — photos from the project page
 
 23. **"Add photos" on every project page** (owner toolbar, draft or published, viewing or editing). It uploads straight to that project through the same signed-URL path as the "+" intake, skips the AI, and appends the photos as `process` at the end; a project with no photos gets its first upload as the cover. The "+" sheet still decides new vs. append from the note.
+
+## 2026-10-07 — Ely Tool corrected
+
+24. **Ely Tool is a continuous improvement internship, not machining.** Eli had no official title and accepted "Continuous Improvement Intern"; every "machinist" mention (profile, intake prompt, CLAUDE.md, interview prompt) is corrected. The Experience entry carries the job: 5S coordination, the adopted SketchUp layout, phased moves (an *estimated* $5,000 shutdown avoided), and the barcode mockup as a prototype with buy-in, not a deployed system. Experience entries are text-only, so photos of the layout and the back room can only appear on a project page; whether to make one is Eli's call. The `todo-ely-tool-fixture` placeholder came from the wrong framing and should be repurposed or deleted.
