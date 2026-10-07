@@ -1,7 +1,7 @@
 Portfolio site — project context for Claude Code
 Read `docs/PLAN.md` (the build plan, schema, prompts) and `docs/RESEARCH.md` (what recruiters want) before doing anything. This file lists what overrides the plan.
 Owner
-Eli Lewis — Manufacturing & Design Engineering (MaDE) student, Northwestern '29. Facts about Eli come only from Eli (content/profile.ts, his notes); nothing in docs/ is a source of truth about him. Summer job (not his identity): machinist at Ely Tool, a custom-tooling shop; that belongs in the Experience section, never in the headline. Site: portfolio for engineering / product-design jobs and internships. Owner email for auth comes from env `OWNER_EMAIL`.
+Eli Lewis — Manufacturing & Design Engineering (MaDE) student, Northwestern '29. Facts about Eli come only from Eli (content/profile.ts, his notes); nothing in docs/ is a source of truth about him. Summer 2026 job (not his identity): Continuous Improvement Intern at Ely Tool, a custom machine shop, reorganizing the shop floor (he was never a machinist); that belongs in the Experience section, never in the headline. Site: portfolio for engineering / product-design jobs and internships. Owner email for auth comes from env `OWNER_EMAIL`.
 Stack (do not change)
 Next.js App Router + TypeScript + Tailwind, deployed on Vercel. Data in Supabase, schema `portfolio`, bucket `portfolio`. Anthropic API (claude-sonnet-4-6) for the `/add` intake. See PLAN.md "Stack decisions".
 Overrides to PLAN.md, from RESEARCH.md (apply these)
