@@ -17,7 +17,6 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 - [ ] **education.gpa** — GPA, or leave blank to omit
 - [ ] **education.coursework[0]** — relevant coursework so far, e.g. DTC, manufacturing processes, CAD, materials
 - [ ] **education.honors[0]** — honors, scholarships, dean's list — or leave empty
-- [ ] **experience[1].location** — Ely Tool city and state
 - [ ] **skills.CAD & CAM[0]** — e.g. Fusion 360, SolidWorks, Onshape; CAM for which machines
 - [ ] **skills.Fabrication[0]** — e.g. manual mill, manual lathe, CNC mill, TIG/MIG, 3D printing (FDM/resin), sheet metal, composites
 - [ ] **skills.Electronics[0]** — e.g. soldering/micro-soldering, Arduino, PCB layout (KiCad?)
