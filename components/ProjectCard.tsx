@@ -44,54 +44,60 @@ function DraftBadge() {
 }
 
 /**
- * A series on /work: one tile that reads as a small stack of cards. The photo cycles through every part's
- * hero (CSS keyframes in globals.css, `.series-flip`; still under prefers-reduced-motion, where only the
- * first photo shows), and a strip of numbered thumbnails names the parts, so the other items are visible
- * without opening anything. Links to the series overview.
+ * A series on /work, drawn like an album cover: a static mosaic of the parts' photos (the lead part large,
+ * the others in a column beside it, numbered), a stacked-squares badge with the part count, and the same
+ * text grammar as every other card (title, one line, chips) so the grid still scans evenly. No motion:
+ * auto-cycling photos can't be skimmed and need a pause control (WCAG 2.2.2). Links to the series overview.
  */
 function SeriesTile({ series }: { series: SeriesCard }) {
   const members = series.members;
   const heroes = members.map((m) => ({ m, hero: heroOf(m) }));
+  const [lead, ...rest] = heroes;
+  const shown = rest.slice(0, 2);
+  const extra = rest.length - shown.length;
   const anyDraft = members.some((m) => m.status === "draft");
   const skills = [...new Set(members.flatMap((m) => m.skills))].slice(0, 3);
+  const cell = "relative overflow-hidden bg-neutral-200 dark:bg-neutral-800";
+  const num = (n: number) => (
+    <span className="absolute left-1.5 top-1.5 z-10 rounded bg-black/55 px-1.5 text-[11px] font-semibold leading-5 text-white">{n}</span>
+  );
   return (
     <Link href={seriesHref(series.name)} className="group block min-w-0">
-      {/* The stack: two offset edges behind the tile */}
-      <div className="relative pt-2 pr-2">
-        <span aria-hidden="true" className="absolute inset-0 translate-x-2 -translate-y-2 rounded-2xl bg-neutral-200/80 ring-1 ring-neutral-900/5 dark:bg-neutral-800 dark:ring-white/10" />
-        <span aria-hidden="true" className="absolute inset-0 translate-x-1 -translate-y-1 rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10" />
-        <div className="series-flip zoom relative aspect-[4/3] overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10" data-n={Math.min(members.length, 4)}>
-          {heroes.map(({ m, hero }, i) =>
-            hero ? (
-              <Image
-                key={m.id}
-                src={hero.path}
-                alt={i === 0 ? `${series.name}: ${hero.caption || m.title}` : ""}
-                fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover"
-              />
-            ) : (
-              <div key={m.id} className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400">No photo yet</div>
-            ),
+      <div className="zoom relative grid aspect-[4/3] grid-cols-3 grid-rows-2 gap-0.5 overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10">
+        <div className={`${cell} col-span-2 row-span-2`}>
+          {lead.hero ? (
+            <Image src={lead.hero.path} alt={`${series.name}: ${lead.hero.caption || lead.m.title}`} fill sizes="(min-width: 1024px) 22vw, (min-width: 640px) 33vw, 66vw" className="object-cover" />
+          ) : (
+            <span className="flex h-full items-center justify-center text-sm text-neutral-400">No photo yet</span>
           )}
-          <span className="on-accent absolute right-2 top-2 z-10 rounded-md bg-accent px-2 py-0.5 text-xs font-semibold text-white shadow">
-            {members.length} parts
-          </span>
-          {anyDraft && <DraftBadge />}
+          {num(1)}
         </div>
+        {shown.map(({ m, hero }, i) => (
+          <div key={m.id} className={`${cell} ${shown.length === 1 ? "row-span-2" : ""}`}>
+            {hero && <Image src={hero.path} alt="" fill sizes="(min-width: 1024px) 11vw, (min-width: 640px) 17vw, 33vw" className="object-cover" />}
+            {num(i + 2)}
+            {i === shown.length - 1 && extra > 0 && (
+              <span className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 text-lg font-semibold text-white">+{extra}</span>
+            )}
+          </div>
+        ))}
+        {/* Count badge with the stacked-squares glyph (the multi-item marker people know from photo apps) */}
+        <span className="absolute bottom-2 right-2 z-10 inline-flex items-center gap-1 rounded-md bg-white/90 px-2 py-0.5 text-xs font-semibold text-neutral-900 shadow dark:bg-neutral-950/85 dark:text-neutral-100">
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <rect x="1.5" y="4.5" width="10" height="10" rx="1.5" />
+            <path d="M5 4.5V3a1.5 1.5 0 0 1 1.5-1.5H13A1.5 1.5 0 0 1 14.5 3v6.5A1.5 1.5 0 0 1 13 11h-1.5" />
+          </svg>
+          {members.length} parts
+        </span>
+        {anyDraft && <DraftBadge />}
       </div>
       <h3 className="mt-3 text-base font-semibold leading-snug group-hover:text-accent sm:text-lg">{series.name}</h3>
-      {/* The parts, by number, with a thumbnail each */}
-      <ol className="mt-2 space-y-1.5">
-        {heroes.map(({ m, hero }, i) => (
-          <li key={m.id} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-            <span className="relative h-9 w-12 shrink-0 overflow-hidden rounded bg-neutral-200 dark:bg-neutral-800">
-              {hero && <Image src={hero.path} alt="" fill sizes="48px" className="object-cover" />}
-            </span>
-            <span className="min-w-0 truncate"><span className="font-medium text-neutral-800 dark:text-neutral-200">{i + 1}.</span> {m.title}{m.status === "draft" ? " (draft)" : ""}</span>
-          </li>
+      {/* One line per part, truncated: two parts take the same two lines a tagline does on the other cards */}
+      <ol className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+        {members.slice(0, 3).map((m, i) => (
+          <li key={m.id} className="truncate">{i + 1}. {m.title}{m.status === "draft" ? " (draft)" : ""}</li>
         ))}
+        {members.length > 3 && <li>and {members.length - 3} more</li>}
       </ol>
       {skills.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1.5">
