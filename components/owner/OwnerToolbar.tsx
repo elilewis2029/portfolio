@@ -27,7 +27,13 @@ export default function OwnerToolbar({ p, editing }: { p: Project; editing: bool
           )}
           <AddPhotos projectId={p.id} supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!} anonKey={process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
           {p.status === "draft" ? (
-            <form action={setStatus.bind(null, p.id, "published")}><button className="btn">Publish</button></form>
+            <form action={setStatus.bind(null, p.id, "published")}>
+              {todos > 0 ? (
+                <ConfirmSubmit message={`This page still has ${todos} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?`} className="btn">Publish</ConfirmSubmit>
+              ) : (
+                <button className="btn">Publish</button>
+              )}
+            </form>
           ) : (
             <form action={setStatus.bind(null, p.id, "draft")}><button className="btn">Unpublish</button></form>
           )}

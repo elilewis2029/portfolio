@@ -5,6 +5,7 @@ import { allProjectsAdmin } from "@/lib/projects";
 import { heroOf, isFeatureReady, type Project } from "@/lib/types";
 import { HighlightTodo, countTodos } from "@/components/Todo";
 import { setFeatured, setStatus } from "./actions";
+import ConfirmSubmit from "@/components/owner/ConfirmSubmit";
 
 export const metadata = { title: "Review", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -38,7 +39,13 @@ function Row({ p }: { p: Project }) {
       </div>
       <div className="flex shrink-0 flex-col gap-1">
         {p.status === "draft" ? (
-          <form action={setStatus.bind(null, p.id, "published")}><button className="btn btn-primary w-full">Publish</button></form>
+          <form action={setStatus.bind(null, p.id, "published")}>
+            {n > 0 ? (
+              <ConfirmSubmit message={`“${p.title}” still has ${n} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?`} className="btn btn-primary w-full">Publish</ConfirmSubmit>
+            ) : (
+              <button className="btn btn-primary w-full">Publish</button>
+            )}
+          </form>
         ) : (
           <form action={setStatus.bind(null, p.id, "draft")}><button className="btn w-full">Unpublish</button></form>
         )}

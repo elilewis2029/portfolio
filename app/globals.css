@@ -53,3 +53,6 @@ dialog.sheet[open] { animation: sheet-in 180ms ease-out; }
   main { max-width: none !important; padding: 0 !important; }
 }
 .print-only { display: none; }
+
+/* Editor: fields and buttons scrolled into view (focus, keyboard) stop above the sticky Save bar. */
+html:has(#project-form) { scroll-padding-bottom: 6rem; }

@@ -10,6 +10,11 @@ export default async function Login({ searchParams }: { searchParams: Promise<SP
     <div className="mx-auto max-w-sm">
       <h1 className="mb-1 text-xl font-semibold">Owner sign-in</h1>
       <p className="mb-4 text-sm text-neutral-500">Only the site owner can sign in. Nothing here for visitors.</p>
+      {next.includes("edit=1") && (
+        <p className="mb-4 rounded-md border border-yellow-500/60 p-2 text-sm">
+          You were signed out, so that change was not saved yet. Sign in and you&rsquo;ll go back to the editor with your edits restored.
+        </p>
+      )}
       {sent ? (
         <form action={verifyCode} className="space-y-3">
           <p className="text-sm">Check your email and tap the sign-in link. If the email shows a code instead, type it here.</p>

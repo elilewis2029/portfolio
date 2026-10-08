@@ -37,7 +37,17 @@ export async function updateProject(id: string, f: FormData) {
     const [label, url] = line.split("|").map((s) => s.trim());
     if (label && url) links[label] = url;
   });
-  const slug = slugify(String(f.get("slug") ?? "")) || undefined;
+  const db = adminDb();
+  let slug = slugify(String(f.get("slug") ?? "")) || undefined;
+  // A URL another project already uses: save everything else and say so, instead of failing the whole Save.
+  let warning: string | null = null;
+  if (slug) {
+    const { data: taken } = await db.from("projects").select("id").eq("slug", slug).neq("id", id).maybeSingle();
+    if (taken) {
+      warning = `The URL /work/${slug} is already used by another project, so the URL was not changed. Everything else was saved.`;
+      slug = undefined;
+    }
+  }
   const fields = {
     title: text(f, "title") ?? "Untitled",
     ...(slug ? { slug } : {}),
@@ -64,15 +74,28 @@ export async function updateProject(id: string, f: FormData) {
     series_order: /^\d+$/.test(String(f.get("series_order") ?? "").trim()) ? Number(f.get("series_order")) : null,
   };
   // Series columns arrive with migration 0003; on a database without them, save everything else.
-  let { error } = await adminDb().from("projects").update({ ...fields, ...seriesFields }).eq("id", id);
-  if (error && /series/.test(error.message)) ({ error } = await adminDb().from("projects").update(fields).eq("id", id));
+  let { error } = await db.from("projects").update({ ...fields, ...seriesFields }).eq("id", id);
+  if (error && /series/.test(error.message)) ({ error } = await db.from("projects").update(fields).eq("id", id));
   if (error) {
     const cur = await projectByIdAdmin(id);
-    redirect(`/work/${cur?.slug}?edit=1&error=${encodeURIComponent(error.message)}`);
+    redirect(`/work/${cur?.slug}?edit=1&error=${encodeURIComponent(`Not saved: ${error.message}`)}`);
   }
+  // Photo kinds and captions are fields of the same form (media_kind:<id>, media_caption:<id>).
+  const mediaIds = [...f.keys()].filter((k) => k.startsWith("media_kind:")).map((k) => k.slice("media_kind:".length));
+  await Promise.all(mediaIds.map((mid) => {
+    const kind = String(f.get(`media_kind:${mid}`));
+    return db.from("media").update({
+      kind: MEDIA_KINDS.includes(kind as MediaKind) ? kind : null,
+      caption: text(f, `media_caption:${mid}`),
+    }).eq("id", mid).eq("project_id", id);
+  }));
   const p = await projectByIdAdmin(id);
+  // Losing the last process photo also loses featured status.
+  if (p?.featured && !isFeatureReady(p)) await db.from("projects").update({ featured: false }).eq("id", id);
   refresh(p?.slug);
-  redirect(`/work/${p?.slug ?? slug}?edit=1&saved=1`);
+  // `saved` is a fresh value on every Save, so the editor knows this Save (not an earlier one) went through.
+  const extra = warning ? `&error=${encodeURIComponent(warning)}` : "";
+  redirect(`/work/${p?.slug ?? slug}?edit=1&saved=${Date.now()}${extra}`);
 }
 
 export async function setStatus(id: string, status: "draft" | "published") {
@@ -113,19 +136,6 @@ export async function deleteProject(id: string) {
   redirect("/review");
 }
 
-export async function updateMedia(projectId: string, mediaId: string, f: FormData) {
-  await requireOwner(returnTo(f));
-  const kind = String(f.get("kind"));
-  await adminDb().from("media").update({
-    kind: MEDIA_KINDS.includes(kind as MediaKind) ? kind : null,
-    caption: text(f, "caption"),
-  }).eq("id", mediaId).eq("project_id", projectId);
-  const p = await projectByIdAdmin(projectId);
-  // Losing the last process photo also loses featured status.
-  if (p?.featured && !isFeatureReady(p)) await adminDb().from("projects").update({ featured: false }).eq("id", projectId);
-  refresh(p?.slug);
-}
-
 export async function moveMedia(projectId: string, mediaId: string, dir: -1 | 1) {
   await requireOwner();
   const p = await projectByIdAdmin(projectId);
@@ -141,7 +151,10 @@ export async function moveMedia(projectId: string, mediaId: string, dir: -1 | 1)
 
 export async function setCover(projectId: string, mediaId: string) {
   await requireOwner();
-  await adminDb().from("projects").update({ cover_media: mediaId }).eq("id", projectId);
+  const db = adminDb();
+  await db.from("projects").update({ cover_media: mediaId }).eq("id", projectId);
+  // The old cover was usually typed "hero"; left that way it would vanish from the page (only the cover shows as hero).
+  await db.from("media").update({ kind: "process" }).eq("project_id", projectId).eq("kind", "hero").neq("id", mediaId);
   const p = await projectByIdAdmin(projectId);
   refresh(p?.slug);
 }

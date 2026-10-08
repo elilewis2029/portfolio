@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { CATEGORIES, CATEGORY_LABEL, MEDIA_KINDS, heroOf, type Project } from "@/lib/types";
 import { HighlightTodo, TODO_RE, countTodos } from "@/components/Todo";
-import { deleteMedia, moveMedia, setCover, updateMedia, updateProject } from "@/app/review/actions";
+import { deleteMedia, moveMedia, setCover, updateProject } from "@/app/review/actions";
 import ConfirmSubmit from "./ConfirmSubmit";
 import DraftForm from "./DraftForm";
 
-function Field({ label, name, value, rows, hint }: { label: string; name: string; value: string | null | undefined; rows?: number; hint?: string }) {
+function Field({ label, name, value, rows, hint, numeric }: { label: string; name: string; value: string | null | undefined; rows?: number; hint?: string; numeric?: boolean }) {
   const todo = !!value && new RegExp(TODO_RE.source, "i").test(value);
   const cls = `input ${todo ? "border-yellow-500 ring-2 ring-yellow-300/60" : ""}`;
   return (
@@ -16,14 +16,17 @@ function Field({ label, name, value, rows, hint }: { label: string; name: string
       {rows ? (
         <textarea name={name} defaultValue={value ?? ""} rows={rows} className={cls} />
       ) : (
-        <input name={name} defaultValue={value ?? ""} className={cls} />
+        <input name={name} defaultValue={value ?? ""} className={cls} inputMode={numeric ? "numeric" : undefined} />
       )}
     </label>
   );
 }
 
-/** Inline editor for a project page (owner mode, ?edit=1): fields, then photos with kind/caption/order/cover. */
-export default function ProjectEditor({ p, saved, error }: { p: Project; saved?: boolean; error?: string }) {
+/**
+ * Inline editor for a project page (owner mode, ?edit=1): fields, then photos with kind/caption/order/cover.
+ * One Save covers the fields and every photo's kind and caption; ↑ ↓, Make cover and Remove act at once.
+ */
+export default function ProjectEditor({ p, savedAt, error }: { p: Project; savedAt?: string; error?: string }) {
   const hero = heroOf(p);
   const textFields: [string, string | null][] = [
     ["Title", p.title], ["Tagline", p.tagline], ["Summary", p.summary], ["Role", p.role],
@@ -37,7 +40,6 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
 
   return (
     <div className="no-print">
-      {saved && <p className="mb-4 rounded-md border border-green-600/40 p-2 text-sm">Saved.</p>}
       {error && <p className="mb-4 rounded-md border border-red-600/40 p-2 text-sm text-red-600">{error}</p>}
 
       {p.intake_note && (
@@ -57,7 +59,16 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         </section>
       )}
 
-      <DraftForm draftKey={`project:${p.id}`} version={p.updated_at} action={updateProject.bind(null, p.id)} className="space-y-4">
+      <DraftForm
+        id="project-form"
+        draftKey={`project:${p.id}`}
+        version={p.updated_at}
+        savedAt={savedAt}
+        error={error}
+        action={updateProject.bind(null, p.id)}
+        className="space-y-4"
+        after={<Photos p={p} heroId={hero?.id} />}
+      >
         <input type="hidden" name="return_to" value={back} />
         <Field label="Title" name="title" value={p.title} hint="impact-style, 2–7 words" />
         <Field label="Tagline" name="tagline" value={p.tagline} hint="names the skill or process" />
@@ -78,7 +89,7 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         </div>
         <Field label="Role" name="role" value={p.role} hint="“I was responsible for…”" />
         <div className="grid gap-4 sm:grid-cols-3">
-          <Field label="Year" name="year" value={p.year?.toString()} />
+          <Field label="Year" name="year" value={p.year?.toString()} numeric />
           <Field label="Duration" name="duration" value={p.duration} />
           <label className="block">
             <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Section</span>
@@ -98,36 +109,39 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         <Field label="Notes" name="body_md" value={p.body_md} rows={4} hint="optional free text" />
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Series" name="series" value={p.series} hint="same name on each related page; they share one card on /work" />
-          <Field label="Series order" name="series_order" value={p.series_order?.toString()} hint="1 = lead page" />
+          <Field label="Series order" name="series_order" value={p.series_order?.toString()} hint="1 = lead page" numeric />
         </div>
         <Field label="Slug" name="slug" value={p.slug} hint="URL: /work/…" />
-        <div className="sticky bottom-0 -mx-1 bg-white/90 px-1 py-3 pr-20 backdrop-blur sm:pr-1 dark:bg-neutral-950/90">
-          <button className="btn btn-primary w-full sm:w-auto">Save</button>
-        </div>
       </DraftForm>
+    </div>
+  );
+}
 
-      <h2 className="mb-3 mt-10 font-semibold">Photos ({p.media?.length ?? 0})</h2>
+/** Photo rows. Kind and caption belong to the project form (saved by its Save); the buttons act immediately. */
+function Photos({ p, heroId }: { p: Project; heroId?: string }) {
+  return (
+    <>
+      <h2 className="mb-1 mt-10 font-semibold">Photos ({p.media?.length ?? 0})</h2>
+      <p className="mb-3 text-sm text-neutral-500">Kind and caption are saved with <strong>Save</strong>. The arrows, Make cover and Remove apply straight away.</p>
       <ul className="space-y-4">
         {(p.media ?? []).map((m, i, all) => (
           <li key={m.id} className="flex gap-3 border-b border-neutral-200 pb-4 dark:border-neutral-800">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded bg-neutral-100 sm:w-32 dark:bg-neutral-900">
               <Image src={m.path} alt="" fill sizes="128px" className="object-cover" />
-              {hero?.id === m.id && <span className="absolute left-1 top-1 rounded bg-accent px-1 text-[10px] text-white">cover</span>}
+              {heroId === m.id && <span className="absolute left-1 top-1 rounded bg-accent px-1 text-[10px] text-white">cover</span>}
             </div>
             <div className="min-w-0 flex-1 space-y-2">
-              <DraftForm draftKey={`media:${m.id}`} version={`${m.kind ?? ""}|${m.caption ?? ""}`} action={updateMedia.bind(null, p.id, m.id)} className="flex flex-wrap gap-2">
-                <input type="hidden" name="return_to" value={back} />
-                <select name="kind" defaultValue={m.kind ?? ""} className="input w-auto">
+              <div className="flex flex-wrap gap-2">
+                <select form="project-form" name={`media_kind:${m.id}`} defaultValue={m.kind ?? ""} aria-label="Photo kind" className="input w-auto">
                   <option value="">(untyped)</option>
                   {MEDIA_KINDS.map((k) => <option key={k} value={k}>{k}</option>)}
                 </select>
-                <input name="caption" defaultValue={m.caption ?? ""} placeholder="caption" className="input min-w-0 flex-1" />
-                <button className="btn">Save</button>
-              </DraftForm>
+                <input form="project-form" name={`media_caption:${m.id}`} defaultValue={m.caption ?? ""} placeholder="caption" aria-label="Caption" className="input min-w-0 flex-1" />
+              </div>
               <div className="flex flex-wrap gap-2">
                 <form action={moveMedia.bind(null, p.id, m.id, -1)}><button className="btn" disabled={i === 0} aria-label="Move up">↑</button></form>
                 <form action={moveMedia.bind(null, p.id, m.id, 1)}><button className="btn" disabled={i === all.length - 1} aria-label="Move down">↓</button></form>
-                {hero?.id !== m.id && <form action={setCover.bind(null, p.id, m.id)}><button className="btn">Make cover</button></form>}
+                {heroId !== m.id && <form action={setCover.bind(null, p.id, m.id)}><button className="btn">Make cover</button></form>}
                 <form action={deleteMedia.bind(null, p.id, m.id)}>
                   <ConfirmSubmit message="Remove this photo?" className="btn text-red-600">Remove</ConfirmSubmit>
                 </form>
@@ -139,6 +153,6 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
       <p className="mt-4 text-sm text-neutral-500">
         To add photos, use <strong>Add photos</strong> at the top of this page. They land at the end as process photos.
       </p>
-    </div>
+    </>
   );
 }
