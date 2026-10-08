@@ -17,8 +17,14 @@ fi
 
 # Vercel holds the keys the live site uses. Pull them so scripts and local builds hit the same project,
 # whatever the environment's own variables say. Values go to .env.local (gitignored) and the session env.
-if [ -n "${VERCEL_TOKEN:-}" ] && command -v vercel >/dev/null 2>&1; then
-  if vercel env pull .env.local --environment=production --yes --token "$VERCEL_TOKEN" >/dev/null 2>&1; then
+if [ -n "${VERCEL_TOKEN:-}" ]; then
+  # The CLI is not in the base image, and a fresh clone is not linked: use npx and write the link file (ids are public).
+  VERCEL="vercel"; command -v vercel >/dev/null 2>&1 || VERCEL="npx --yes vercel@latest"
+  if [ ! -f .vercel/project.json ]; then
+    mkdir -p .vercel
+    printf '{"projectId":"prj_AgnVGOUb1RKL1MYERnteMk1ERs9T","orgId":"team_O10BQQMStMey48liCw1gSFXs","projectName":"portfolio"}\n' > .vercel/project.json
+  fi
+  if $VERCEL env pull .env.local --environment=production --yes --token "$VERCEL_TOKEN" >/dev/null 2>&1; then
     for name in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY; do
       value=$(grep -E "^${name}=" .env.local | head -1 | cut -d= -f2- | tr -d '"')
       if [ -n "$value" ] && [ -n "${CLAUDE_ENV_FILE:-}" ]; then
