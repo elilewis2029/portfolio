@@ -149,9 +149,9 @@ export default async function ProjectPage({ params, searchParams }: Props) {
             </section>
           )}
 
-          {/* 7. Result */}
+          {/* 7. Result: a clear break from the process photos, the metric first, then before/after pairs */}
           {(p.result_metric || results.length > 0) && (
-            <section className="mb-8">
+            <section className="mb-8 border-t border-neutral-200 pt-8 dark:border-neutral-800">
               <h2 className="mb-2 text-lg font-semibold">Result</h2>
               {p.result_metric && (
                 <p className="inline-block rounded-md bg-accent-soft px-3 py-2 text-xl font-semibold text-accent dark:bg-accent/15">
@@ -159,9 +159,19 @@ export default async function ProjectPage({ params, searchParams }: Props) {
                 </p>
               )}
               {results.length > 0 && (
-                <div className="print-grid mt-5 grid gap-5 sm:grid-cols-2">
-                  {results.map((m) => <Figure key={m.id} m={m} sizes="(min-width: 1024px) 440px, 100vw" />)}
-                </div>
+                <>
+                  <h3 className="mt-6 mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-500">Before and after</h3>
+                  <div className="print-grid grid gap-5 sm:grid-cols-2">
+                    {results.map((m) => (
+                      <div key={m.id} className="relative">
+                        <span className="absolute left-3 top-3 z-10 rounded-md bg-neutral-900/80 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                          {m.kind === "before" ? "Before" : "After"}
+                        </span>
+                        <Figure m={m} sizes="(min-width: 1024px) 440px, 100vw" />
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </section>
           )}
