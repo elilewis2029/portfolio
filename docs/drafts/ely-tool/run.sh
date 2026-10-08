@@ -13,8 +13,8 @@ fi
 P() { npm run -s portfolio -- "$@"; }
 
 P list
-P new $D/shop-relayout.json $I/layout-main-floor-final.webp $I/layout-main-floor-original.webp $I/layout-eye-level-original.webp \
-  $I/layout-eye-level-final.webp $I/back-room-before.jpg $I/back-room-after.jpg $I/plastics-corner-before.jpg $I/flammables-cabinet-after.jpg
+P new $D/shop-relayout.json $I/layout-main-floor-final.webp $I/layout-main-floor-original.webp $I/sequencing-map.png $I/layout-eye-level-original.webp \
+  $I/layout-eye-level-final.webp $I/hallway-cabinet-teardown.jpg $I/back-room-before.jpg $I/back-room-after.jpg $I/plastics-corner-before.jpg $I/flammables-cabinet-after.jpg $I/container-plastics-shelves.jpg
 P new $D/detail-room.json $I/mockup-lookup.webp $I/layout-detail-room-original.webp $I/layout-detail-room-final.webp $I/mockup-scan-link.png $I/mockup-storage-map.webp
 P show todo-ely-tool-fixture >/dev/null 2>&1 && P delete todo-ely-tool-fixture || echo "no placeholder draft to delete"
 P list

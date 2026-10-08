@@ -6,7 +6,7 @@
   "role_kind": "team",
   "role": "I was responsible for the detailed layout and for coordinating between management and the floor; management made the major relocation decisions.",
   "goal_constraints": "- Make room for new equipment without shutting the shop down.\n- Keep required machine adjacencies and the service space around each machine.\n- Improve access, safety, storage and findability (5S, with advice from a MassMEP consultant).",
-  "process_md": "- Interviewed machinists and watched daily work to learn what already worked and what got in the way.\n- Built a to-scale SketchUp model and tagged every item: keep in place, move, remove, or review.\n- Placed and oriented machines within management's major moves, drew each machine's service margin, and checked new hallway widths with 12, 8 and 5 ft gauge circles.\n- Sequenced prep and moves so machines kept running; helped take down workbenches, clear forklift paths and empty the back room.\n- Relayed decisions to the floor and brought feedback back to management.\n- Large-machine moves were underway when I left; floor resurfacing followed one to two weeks later.",
+  "process_md": "- Interviewed machinists and watched daily work to learn what already worked and what got in the way.\n- Built a to-scale SketchUp model and tagged every item: keep in place, move, remove, or review.\n- Placed and oriented machines within management's major moves, drew each machine's service margin, and checked new hallway widths with 12, 8 and 5 ft gauge circles.\n- Mapped which tasks had to finish before each stage could start, then sequenced prep and moves so machines kept running; helped take down workbenches, clear forklift paths and empty the back room.\n- Relayed decisions to the floor and brought feedback back to management.\n- Large-machine moves were underway when I left; floor resurfacing followed one to two weeks later.",
   "result_metric": "~$5,000 estimated shutdown labor avoided",
   "lesson": "Show before asking: I'd make a rough visual draft before taking an idea to my boss, so he could judge it faster.",
   "tools": [
@@ -34,12 +34,20 @@
       "caption": "The original main-floor layout in the same view, with every item tagged keep in place, move, remove or review. Compare with the final plan at the top."
     },
     {
+      "kind": "drawing",
+      "caption": "The dependency map I used to sequence the work: tasks (triangles) that had to finish before each stage (diamonds) could start, building toward the two goals in red: clearing space for the new machines and concrete pad, and redoing the detail room."
+    },
+    {
       "kind": "cad",
       "caption": "Eye level in the model, original layout: a crowded aisle of items marked for removal."
     },
     {
       "kind": "cad",
       "caption": "The same spot in the final plan: the aisle opens up."
+    },
+    {
+      "kind": "process",
+      "caption": "Taking apart the built-in cabinet and counter in the hallway to open the route through the shop."
     },
     {
       "kind": "before",
@@ -56,6 +64,10 @@
     {
       "kind": "after",
       "caption": "After: the same corner with the plastics cleared and a flammables cabinet in their place, holding paints, solvents and oils."
+    },
+    {
+      "kind": "after",
+      "caption": "Where the plastic stock went: a storage container outside the shop. I added the shelving and labeled it by material and size (UHMW, PVC, oversize) so it stays findable."
     }
   ]
 }
