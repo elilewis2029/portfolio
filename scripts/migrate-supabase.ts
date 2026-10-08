@@ -5,8 +5,9 @@
  *   npm run migrate-supabase -- [--dry-run] [--vercel]
  *
  * Env (names only; never print values):
- *   OLD_SUPABASE_URL, OLD_SUPABASE_SERVICE_ROLE_KEY   source project (the one that holds the data today)
- *   NEW_SUPABASE_URL, NEW_SUPABASE_SERVICE_ROLE_KEY   target project; default to NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY
+ *   NEW_SUPABASE_URL                                 target project URL (https://<ref>.supabase.co); its service key is fetched via the access token
+ *   OLD_SUPABASE_URL, OLD_SUPABASE_SERVICE_ROLE_KEY   source project; default to NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY (the live project)
+ *   NEW_SUPABASE_SERVICE_ROLE_KEY                    optional override for the target's service key
  *   SUPABASE_ACCESS_TOKEN                            personal access token (Management API) for DDL, config and api keys
  *   VERCEL_TOKEN                                     only with --vercel
  *
@@ -29,10 +30,10 @@ const API = "https://api.supabase.com/v1";
 const clean = (u?: string) => (u ?? "").replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
 const refOf = (u: string) => u.replace(/^https?:\/\//, "").split(".")[0];
 
-const OLD_URL = clean(process.env.OLD_SUPABASE_URL);
-const OLD_KEY = process.env.OLD_SUPABASE_SERVICE_ROLE_KEY ?? "";
-const NEW_URL = clean(process.env.NEW_SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL);
-const NEW_KEY = process.env.NEW_SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+const OLD_URL = clean(process.env.OLD_SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL);
+const OLD_KEY = process.env.OLD_SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+const NEW_URL = clean(process.env.NEW_SUPABASE_URL);
+let NEW_KEY = process.env.NEW_SUPABASE_SERVICE_ROLE_KEY ?? "";
 const TOKEN = process.env.SUPABASE_ACCESS_TOKEN ?? "";
 
 function need(cond: unknown, msg: string): asserts cond {
@@ -41,8 +42,8 @@ function need(cond: unknown, msg: string): asserts cond {
     process.exit(1);
   }
 }
-need(OLD_URL && OLD_KEY, "Set OLD_SUPABASE_URL and OLD_SUPABASE_SERVICE_ROLE_KEY (the project that holds the data today).");
-need(NEW_URL && NEW_KEY, "Set NEW_SUPABASE_URL and NEW_SUPABASE_SERVICE_ROLE_KEY (or NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY).");
+need(OLD_URL && OLD_KEY, "Source project missing: set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY (or OLD_SUPABASE_URL / OLD_SUPABASE_SERVICE_ROLE_KEY).");
+need(NEW_URL, "Set NEW_SUPABASE_URL to the target project's URL, e.g. https://<ref>.supabase.co.");
 need(refOf(OLD_URL) !== refOf(NEW_URL), "Source and target are the same project; nothing to do.");
 need(TOKEN, "Set SUPABASE_ACCESS_TOKEN (Supabase dashboard → Account → Access Tokens) so the schema and settings can be applied.");
 
@@ -78,6 +79,11 @@ need(oldP && newP, `Access token can't see both projects (${OLD_REF}, ${NEW_REF}
 log(`source: ${oldP.name} (${OLD_REF}, ${oldP.status})`);
 log(`target: ${newP.name} (${NEW_REF}, ${newP.status})`);
 need(newP.status === "ACTIVE_HEALTHY", `Target project is ${newP.status}; wait until it is ACTIVE_HEALTHY.`);
+
+type Key = { name: string; api_key: string };
+const targetKeys = await mgmt<Key[]>("GET", `/projects/${NEW_REF}/api-keys?reveal=true`);
+if (!NEW_KEY) NEW_KEY = targetKeys.find((k) => k.name === "service_role")?.api_key ?? "";
+need(NEW_KEY, "Could not read the target project's service_role key; set NEW_SUPABASE_SERVICE_ROLE_KEY.");
 
 // ---------- 1. schema ----------
 const migrations = ["0001_portfolio.sql", "0002_chat_intake.sql"].map((f) => path.join("supabase", "migrations", f));
@@ -196,10 +202,8 @@ if (!DRY) {
 if (DO_VERCEL) {
   const vt = process.env.VERCEL_TOKEN;
   need(vt, "Set VERCEL_TOKEN for --vercel.");
-  type Key = { name: string; api_key: string };
-  const keys = await mgmt<Key[]>("GET", `/projects/${NEW_REF}/api-keys?reveal=true`);
-  const anon = keys.find((k) => k.name === "anon")?.api_key;
-  const service = keys.find((k) => k.name === "service_role")?.api_key;
+  const anon = targetKeys.find((k) => k.name === "anon")?.api_key;
+  const service = NEW_KEY;
   need(anon && service, "Could not read the target project's anon / service_role keys.");
   const vars: Record<string, string> = {
     NEXT_PUBLIC_SUPABASE_URL: NEW_URL,
