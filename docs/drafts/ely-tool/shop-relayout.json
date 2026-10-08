@@ -9,17 +9,53 @@
   "process_md": "- Interviewed machinists and watched daily work to learn what already worked and what got in the way.\n- Built a to-scale SketchUp model and tagged every item: keep in place, move, remove, or review.\n- Placed and oriented machines within management's major moves, drew each machine's service margin, and checked new hallway widths with 12, 8 and 5 ft gauge circles.\n- Sequenced prep and moves so machines kept running; helped take down workbenches, clear forklift paths and empty the back room.\n- Relayed decisions to the floor and brought feedback back to management.\n- Large-machine moves were underway when I left; floor resurfacing followed one to two weeks later.",
   "result_metric": "~$5,000 estimated shutdown labor avoided",
   "lesson": "Show before asking: I'd make a rough visual draft before taking an idea to my boss, so he could judge it faster.",
-  "tools": ["sketchup"],
-  "skills": ["facility-layout", "5s-lean", "stakeholder-coordination", "project-planning"],
-  "audience": ["mfg", "pd"],
+  "tools": [
+    "sketchup"
+  ],
+  "skills": [
+    "facility-layout",
+    "5s-lean",
+    "stakeholder-coordination",
+    "project-planning"
+  ],
+  "audience": [
+    "mfg",
+    "pd"
+  ],
   "year": 2026,
   "duration": "Jul–Sep 2026",
   "media": [
-    { "kind": "cad", "caption": "Main floor modeled to scale in SketchUp: original layout (top) and final plan (bottom). Green items were already in their final positions; orange items had planned positions and were still to be moved when I left. Management set the major moves; I worked out machine orientation, exact placement, and where benches and storage fit." },
-    { "kind": "cad", "caption": "The same spot at eye level in the model, before and after the plan: the cluster of items marked for removal clears into an open aisle." },
-    { "kind": "before", "caption": "Before: the back room held the horizontal bandsaw, carts and racks of bar stock, and pallets; the compressor and tank sat on the back wall." },
-    { "kind": "after", "caption": "After: the same corner cleared for good; the compressor and tank stayed in place, wrapped while painters repainted the walls." },
-    { "kind": "before", "caption": "Before: plastic bar and sheet stock piled in a back-room corner beside the metal-stock rack." },
-    { "kind": "after", "caption": "After: the same corner with the plastics cleared and a flammables cabinet in their place, holding paints, solvents and oils." }
+    {
+      "kind": "cad",
+      "caption": "Final plan for the main floor, modeled to scale in SketchUp. Management set the major moves; I worked out machine orientation, exact placement, and where benches and storage fit. Colors: green = in final position, orange = planned, not yet moved, red = remove, purple = review, brown = work surface, yellow = keep contents. Large shaded margins = space needed to service a machine; white circles = 12, 8 and 5 ft gauges for checking the new hallway widths."
+    },
+    {
+      "kind": "cad",
+      "caption": "The original main-floor layout in the same view, with every item tagged keep in place, move, remove or review. Compare with the final plan at the top."
+    },
+    {
+      "kind": "cad",
+      "caption": "Eye level in the model, original layout: a crowded aisle of items marked for removal."
+    },
+    {
+      "kind": "cad",
+      "caption": "The same spot in the final plan: the aisle opens up."
+    },
+    {
+      "kind": "before",
+      "caption": "Before: the back room held the horizontal bandsaw, carts and racks of bar stock, and pallets; the compressor and tank sat on the back wall."
+    },
+    {
+      "kind": "after",
+      "caption": "After: the same corner cleared for good; the compressor and tank stayed in place, wrapped while painters repainted the walls."
+    },
+    {
+      "kind": "before",
+      "caption": "Before: plastic bar and sheet stock piled in a back-room corner beside the metal-stock rack."
+    },
+    {
+      "kind": "after",
+      "caption": "After: the same corner with the plastics cleared and a flammables cabinet in their place, holding paints, solvents and oils."
+    }
   ]
 }
