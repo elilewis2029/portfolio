@@ -85,13 +85,14 @@ export const profile = {
     },
     {
       org: "Ely Tool",
-      title: "Machinist (summer job)",
-      dates: "[TODO: months, e.g. “Jun–Aug 2026”]",
-      location: "[TODO: city]",
+      title: "Continuous Improvement Intern",
+      dates: "Jul–Sep 2026",
+      location: "Massachusetts",
       bullets: [
-        "[TODO: what you actually ran and made: machines (manual/CNC mill, lathe), materials, part types]",
-        "[TODO: one number: tolerance held, parts made, setup time cut, scrap reduced]",
-        "[TODO: anything you designed: fixtures, soft jaws, process improvements]",
+        "Built a 3D model of the whole shop and, from machinist interviews and floor observation, developed the layout the company chose for its reorganization.",
+        "Sequenced the moves so the shop kept running: cleared benches first to open the center to a forklift, then moved machines in stages, avoiding full-day shutdowns we estimated at about $5,000 each.",
+        "Designed a barcode-based location system for a densely packed parts room and built a working mockup.",
+        "Reorganized the saw room, power tools and material storage using 5S, and set up Airtable-based tracking.",
       ],
     },
   ] as Experience[],
@@ -107,6 +108,12 @@ export const profile = {
 
   involvement: [
     { org: "[TODO: clubs/teams at Northwestern — Formula Racing, Baja, robotics, Segal design groups…]", role: "[TODO: role]", dates: "[TODO: dates]" },
+    {
+      org: "Fine-woodworking mentorship with John Hartman, professional woodworker",
+      role: "Mentee",
+      dates: "Spring 2025 – present",
+      note: "Began with my hand-plane senior project; now working on a workbench and other furniture projects. Taught me to plan the order of operations, keep setups and reference surfaces consistent, and account for grain direction and wood movement, habits that carry straight into machining.",
+    },
     { org: "[TODO: community makerspace from high school]", role: "[TODO: role, e.g. leadership / teaching]", dates: "[TODO: dates]" },
   ] as Involvement[],
 
