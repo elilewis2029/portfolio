@@ -1,0 +1,25 @@
+{
+  "title": "Shop relayout sequenced to avoid a shutdown",
+  "tagline": "5S layout planning in SketchUp for a working custom-tooling shop",
+  "summary": "I modeled Ely Tool's main floor to scale in SketchUp and designed the detailed layout management adopted, fitting new equipment, benches and storage around machines that had to keep running. Phasing the prep and moves avoided an estimated $5,000 full-day shutdown.",
+  "category": "manufacturing-shop",
+  "role_kind": "team",
+  "role": "I was responsible for the detailed layout and for coordinating between management and the floor; management made the major relocation decisions.",
+  "goal_constraints": "- Make room for new equipment without shutting the shop down.\n- Keep required machine adjacencies and the service space around each machine.\n- Improve access, safety, storage and findability (5S, with advice from a MassMEP consultant).",
+  "process_md": "- Interviewed machinists and watched daily work to learn what already worked and what got in the way.\n- Built a to-scale SketchUp model and tagged every item: keep in place, move, remove, or review.\n- Placed and oriented machines within management's major moves, drew each machine's service margin, and checked new hallway widths with 12, 8 and 5 ft gauge circles.\n- Sequenced prep and moves so machines kept running; helped take down workbenches, clear forklift paths and empty the back room.\n- Relayed decisions to the floor and brought feedback back to management.\n- Large-machine moves were underway when I left; floor resurfacing followed one to two weeks later.",
+  "result_metric": "~$5,000 estimated shutdown labor avoided",
+  "lesson": "Show before asking: I'd make a rough visual draft before taking an idea to my boss, so he could judge it faster.",
+  "tools": ["sketchup"],
+  "skills": ["facility-layout", "5s-lean", "stakeholder-coordination", "project-planning"],
+  "audience": ["mfg", "pd"],
+  "year": 2026,
+  "duration": "Jul–Sep 2026",
+  "media": [
+    { "kind": "cad", "caption": "Main floor modeled to scale in SketchUp: original layout (top) and final plan (bottom). Green items were already in their final positions; orange items had planned positions and were still to be moved when I left. Management set the major moves; I worked out machine orientation, exact placement, and where benches and storage fit." },
+    { "kind": "cad", "caption": "The same spot at eye level in the model, before and after the plan: the cluster of items marked for removal clears into an open aisle." },
+    { "kind": "before", "caption": "Before: the back room held the horizontal bandsaw, carts and racks of bar stock, and pallets; the compressor and tank sat on the back wall." },
+    { "kind": "after", "caption": "After: the same corner cleared for good; the compressor and tank stayed in place, wrapped while painters repainted the walls." },
+    { "kind": "before", "caption": "Before: plastic bar and sheet stock piled in a back-room corner beside the metal-stock rack." },
+    { "kind": "after", "caption": "After: the same corner with the plastics cleared and a flammables cabinet in their place, holding paints, solvents and oils." }
+  ]
+}

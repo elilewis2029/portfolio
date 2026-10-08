@@ -8,7 +8,7 @@ description: Draft or edit portfolio projects in chat — batches saved "for cha
 Rules come from `CLAUDE.md`, `docs/RESEARCH.md` and `prompts/intake.md` (field list, word budget, voice). Same output shape as the API intake; the difference is you can ask questions.
 
 ## Setup check
-`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` must be set (environment variables, or `.env.local`), and the project host `<ref>.supabase.co` must be in the environment's allowed domains. Run `npm install` if `node_modules` is missing.
+`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` must be set (environment variables, or `.env.local`), and the project host `<ref>.supabase.co` must be in the environment's allowed domains. Behind a proxy (cloud sessions), run the helper with `NODE_USE_ENV_PROXY=1` (and `NODE_EXTRA_CA_CERTS` set to the proxy's CA bundle), or Node's fetch fails with "fetch failed". "Invalid schema: portfolio" means the URL/key point at the wrong Supabase project. Run `npm install` if `node_modules` is missing.
 
 ## Pending batches from /add
 1. `npm run portfolio -- pending` — prints each batch's note, tap answers, and photo files under `.intake/<slug>/`. Read every photo file.

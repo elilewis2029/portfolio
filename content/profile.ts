@@ -87,7 +87,7 @@ export const profile = {
       org: "Ely Tool",
       title: "Continuous Improvement Intern",
       dates: "Jul–Sep 2026",
-      location: "Massachusetts",
+      location: "Springfield, MA",
       bullets: [
         "Built a 3D model of the whole shop and, from machinist interviews and floor observation, developed the layout the company chose for its reorganization.",
         "Sequenced the moves so the shop kept running: cleared benches first to open the center to a forklift, then moved machines in stages, avoiding full-day shutdowns we estimated at about $5,000 each.",
