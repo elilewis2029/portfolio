@@ -15,9 +15,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Prototype C: the series gets an overview page of its own. Each part is shown with its hero, outcome
- * sentence and result number side by side, so both outcomes are seen in one skim; each part keeps its page.
- * With fewer than two visible parts there is nothing to overview: one part redirects to that page, none is a 404.
+ * Series overview: photo-first tiles, one per part, each with a big hero, the title, the first lines of the
+ * outcome sentence and the result number; the whole tile opens the part. With fewer than two visible parts
+ * there is nothing to overview: one part redirects to that page, none is a 404.
  */
 export default async function SeriesHub({ params }: Props) {
   const { series } = await params;
@@ -29,55 +29,64 @@ export default async function SeriesHub({ params }: Props) {
   const tools = [...new Set(parts.flatMap((p) => p.tools))];
   const skills = [...new Set(parts.flatMap((p) => p.skills))];
   const years = [...new Set(parts.map((p) => p.year).filter(Boolean))].sort();
+  const lead = parts[0];
 
   return (
-    <article className="mx-auto max-w-4xl">
+    <article className="mx-auto max-w-5xl">
       <nav aria-label="Breadcrumb" className="no-print mb-3 text-sm">
         <Link href="/work" className="inline-flex min-h-11 items-center text-neutral-600 hover:text-accent dark:text-neutral-400">← Work</Link>
       </nav>
-      <header className="rise mb-8">
+      <header className="rise mb-6">
         <p className="text-xs uppercase tracking-wide text-accent">
           Project in {parts.length} parts{years.length ? ` · ${years.join("–")}` : ""}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{name}</h1>
-        <p className="mt-3 max-w-3xl text-lg text-neutral-700 dark:text-neutral-300">
-          {parts.map((p, n) => `${n + 1}. ${p.title}`).join(" · ")}
-        </p>
-        <dl className="mt-5 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 text-sm sm:grid-cols-3 dark:border-neutral-800">
-          <div><dt className="text-xs uppercase tracking-wide text-neutral-500">Role</dt><dd className="mt-0.5">{parts[0].role_kind === "team" ? "Team" : parts[0].role_kind === "solo" ? "Solo" : "—"}{parts[0].role && <span className="block text-neutral-600 dark:text-neutral-400">{parts[0].role}</span>}</dd></div>
-          <div><dt className="text-xs uppercase tracking-wide text-neutral-500">Tools</dt><dd className="mt-0.5">{tools.join(", ") || "—"}</dd></div>
-          <div><dt className="text-xs uppercase tracking-wide text-neutral-500">Skills</dt><dd className="mt-0.5">{skills.join(", ") || "—"}</dd></div>
+        <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-neutral-600 dark:text-neutral-400">
+          <div><dt className="inline text-xs uppercase tracking-wide text-neutral-500">Role </dt><dd className="inline">{lead.role_kind === "team" ? "Team" : lead.role_kind === "solo" ? "Solo" : "—"}</dd></div>
+          {tools.length > 0 && <div><dt className="inline text-xs uppercase tracking-wide text-neutral-500">Tools </dt><dd className="inline">{tools.join(", ")}</dd></div>}
+          {skills.length > 0 && <div><dt className="inline text-xs uppercase tracking-wide text-neutral-500">Skills </dt><dd className="inline">{skills.join(", ")}</dd></div>}
         </dl>
       </header>
 
-      <ol className="space-y-8">
-        {parts.map((p, n) => <PartCard key={p.id} p={p} n={n + 1} />)}
+      <ol className="grid gap-6 sm:grid-cols-2">
+        {parts.map((p, n) => <PartTile key={p.id} p={p} n={n + 1} />)}
       </ol>
 
-      <p className="no-print mt-10 text-sm">
+      {lead.role && (
+        <p className="mt-8 max-w-3xl text-sm text-neutral-600 dark:text-neutral-400"><span className="text-xs uppercase tracking-wide text-neutral-500">My part </span>{lead.role}</p>
+      )}
+      <p className="no-print mt-8 text-sm">
         <Link href="/work" className="inline-flex min-h-11 items-center text-accent hover:underline">← Back to work</Link>
       </p>
     </article>
   );
 }
 
-function PartCard({ p, n }: { p: Project; n: number }) {
+function PartTile({ p, n }: { p: Project; n: number }) {
   const hero = heroOf(p);
-  const href = `/work/${p.slug}`;
   return (
-    <li className="avoid-break grid gap-4 rounded-2xl border border-neutral-200 p-4 sm:grid-cols-[2fr_3fr] sm:gap-6 dark:border-neutral-800">
-      <Link href={href} className="zoom relative block aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900" aria-label={`Part ${n}: ${p.title}`}>
-        {hero ? <Image src={hero.path} alt={hero.caption || p.title} fill sizes="(min-width: 640px) 360px, 100vw" className="object-cover" priority={n === 1} /> : <span className="flex h-full items-center justify-center text-sm text-neutral-400">No photo yet</span>}
-        {p.status === "draft" && <span className="absolute left-2 top-2 rounded-md bg-yellow-400 px-2 py-0.5 text-xs font-semibold text-neutral-900 shadow">Draft</span>}
+    <li className="avoid-break">
+      <Link href={`/work/${p.slug}`} className="group block h-full rounded-2xl ring-1 ring-neutral-200 transition-shadow hover:shadow-lg hover:ring-accent dark:ring-neutral-800">
+        <div className="zoom relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-neutral-100 dark:bg-neutral-900">
+          {hero ? (
+            <Image src={hero.path} alt={hero.caption || p.title} fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" priority={n === 1} />
+          ) : (
+            <span className="flex h-full items-center justify-center text-sm text-neutral-400">No photo yet</span>
+          )}
+          <span className="on-accent absolute left-3 top-3 z-10 rounded-md bg-accent px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white shadow">Part {n}</span>
+          {p.status === "draft" && <span className="absolute right-3 top-3 z-10 rounded-md bg-yellow-400 px-2 py-0.5 text-xs font-semibold text-neutral-900 shadow">Draft</span>}
+        </div>
+        <div className="p-4">
+          <p className="text-xs uppercase tracking-wide text-neutral-500">{CATEGORY_LABEL[p.category]}{p.duration ? ` · ${p.duration}` : ""}</p>
+          <h2 className="mt-1 text-lg font-semibold leading-snug group-hover:text-accent sm:text-xl">{p.title}</h2>
+          {p.tagline && <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{p.tagline}</p>}
+          {p.summary && <p className="mt-3 line-clamp-3 text-sm leading-relaxed">{p.summary}</p>}
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+            {p.result_metric && <span className="inline-block rounded-md bg-accent-soft px-2.5 py-1 text-sm font-semibold text-accent dark:bg-accent/15">{p.result_metric}</span>}
+            <span className="ml-auto text-sm font-medium text-accent">Read part {n} →</span>
+          </div>
+        </div>
       </Link>
-      <div className="min-w-0">
-        <p className="text-xs uppercase tracking-wide text-accent">Part {n} · {CATEGORY_LABEL[p.category]}{p.duration ? ` · ${p.duration}` : ""}</p>
-        <h2 className="mt-1 text-xl font-semibold leading-snug"><Link href={href} className="hover:text-accent">{p.title}</Link></h2>
-        {p.tagline && <p className="mt-1 text-neutral-600 dark:text-neutral-400">{p.tagline}</p>}
-        {p.summary && <p className="mt-3 text-sm leading-relaxed">{p.summary}</p>}
-        {p.result_metric && <p className="mt-3 inline-block rounded-md bg-accent-soft px-3 py-1.5 text-sm font-semibold text-accent dark:bg-accent/15">{p.result_metric}</p>}
-        <p className="mt-4"><Link href={href} className="btn">Read part {n} →</Link></p>
-      </div>
     </li>
   );
 }

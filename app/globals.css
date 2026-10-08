@@ -70,3 +70,24 @@ dialog.sheet[open] { animation: sheet-in 180ms ease-out; }
 
 /* Editor: fields and buttons scrolled into view (focus, keyboard) stop above the sticky Save bar. */
 html:has(#project-form) { scroll-padding-bottom: 6rem; }
+
+/* Series tile on /work: the parts' photos are stacked and cycle, one every 4 s, with a short crossfade.
+   The first photo sits underneath and never animates, so there is always a picture; each later layer fades
+   in for its slot and drops out once the next one is fully opaque. Off under prefers-reduced-motion. */
+.series-flip > img { opacity: 1; }
+.series-flip > img:nth-child(n + 2) { opacity: 0; animation-timing-function: linear; animation-iteration-count: infinite; }
+.series-flip[data-n="2"] > img:nth-child(2) { animation: flip2b 8s; }
+.series-flip[data-n="3"] > img:nth-child(2) { animation: flip3b 12s; }
+.series-flip[data-n="3"] > img:nth-child(3) { animation: flip3c 12s; }
+.series-flip[data-n="4"] > img:nth-child(2) { animation: flip4b 16s; }
+.series-flip[data-n="4"] > img:nth-child(3) { animation: flip4c 16s; }
+.series-flip[data-n="4"] > img:nth-child(4) { animation: flip4d 16s; }
+@keyframes flip2b { 0%, 50% { opacity: 0; } 56%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes flip3b { 0%, 33.3% { opacity: 0; } 37.3%, 71% { opacity: 1; } 71.1%, 100% { opacity: 0; } }
+@keyframes flip3c { 0%, 66.6% { opacity: 0; } 70.6%, 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes flip4b { 0%, 25% { opacity: 0; } 28%, 54% { opacity: 1; } 54.1%, 100% { opacity: 0; } }
+@keyframes flip4c { 0%, 50% { opacity: 0; } 53%, 79% { opacity: 1; } 79.1%, 100% { opacity: 0; } }
+@keyframes flip4d { 0%, 75% { opacity: 0; } 78%, 95% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .series-flip > img:nth-child(n + 2) { animation: none !important; opacity: 0 !important; }
+}
