@@ -5,6 +5,11 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 D=docs/drafts/ely-tool
 I=.intake/ely-tool
+# Cloud sessions reach Supabase through an HTTPS proxy, which Node's fetch ignores unless told (Node >= 22.21).
+if [ -n "${HTTPS_PROXY:-}" ]; then
+  export NODE_USE_ENV_PROXY=1 NODE_NO_WARNINGS=1
+  [ -f /root/.ccr/ca-bundle.crt ] && export NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt
+fi
 P() { npm run -s portfolio -- "$@"; }
 
 P list
