@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function Figure({ m, sizes }: { m: Media; sizes: string }) {
   return (
     <figure className="avoid-break">
-      <Lightbox src={publicUrl(m.path)} alt={m.caption || ""}>
+      <Lightbox src={publicUrl(m.original_path ?? m.path)} alt={m.caption || ""}>
         <span className="zoom block overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
           <Image
             src={m.path}
@@ -92,7 +92,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 2. Hero */}
           {hero && (
             <div className="print-hero rise rise-2 mb-8">
-              <Lightbox src={publicUrl(hero.path)} alt={hero.caption || p.title}>
+              <Lightbox src={publicUrl(hero.original_path ?? hero.path)} alt={hero.caption || p.title}>
                 <Image
                   src={hero.path}
                   alt={hero.caption || p.title}

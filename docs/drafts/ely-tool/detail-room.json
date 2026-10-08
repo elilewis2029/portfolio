@@ -9,15 +9,44 @@
   "process_md": "- Planned the room in SketchUp: two rolling Uline bin racks that wheel out for full access, three LISTA cabinets, a computer table, and space for a cart or filing cabinet. Base layout $0; a third rack would add $760, or $900–1,090 with bins.\n- Designed the workflow: every bin gets a permanent location label and every part type a code; scanning a part and then a bin label links them. The system doesn't detect where parts are, so a part found in the wrong bin gets relinked.\n- Refined a working mockup built with AI coding help: search a part to see its total and bins, link by scanning, a front view of each rack, Code 128 label printing, and a history log. Scanner and printer are simulated on screen.\n- Researched budget hardware: USB scanners, Raspberry Pi, old Android devices, and a DIY handheld (Wio Terminal + Zebra LS1203).\n- Showed it to the lead engineer's assistant (positive feedback).",
   "result_metric": "$0 base layout using owned equipment",
   "lesson": "[TODO: what would you change?]",
-  "tools": ["sketchup", "react", "typescript", "sqlite"],
-  "skills": ["inventory-systems", "workflow-design", "facility-layout", "prototyping"],
-  "audience": ["mfg", "pd"],
+  "tools": [
+    "sketchup",
+    "react",
+    "typescript",
+    "sqlite"
+  ],
+  "skills": [
+    "inventory-systems",
+    "workflow-design",
+    "facility-layout",
+    "prototyping"
+  ],
+  "audience": [
+    "mfg",
+    "pd"
+  ],
   "year": 2026,
   "duration": "Summer 2026",
   "media": [
-    { "kind": "process", "caption": "Searching \"6203 bearing\" finds the part, its total stock and both bins it's linked to (sample data)." },
-    { "kind": "cad", "caption": "The small computer room planned as a detail room, using only equipment the shop already owned: two rolling bin racks that wheel out for full access, three LISTA cabinets, a computer table, and a spot for a cart or filing cabinet." },
-    { "kind": "process", "caption": "Scan and place: scan the part, then the bin's location label, then confirm. The scans are simulated on screen but go through the same lookup a real scanner would use." },
-    { "kind": "process", "caption": "Storage map: a front view of each rack; click a bin to see which parts are linked to it." }
+    {
+      "kind": "process",
+      "caption": "Searching \"6203 bearing\" finds the part, its total stock and both bins it's linked to (sample data)."
+    },
+    {
+      "kind": "cad",
+      "caption": "Before: the small computer room, old office and hallway, with most contents marked for removal (red)."
+    },
+    {
+      "kind": "cad",
+      "caption": "The planned detail room (left), using only equipment the shop already owned: two rolling bin racks that wheel out for full access, three LISTA cabinets, a computer table, and a spot for a cart or filing cabinet."
+    },
+    {
+      "kind": "process",
+      "caption": "Scan and place: scan the part, then the bin's location label, then confirm. The scans are simulated on screen but go through the same lookup a real scanner would use."
+    },
+    {
+      "kind": "process",
+      "caption": "Storage map: a front view of each rack; click a bin to see which parts are linked to it."
+    }
   ]
 }
