@@ -40,7 +40,9 @@ export default async function SeriesHub({ params }: Props) {
           Project in {parts.length} parts{years.length ? ` · ${years.join("–")}` : ""}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{name}</h1>
-        {parts[0].summary && <p className="mt-3 max-w-3xl text-lg text-neutral-700 dark:text-neutral-300">{parts[0].summary}</p>}
+        <p className="mt-3 max-w-3xl text-lg text-neutral-700 dark:text-neutral-300">
+          {parts.map((p, n) => `${n + 1}. ${p.title}`).join(" · ")}
+        </p>
         <dl className="mt-5 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 text-sm sm:grid-cols-3 dark:border-neutral-800">
           <div><dt className="text-xs uppercase tracking-wide text-neutral-500">Role</dt><dd className="mt-0.5">{parts[0].role_kind === "team" ? "Team" : parts[0].role_kind === "solo" ? "Solo" : "—"}{parts[0].role && <span className="block text-neutral-600 dark:text-neutral-400">{parts[0].role}</span>}</dd></div>
           <div><dt className="text-xs uppercase tracking-wide text-neutral-500">Tools</dt><dd className="mt-0.5">{tools.join(", ") || "—"}</dd></div>
