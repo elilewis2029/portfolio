@@ -9,6 +9,7 @@
  *   npm run portfolio -- new <file> <photo>...      create a draft from a JSON entry + local photos
  *   npm run portfolio -- add-photos <slug|id> <photo>...
  *   npm run portfolio -- merge <from slug|id> <into slug|id>   move photos, delete the "from" draft
+ *   npm run portfolio -- delete <slug|id>           delete a draft and its photos (refuses published projects)
  *
  * Entry JSON uses the fields in prompts/intake.md (title, tagline, summary, role_kind, role, goal_constraints,
  * process_md, result_metric, lesson, category, tools, skills, audience, year, duration, links, body_md, era),
@@ -26,7 +27,8 @@ import { CATEGORIES, MEDIA_KINDS } from "../lib/types";
 config({ path: ".env.local" });
 config();
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+// Tolerate a URL pasted with the REST path (".../rest/v1/"); supabase-js appends that itself.
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim().replace(/\/rest\/v1\/?$/, "");
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !key) {
   console.error("Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
@@ -40,11 +42,11 @@ const FIELDS = [
   "lesson", "category", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era",
 ] as const;
 
-type Media = { id: string; path: string; kind: string | null; caption: string | null; sort: number };
+type Media = { id: string; path: string; original_path?: string | null; kind: string | null; caption: string | null; sort: number };
 
 async function find(ref: string) {
   const col = /^[0-9a-f-]{36}$/.test(ref) ? "id" : "slug";
-  const { data, error } = await db.from("projects").select("*, media(id, path, kind, caption, sort)").eq(col, ref).maybeSingle();
+  const { data, error } = await db.from("projects").select("*, media(id, path, original_path, kind, caption, sort)").eq(col, ref).maybeSingle();
   if (error || !data) throw new Error(`No project "${ref}" ${error?.message ?? ""}`);
   data.media.sort((a: Media, b: Media) => a.sort - b.sort);
   return data;
@@ -121,7 +123,8 @@ async function main() {
       break;
     }
     case "list": {
-      const { data } = await db.from("projects").select("id, status, era, featured, needs_drafting, slug, title").order("updated_at", { ascending: false });
+      const { data, error } = await db.from("projects").select("id, status, era, featured, needs_drafting, slug, title").order("updated_at", { ascending: false });
+      if (error) throw new Error(error.message);
       (data ?? []).forEach((p) => console.log([p.id, p.status, p.era, p.featured ? "featured" : "", p.needs_drafting ? "needs-drafting" : "", p.slug, p.title].join("\t")));
       break;
     }
@@ -170,8 +173,18 @@ async function main() {
       console.log(`moved ${from.media.length} photos into ${into.slug}; deleted ${from.slug}`);
       break;
     }
+    case "delete": {
+      const p = await find(a);
+      if (p.status !== "draft") throw new Error(`${p.slug} is ${p.status}; unpublish it in /review first`);
+      const paths = p.media.flatMap((m: Media) => [m.path, m.original_path].filter((x): x is string => !!x));
+      if (paths.length) await storage.remove(paths);
+      const { error } = await db.from("projects").delete().eq("id", p.id);
+      if (error) throw new Error(error.message);
+      console.log(`deleted ${p.slug} and ${p.media.length} photos`);
+      break;
+    }
     default:
-      console.log("commands: pending | list | show | update | new | add-photos | merge (see top of scripts/portfolio.ts)");
+      console.log("commands: pending | list | show | update | new | add-photos | merge | delete (see top of scripts/portfolio.ts)");
   }
 }
 

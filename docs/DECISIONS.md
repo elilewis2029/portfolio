@@ -40,3 +40,7 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 ## 2026-10-06 — photos from the project page
 
 23. **"Add photos" on every project page** (owner toolbar, draft or published, viewing or editing). It uploads straight to that project through the same signed-URL path as the "+" intake, skips the AI, and appends the photos as `process` at the end; a project with no photos gets its first upload as the cover. The "+" sheet still decides new vs. append from the note.
+
+## 2026-10-08 — Ely Tool project drafts
+
+25. **Two Ely Tool project pages as drafts, staged in the repo.** The shop relayout (team, manufacturing-shop) and the detail room + barcode prototype (solo, engineering) are written in `docs/drafts/ely-tool/*.json` and created by `docs/drafts/ely-tool/run.sh`, so the text can be reviewed in a PR before it reaches the database. The covers are the SketchUp plan and the mockup's lookup screen. Their kinds stay `cad`/`process` (cover set via `cover_media`) so the pages count as feature-ready. The photos are not committed; they come from the handoff artifact into `.intake/ely-tool/`. The `todo-ely-tool-fixture` placeholder is deleted, not repurposed, because its slug would carry over and the helper can't rename it. The helper gains `delete` (drafts only), strips a pasted `/rest/v1/` from the Supabase URL, and `list` now reports query errors instead of printing nothing.
