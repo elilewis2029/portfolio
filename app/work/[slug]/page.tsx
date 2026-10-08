@@ -5,8 +5,8 @@ import Md from "@/components/Md";
 import Lightbox from "@/components/Lightbox";
 import OwnerToolbar from "@/components/owner/OwnerToolbar";
 import ProjectEditor from "@/components/owner/ProjectEditor";
-import { contactEmail, projectBySlug, publicUrl, seriesSiblings } from "@/lib/projects";
-import SeriesNav from "@/components/SeriesNav";
+import { contactEmail, projectBySlug, publicUrl, seriesHref, seriesSiblings } from "@/lib/projects";
+import { SeriesCrumb, SeriesPager } from "@/components/SeriesNav";
 import { isOwner } from "@/lib/owner";
 import { CATEGORY_LABEL, heroOf, type Media } from "@/lib/types";
 
@@ -69,6 +69,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
 
   return (
     <article className="mx-auto max-w-4xl">
+      {siblings.length > 1 && !editing && <SeriesCrumb current={p} siblings={siblings} />}
       {owner && <OwnerToolbar p={p} editing={editing} />}
       {owner && !editing && error && <p className="no-print mb-4 rounded-md border border-red-600/40 p-2 text-sm text-red-600">{error}</p>}
 
@@ -81,16 +82,17 @@ export default async function ProjectPage({ params, searchParams }: Props) {
         <>
           <div className="print-only mb-3 text-xs">
             Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
+            {siblings.length > 1 && <> · part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length} of &ldquo;{p.series}&rdquo; (elilewisportfolio.info{seriesHref(p.series!)})</>}
           </div>
 
           {/* 1. Impact title + tagline */}
           <header className="rise mb-6">
             <p className="text-xs uppercase tracking-wide text-accent">
+              {siblings.length > 1 && <span className="mr-2 rounded bg-accent px-1.5 py-0.5 text-white">Part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length}</span>}
               {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{p.title}</h1>
             {p.tagline && <p className="mt-2 text-lg text-neutral-700 dark:text-neutral-300">{p.tagline}</p>}
-            {siblings.length > 1 && <SeriesNav current={p} siblings={siblings} />}
           </header>
 
           {/* 2. Hero */}
@@ -204,6 +206,8 @@ export default async function ProjectPage({ params, searchParams }: Props) {
               </ul>
             </section>
           )}
+
+          {siblings.length > 1 && <SeriesPager current={p} siblings={siblings} />}
 
           <p className="no-print mt-10 text-sm text-neutral-500">
             Printing this page gives a one-to-two page PDF.

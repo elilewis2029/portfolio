@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { heroOf, type Project } from "@/lib/types";
+import { seriesHref } from "@/lib/projects";
 
 export type SeriesCard = { name: string; members: Project[] };
 
@@ -12,7 +13,7 @@ export default function ProjectCard({
   const title = series ? series.name : p.title;
   const tagline = series ? series.members.map((m) => m.title).join(" · ") : p.tagline;
   return (
-    <Link href={`/work/${p.slug}`} className={`group block ${banner ? "sm:col-span-2 lg:col-span-3" : ""}`}>
+    <Link href={series ? seriesHref(series.name) : `/work/${p.slug}`} className={`group block ${banner ? "sm:col-span-2 lg:col-span-3" : ""}`}>
       <div className={`zoom relative overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10 ${banner ? "aspect-[4/3] sm:aspect-[21/9]" : "aspect-[4/3]"}`}>
         {hero ? (
           <Image
