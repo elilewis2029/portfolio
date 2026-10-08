@@ -61,7 +61,8 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const media = p.media ?? [];
   const hero = heroOf(p);
   const rest = media.filter((m) => m.id !== hero?.id);
-  const process = rest.filter((m) => !m.kind || ["process", "cad", "drawing", "test", "failure"].includes(m.kind));
+  // A "hero" photo that is no longer the cover still belongs on the page, with the process photos.
+  const process = rest.filter((m) => !m.kind || ["hero", "process", "cad", "drawing", "test", "failure"].includes(m.kind));
   const results = rest.filter((m) => m.kind === "before" || m.kind === "after");
   const links = Object.entries(p.links ?? {}).filter(([, url]) => typeof url === "string" && url);
   const email = contactEmail();
@@ -74,7 +75,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
       {editing ? (
         <>
           <h1 className="mb-4 text-xl font-semibold">Edit project</h1>
-          <ProjectEditor p={p} saved={saved === "1"} error={error} />
+          <ProjectEditor p={p} savedAt={saved} error={error} />
         </>
       ) : (
         <>

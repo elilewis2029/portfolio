@@ -47,7 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <div className="ml-auto flex items-center gap-4">
               <SocialLinks className="hidden sm:flex" />
               <div className="hidden sm:block"><CopyEmail email={email} /></div>
-              {owner && <Link href="/review" className="chip border-accent text-accent">Owner</Link>}
+              {owner && <Link href="/review" className="chip hidden border-accent text-accent sm:inline-flex">Owner</Link>}
             </div>
           </div>
         </header>

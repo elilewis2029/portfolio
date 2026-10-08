@@ -41,7 +41,8 @@ export default function AddSheet({ supabaseUrl, anonKey }: { supabaseUrl: string
             <h2 className="text-lg font-semibold">Add to portfolio</h2>
             <button type="button" onClick={() => setOpen(false)} className="btn ml-auto h-9 w-9 rounded-full p-0" aria-label="Close">×</button>
           </div>
-          {open && <AddForm supabaseUrl={supabaseUrl} anonKey={anonKey} onDone={() => setOpen(false)} />}
+          {/* Stays mounted while closed: closing keeps the chosen photos and note, and a send in progress still reports back. */}
+          <AddForm supabaseUrl={supabaseUrl} anonKey={anonKey} onDone={() => setOpen(false)} />
         </div>
       </dialog>
     </>
