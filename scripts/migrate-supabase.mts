@@ -104,12 +104,12 @@ for (const file of migrations) {
 }
 
 // ---------- 2. expose schema `portfolio` through PostgREST ----------
-type Pg = { db_schema: string; max_rows: number; db_extra_search_path: string };
+type Pg = { db_schema: string };
 const pg = await mgmt<Pg>("GET", `/projects/${NEW_REF}/postgrest`);
 const schemas = pg.db_schema.split(",").map((s) => s.trim()).filter(Boolean);
 if (!schemas.includes("portfolio")) {
   const db_schema = [...schemas, "portfolio"].join(", ");
-  if (!DRY) await mgmt("PATCH", `/projects/${NEW_REF}/postgrest`, { ...pg, db_schema });
+  if (!DRY) await mgmt("PATCH", `/projects/${NEW_REF}/postgrest`, { db_schema });
   log(`exposed schema portfolio (db_schema = ${db_schema})`);
 } else log("schema portfolio already exposed");
 
