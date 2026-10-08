@@ -13,9 +13,9 @@ export default function SeriesNav({ current, siblings }: { current: Project; sib
         {siblings.map((s, n) => (
           <li key={s.id}>
             {s.id === current.id ? (
-              <span className="chip chip-on" aria-current="page">{n + 1}. {s.title}</span>
+              <span className="chip chip-on py-1.5" aria-current="page">{n + 1}. {s.title}</span>
             ) : (
-              <Link href={`/work/${s.slug}`} className="chip">{n + 1}. {s.title}{s.status === "draft" ? " (draft)" : ""}</Link>
+              <Link href={`/work/${s.slug}`} className="chip py-1.5">{n + 1}. {s.title}{s.status === "draft" ? " (draft)" : ""}</Link>
             )}
           </li>
         ))}

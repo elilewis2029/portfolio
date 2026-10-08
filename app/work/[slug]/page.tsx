@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Md from "@/components/Md";
 import Lightbox from "@/components/Lightbox";
@@ -67,8 +68,18 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const links = Object.entries(p.links ?? {}).filter(([, url]) => typeof url === "string" && url);
   const email = contactEmail();
 
+  const backHref = p.era === "archive" ? "/archive" : "/work";
+  const backLabel = p.era === "archive" ? "Archive" : "Work";
+  const i = siblings.findIndex((s) => s.id === p.id);
+
   return (
     <article className="mx-auto max-w-4xl">
+      {/* Way back to the list without the header tabs (Nielsen: user control; every page says where it sits). */}
+      <nav aria-label="Breadcrumb" className="no-print mb-3 text-sm">
+        <Link href={backHref} className="inline-flex min-h-11 items-center gap-1 text-neutral-600 hover:text-accent dark:text-neutral-400">
+          <span aria-hidden="true">←</span> {backLabel}
+        </Link>
+      </nav>
       {owner && <OwnerToolbar p={p} editing={editing} />}
       {owner && !editing && error && <p className="no-print mb-4 rounded-md border border-red-600/40 p-2 text-sm text-red-600">{error}</p>}
 
@@ -81,6 +92,9 @@ export default async function ProjectPage({ params, searchParams }: Props) {
         <>
           <div className="print-only mb-3 text-xs">
             Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
+            {siblings.length > 1 && (
+              <> · Part {i + 1} of {siblings.length}, &ldquo;{p.series}&rdquo;: {siblings.filter((s) => s.id !== p.id).map((s) => `elilewisportfolio.info/work/${s.slug}`).join(", ")}</>
+            )}
           </div>
 
           {/* 1. Impact title + tagline */}
@@ -206,7 +220,10 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           )}
 
           <p className="no-print mt-10 text-sm text-neutral-500">
-            Printing this page gives a one-to-two page PDF.
+            Print this page for a PDF copy (photos shrink to fit).
+          </p>
+          <p className="no-print mt-4 text-sm">
+            <Link href={backHref} className="inline-flex min-h-11 items-center gap-1 text-accent hover:underline"><span aria-hidden="true">←</span> Back to {backLabel.toLowerCase()}</Link>
           </p>
         </>
       )}

@@ -4,6 +4,7 @@ import { isFeatureReady, type Project } from "@/lib/types";
 import { countTodos } from "@/components/Todo";
 import ConfirmSubmit from "./ConfirmSubmit";
 import AddPhotos from "./AddPhotos";
+import DoneEditingLink from "./DoneEditingLink";
 
 /** Owner mode controls at the top of a project page: status, Edit, Add photos, Publish, Feature, Delete. */
 export default function OwnerToolbar({ p, editing }: { p: Project; editing: boolean }) {
@@ -21,31 +22,34 @@ export default function OwnerToolbar({ p, editing }: { p: Project; editing: bool
         {todos > 0 && <mark className="todo text-xs">{todos} TODO</mark>}
         <span className="ml-auto flex flex-wrap gap-2">
           {editing ? (
-            <Link href={`/work/${p.slug}`} className="btn">Done editing</Link>
+            <DoneEditingLink href={`/work/${p.slug}`} draftKey={`project:${p.id}`} />
           ) : (
             <Link href={`/work/${p.slug}?edit=1`} className="btn btn-primary">Edit</Link>
           )}
           <AddPhotos projectId={p.id} supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!} anonKey={process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
           {p.status === "draft" ? (
             <form action={setStatus.bind(null, p.id, "published")}>
-              {todos > 0 ? (
-                <ConfirmSubmit message={`This page still has ${todos} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?`} className="btn">Publish</ConfirmSubmit>
-              ) : (
-                <button className="btn">Publish</button>
-              )}
+              <ConfirmSubmit
+                message={todos > 0 ? `This page still has ${todos} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?` : undefined}
+                pending="Publishing…" className="btn"
+              >
+                Publish
+              </ConfirmSubmit>
             </form>
           ) : (
-            <form action={setStatus.bind(null, p.id, "draft")}><button className="btn">Unpublish</button></form>
+            <form action={setStatus.bind(null, p.id, "draft")}><ConfirmSubmit pending="Unpublishing…" className="btn">Unpublish</ConfirmSubmit></form>
           )}
           {p.status === "published" && (
             <form action={setFeatured.bind(null, p.id, !p.featured)}>
-              <button className="btn" disabled={!p.featured && !ready} title={!ready ? "Needs a process, CAD or drawing photo" : ""}>
-                {p.featured ? "Unfeature" : "Feature"}
-              </button>
+              {!p.featured && !ready ? (
+                <button className="btn" disabled title="Needs a process, CAD or drawing photo">Feature</button>
+              ) : (
+                <ConfirmSubmit pending="Saving…" className="btn">{p.featured ? "Unfeature" : "Feature"}</ConfirmSubmit>
+              )}
             </form>
           )}
           <form action={deleteProject.bind(null, p.id)}>
-            <ConfirmSubmit message={`Delete “${p.title}” and its ${p.media?.length ?? 0} photo(s)? This can't be undone.`} className="btn text-red-600">
+            <ConfirmSubmit message={`Delete “${p.title}” and its ${p.media?.length ?? 0} photo(s)? This can't be undone.`} pending="Deleting…" className="btn text-red-600">
               Delete
             </ConfirmSubmit>
           </form>

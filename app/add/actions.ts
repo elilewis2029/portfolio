@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/supabase";
-import { requireOwner } from "@/lib/owner";
+import { ownerEmail } from "@/lib/supabase";
 import { processImage } from "@/lib/images";
 import { runIntake, type Taps } from "@/lib/intake";
 import { uniqueSlug } from "@/lib/slug";
@@ -11,8 +11,12 @@ const MAX_PHOTOS = 12;
 const BUCKET = "portfolio";
 
 /** Step 1: hand the browser signed upload URLs, so big phone photos go straight to the bucket. */
-export async function prepareUploads(names: string[]) {
-  await requireOwner("/add");
+// An expired sign-in is returned as { error: "signed-out" } rather than a redirect to /login, so the sheet
+// keeps its photos and note and can say what happened (production hides thrown error messages from the client).
+const signedOut = async () => !(await ownerEmail());
+
+export async function prepareUploads(names: string[]): Promise<{ batch: string; uploads: { path: string; token: string }[] } | { error: "signed-out" }> {
+  if (await signedOut()) return { error: "signed-out" };
   if (names.length === 0 || names.length > MAX_PHOTOS) throw new Error(`Pick 1–${MAX_PHOTOS} photos.`);
   const batch = randomUUID();
   const storage = adminDb().storage.from(BUCKET);
@@ -41,7 +45,7 @@ export async function submitIntake(input: {
   /** "now" = Claude API drafts it; "chat" = save for drafting later in a Claude Code chat. */
   mode: "now" | "chat";
 }): Promise<IntakeOutcome> {
-  await requireOwner("/add");
+  if (await signedOut()) return { ok: false, error: "signed-out" };
   const db = adminDb();
   const storage = db.storage.from(BUCKET);
   const { batch, note } = input;

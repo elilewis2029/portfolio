@@ -35,25 +35,28 @@ function Row({ p }: { p: Project }) {
           {p.role_kind === "team" && !p.role && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">team project: say what you owned</span>}
           {n > 0 && <mark className="todo text-xs">{n} TODO</mark>}
         </div>
-        <Link href={`/work/${p.slug}?edit=1`} className="mt-1 inline-block text-xs text-accent">Edit</Link>
+        <Link href={`/work/${p.slug}?edit=1`} className="-ml-2 inline-flex min-h-11 items-center px-2 text-xs text-accent">Edit</Link>
       </div>
       <div className="flex shrink-0 flex-col gap-1">
         {p.status === "draft" ? (
           <form action={setStatus.bind(null, p.id, "published")}>
-            {n > 0 ? (
-              <ConfirmSubmit message={`“${p.title}” still has ${n} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?`} className="btn btn-primary w-full">Publish</ConfirmSubmit>
-            ) : (
-              <button className="btn btn-primary w-full">Publish</button>
-            )}
+            <ConfirmSubmit
+              message={n > 0 ? `“${p.title}” still has ${n} [TODO] placeholder(s), and visitors will see them as written. Publish anyway?` : undefined}
+              pending="Publishing…" className="btn btn-primary w-full"
+            >
+              Publish
+            </ConfirmSubmit>
           </form>
         ) : (
-          <form action={setStatus.bind(null, p.id, "draft")}><button className="btn w-full">Unpublish</button></form>
+          <form action={setStatus.bind(null, p.id, "draft")}><ConfirmSubmit pending="Unpublishing…" className="btn w-full">Unpublish</ConfirmSubmit></form>
         )}
         {p.status === "published" && (
           <form action={setFeatured.bind(null, p.id, !p.featured)}>
-            <button className="btn w-full" disabled={!p.featured && !ready} title={!ready ? "Needs a process, CAD or drawing photo" : ""}>
-              {p.featured ? "Unfeature" : "Feature"}
-            </button>
+            {!p.featured && !ready ? (
+              <button className="btn w-full" disabled title="Needs a process, CAD or drawing photo">Feature</button>
+            ) : (
+              <ConfirmSubmit pending="Saving…" className="btn w-full">{p.featured ? "Unfeature" : "Feature"}</ConfirmSubmit>
+            )}
           </form>
         )}
       </div>
@@ -61,8 +64,9 @@ function Row({ p }: { p: Project }) {
   );
 }
 
-export default async function Review() {
+export default async function Review({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
   await requireOwner("/review");
+  const { deleted } = await searchParams;
   const all = await allProjectsAdmin();
   const drafts = all.filter((p) => p.status === "draft");
   const published = all.filter((p) => p.status === "published");
@@ -74,6 +78,7 @@ export default async function Review() {
         <span className="text-sm text-neutral-500">{featured}/5 featured</span>
         <Link href="/add" className="btn btn-primary ml-auto">+ Add</Link>
       </div>
+      {deleted && <p role="status" className="mb-4 rounded-md border border-green-600/40 p-2 text-sm">Deleted &ldquo;{deleted}&rdquo;.</p>}
       <h2 className="mb-1 font-semibold">Drafts ({drafts.length})</h2>
       {drafts.length === 0 && <p className="mb-6 text-sm text-neutral-500">No drafts. Tap + on any page to add one from photos.</p>}
       <ul className="mb-10">{drafts.map((p) => <Row key={p.id} p={p} />)}</ul>

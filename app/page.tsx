@@ -93,10 +93,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
               <dd className="mt-1">{latestJob.title}, {latestJob.org}<br /><span className="text-neutral-600 dark:text-neutral-400"><Field value={latestJob.dates} owner={owner} /></span></dd>
             </div>
           )}
-          <div>
-            <dt className="text-xs uppercase tracking-wide text-neutral-500">Currently</dt>
-            <dd className="mt-1"><Field value={profile.currently} owner={owner} fallback={<span className="text-neutral-500">—</span>} /></dd>
-          </div>
+          {(owner || filled(profile.currently)) && (
+            <div>
+              <dt className="text-xs uppercase tracking-wide text-neutral-500">Currently</dt>
+              <dd className="mt-1"><Field value={profile.currently} owner={owner} /></dd>
+            </div>
+          )}
         </dl>
       </section>
     </>
