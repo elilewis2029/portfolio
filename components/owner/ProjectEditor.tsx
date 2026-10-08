@@ -3,6 +3,7 @@ import { CATEGORIES, CATEGORY_LABEL, MEDIA_KINDS, heroOf, type Project } from "@
 import { HighlightTodo, TODO_RE, countTodos } from "@/components/Todo";
 import { deleteMedia, moveMedia, setCover, updateMedia, updateProject } from "@/app/review/actions";
 import ConfirmSubmit from "./ConfirmSubmit";
+import DraftForm from "./DraftForm";
 
 function Field({ label, name, value, rows, hint }: { label: string; name: string; value: string | null | undefined; rows?: number; hint?: string }) {
   const todo = !!value && new RegExp(TODO_RE.source, "i").test(value);
@@ -31,6 +32,7 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
   ];
   const todoFields = textFields.filter(([, v]) => v && new RegExp(TODO_RE.source, "i").test(v));
   const nTodo = countTodos(...textFields.map(([, v]) => v));
+  const back = `/work/${p.slug}?edit=1`;
   const linksText = Object.entries(p.links ?? {}).map(([k, v]) => `${k} | ${v}`).join("\n");
 
   return (
@@ -55,7 +57,8 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         </section>
       )}
 
-      <form action={updateProject.bind(null, p.id)} className="space-y-4">
+      <DraftForm draftKey={`project:${p.id}`} version={p.updated_at} action={updateProject.bind(null, p.id)} className="space-y-4">
+        <input type="hidden" name="return_to" value={back} />
         <Field label="Title" name="title" value={p.title} hint="impact-style, 2–7 words" />
         <Field label="Tagline" name="tagline" value={p.tagline} hint="names the skill or process" />
         <Field label="Summary" name="summary" value={p.summary} rows={3} hint="2 sentences: what, how it performed, your part" />
@@ -97,7 +100,7 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         <div className="sticky bottom-0 -mx-1 bg-white/90 px-1 py-3 pr-20 backdrop-blur sm:pr-1 dark:bg-neutral-950/90">
           <button className="btn btn-primary w-full sm:w-auto">Save</button>
         </div>
-      </form>
+      </DraftForm>
 
       <h2 className="mb-3 mt-10 font-semibold">Photos ({p.media?.length ?? 0})</h2>
       <ul className="space-y-4">
@@ -108,14 +111,15 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
               {hero?.id === m.id && <span className="absolute left-1 top-1 rounded bg-accent px-1 text-[10px] text-white">cover</span>}
             </div>
             <div className="min-w-0 flex-1 space-y-2">
-              <form action={updateMedia.bind(null, p.id, m.id)} className="flex flex-wrap gap-2">
+              <DraftForm draftKey={`media:${m.id}`} version={`${m.kind ?? ""}|${m.caption ?? ""}`} action={updateMedia.bind(null, p.id, m.id)} className="flex flex-wrap gap-2">
+                <input type="hidden" name="return_to" value={back} />
                 <select name="kind" defaultValue={m.kind ?? ""} className="input w-auto">
                   <option value="">(untyped)</option>
                   {MEDIA_KINDS.map((k) => <option key={k} value={k}>{k}</option>)}
                 </select>
                 <input name="caption" defaultValue={m.caption ?? ""} placeholder="caption" className="input min-w-0 flex-1" />
                 <button className="btn">Save</button>
-              </form>
+              </DraftForm>
               <div className="flex flex-wrap gap-2">
                 <form action={moveMedia.bind(null, p.id, m.id, -1)}><button className="btn" disabled={i === 0} aria-label="Move up">↑</button></form>
                 <form action={moveMedia.bind(null, p.id, m.id, 1)}><button className="btn" disabled={i === all.length - 1} aria-label="Move down">↓</button></form>

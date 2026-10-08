@@ -21,8 +21,14 @@ const text = (f: FormData, k: string) => {
 const list = (f: FormData, k: string) =>
   [...new Set(String(f.get(k) ?? "").split(",").map((s) => s.trim().toLowerCase().replace(/\s+/g, "-")).filter(Boolean))];
 
+// Where to come back to after signing in again, so a Save from a stale tab lands back in the editor.
+const returnTo = (f: FormData) => {
+  const v = String(f.get("return_to") ?? "");
+  return v.startsWith("/") && !v.startsWith("//") ? v : "/";
+};
+
 export async function updateProject(id: string, f: FormData) {
-  await requireOwner();
+  await requireOwner(returnTo(f));
   const category = String(f.get("category"));
   const roleKind = String(f.get("role_kind"));
   const yearStr = String(f.get("year") ?? "").trim();
@@ -101,7 +107,7 @@ export async function deleteProject(id: string) {
 }
 
 export async function updateMedia(projectId: string, mediaId: string, f: FormData) {
-  await requireOwner();
+  await requireOwner(returnTo(f));
   const kind = String(f.get("kind"));
   await adminDb().from("media").update({
     kind: MEDIA_KINDS.includes(kind as MediaKind) ? kind : null,
