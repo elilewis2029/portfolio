@@ -45,7 +45,7 @@ function DraftBadge() {
 
 /**
  * A series on /work, drawn like an album cover: a static mosaic of the parts' photos (the lead part large,
- * the others in a column beside it, numbered), a stacked-squares badge with the part count, and the same
+ * the others in a column beside it), a stacked-squares badge with the part count, and the same
  * text grammar as every other card (title, one line, chips) so the grid still scans evenly. No motion:
  * auto-cycling photos can't be skimmed and need a pause control (WCAG 2.2.2). Links to the series overview.
  */
@@ -57,25 +57,21 @@ function SeriesTile({ series }: { series: SeriesCard }) {
   const extra = rest.length - shown.length;
   const anyDraft = members.some((m) => m.status === "draft");
   const skills = [...new Set(members.flatMap((m) => m.skills))].slice(0, 3);
-  const cell = "relative overflow-hidden bg-neutral-200 dark:bg-neutral-800";
-  const num = (n: number) => (
-    <span className="absolute left-1.5 top-1.5 z-10 rounded bg-black/55 px-1.5 text-[11px] font-semibold leading-5 text-white">{n}</span>
-  );
+  // Each cell carries its own hover zoom, so only the part under the pointer moves: the parts read as separate things.
+  const cell = "zoom relative overflow-hidden bg-neutral-200 dark:bg-neutral-800";
   return (
     <Link href={seriesHref(series.name)} className="group block min-w-0">
-      <div className="zoom relative grid aspect-[4/3] grid-cols-3 grid-rows-2 gap-0.5 overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10">
+      <div className="relative grid aspect-[4/3] grid-cols-3 grid-rows-2 gap-0.5 overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10">
         <div className={`${cell} col-span-2 row-span-2`}>
           {lead.hero ? (
             <Image src={lead.hero.path} alt={`${series.name}: ${lead.hero.caption || lead.m.title}`} fill sizes="(min-width: 1024px) 22vw, (min-width: 640px) 33vw, 66vw" className="object-cover" />
           ) : (
             <span className="flex h-full items-center justify-center text-sm text-neutral-400">No photo yet</span>
           )}
-          {num(1)}
         </div>
         {shown.map(({ m, hero }, i) => (
           <div key={m.id} className={`${cell} ${shown.length === 1 ? "row-span-2" : ""}`}>
             {hero && <Image src={hero.path} alt="" fill sizes="(min-width: 1024px) 11vw, (min-width: 640px) 17vw, 33vw" className="object-cover" />}
-            {num(i + 2)}
             {i === shown.length - 1 && extra > 0 && (
               <span className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 text-lg font-semibold text-white">+{extra}</span>
             )}
