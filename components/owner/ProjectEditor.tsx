@@ -128,7 +128,7 @@ function Photos({ p, heroId }: { p: Project; heroId?: string }) {
           <li key={m.id} className="flex gap-3 border-b border-neutral-200 pb-4 dark:border-neutral-800">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded bg-neutral-100 sm:w-32 dark:bg-neutral-900">
               <Image src={m.path} alt="" fill sizes="128px" className="object-cover" />
-              {heroId === m.id && <span className="absolute left-1 top-1 rounded bg-accent px-1 text-[10px] text-white">cover</span>}
+              {heroId === m.id && <span className="absolute left-1 top-1 on-accent rounded bg-accent px-1 text-[10px] text-white">cover</span>}
             </div>
             <div className="min-w-0 flex-1 space-y-2">
               <div className="flex flex-wrap gap-2">

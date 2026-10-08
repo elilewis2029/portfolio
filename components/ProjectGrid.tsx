@@ -30,30 +30,46 @@ export default function ProjectGrid({
     const s = q.toString();
     return s ? `${base}?${s}` : base;
   };
+  // Filter chips are links; py-1.5 + gap-2 gives them a tappable height on phones (they were 22 px tall).
+  const chip = (on: boolean) => `chip py-1.5 ${on ? "chip-on" : ""}`;
+  const filtered = !!(skill || cat);
   return (
     <>
       {cats.length > 1 && (
         <div className="mb-3 flex flex-wrap gap-2">
-          <Link href={href({ skill })} className={`chip ${!cat ? "chip-on" : ""}`}>All</Link>
+          <Link href={href({ skill })} className={chip(!cat)} aria-current={!cat ? "true" : undefined}>All</Link>
           {cats.map((c) => (
-            <Link key={c} href={href({ skill, cat: c === cat ? undefined : c })} className={`chip ${c === cat ? "chip-on" : ""}`}>
+            <Link key={c} href={href({ skill, cat: c === cat ? undefined : c })} className={chip(c === cat)} aria-current={c === cat ? "true" : undefined}>
               {CATEGORY_LABEL[c]}
             </Link>
           ))}
         </div>
       )}
       {skills.length > 0 && (
-        <div className="mb-8 flex flex-wrap gap-1.5">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
           <span className="mr-1 text-xs uppercase tracking-wide text-neutral-500">Skills</span>
           {skills.map((s) => (
-            <Link key={s} href={href({ cat, skill: s === skill ? undefined : s })} className={`chip ${s === skill ? "chip-on" : ""}`}>
+            <Link key={s} href={href({ cat, skill: s === skill ? undefined : s })} className={chip(s === skill)} aria-current={s === skill ? "true" : undefined}>
               {s}
             </Link>
           ))}
         </div>
       )}
+      {/* What the filter did, and one tap to undo it (the active chip also toggles off, but that is easy to miss). */}
+      {filtered && (
+        <p className="mb-6 flex flex-wrap items-center gap-x-3 text-sm text-neutral-600 dark:text-neutral-400" role="status">
+          <span>
+            {items.length} {items.length === 1 ? "project" : "projects"}
+            {cat ? ` in ${CATEGORY_LABEL[cat as keyof typeof CATEGORY_LABEL] ?? cat}` : ""}{skill ? ` tagged ${skill}` : ""}
+          </span>
+          <Link href={base} className="inline-flex min-h-11 items-center text-accent hover:underline">Clear filters ×</Link>
+        </p>
+      )}
+      {!filtered && skills.length > 0 && <div className="mb-4" />}
       {shown.length === 0 ? (
-        <p className="text-neutral-500">Nothing here yet.</p>
+        <p className="text-neutral-500">
+          {filtered ? "No projects match this filter." : "Nothing here yet."}
+        </p>
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {items.map(({ p, series }) => <ProjectCard key={p.id} p={p} series={series} />)}

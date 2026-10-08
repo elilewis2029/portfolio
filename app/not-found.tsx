@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { contactEmail } from "@/lib/projects";
 
+export const metadata = { title: "Page not found" };
+
 export default function NotFound() {
   const email = contactEmail();
   return (
@@ -10,7 +12,7 @@ export default function NotFound() {
       <p className="mt-3 text-neutral-600 dark:text-neutral-400">It may have been unpublished or moved.</p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         <Link href="/work" className="btn btn-primary">See the work</Link>
-        <Link href="/about" className="btn">About</Link>
+        <Link href="/" className="btn">Home</Link>
         {email && <a href={`mailto:${email}`} className="btn">Email me</a>}
       </div>
     </div>

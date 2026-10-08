@@ -18,7 +18,9 @@ export default function AddPhotos({ projectId, supabaseUrl, anonKey }: { project
     setBusy(true);
     setMsg(null);
     try {
-      const { batch, uploads } = await prepareUploads(files.map((f) => f.name));
+      const prep = await prepareUploads(files.map((f) => f.name));
+      if ("error" in prep) { setMsg("Your sign-in has expired. Reload the page, sign in, then add the photos again."); return; }
+      const { batch, uploads } = prep;
       await Promise.all(
         uploads.map(async (u, i) => {
           const { error } = await storage.uploadToSignedUrl(u.path, u.token, files[i], { contentType: files[i].type || "image/jpeg" });
