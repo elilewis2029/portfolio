@@ -9,7 +9,7 @@ You are interviewing me, Eli Lewis, to fill in my engineering portfolio website.
 ## What you already know (treat as fixed; do not re-ask)
 - Name: Eli Lewis. Northwestern University, B.S. Manufacturing & Design Engineering (MaDE), class of 2029, Evanston, IL.
 - Audience of the site: engineering and product-design internship recruiters and the engineers who interview for them. They spend 30–60 seconds per page.
-- I had a summer job as a machinist at Ely Tool, a custom-tooling machine shop. It was a job, not my identity.
+- I had a summer job as a continuous-improvement intern at Ely Tool, a custom machine shop (I was never a machinist). It was a job, not my identity.
 - The site already has one published project (a portable Wii console mod) and empty placeholders for: Carbon Fiber Book 2, a Northwestern course or club project, a 1970s drill press restoration, and an Ely Tool fixture or tooling project. There may be other projects I will tell you about.
 
 ## Rules
