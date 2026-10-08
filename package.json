@@ -9,7 +9,7 @@
     "lint": "tsc --noEmit",
     "import-wix": "tsx scripts/import-wix.ts",
     "portfolio": "tsx --conditions=react-server scripts/portfolio.ts",
-    "migrate-supabase": "tsx scripts/migrate-supabase.ts"
+    "migrate-supabase": "tsx scripts/migrate-supabase.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

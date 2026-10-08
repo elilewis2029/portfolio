@@ -73,10 +73,10 @@ async function sql(ref: string, query: string) {
 // ---------- 0. identify both projects ----------
 type Proj = { id: string; name: string; status: string };
 const all = await mgmt<Proj[]>("GET", "/projects");
-const oldP = all.find((p) => p.id === OLD_REF);
+const oldP = all.find((p) => p.id === OLD_REF); // may be in another account; the source is only read with its service key
 const newP = all.find((p) => p.id === NEW_REF);
-need(oldP && newP, `Access token can't see both projects (${OLD_REF}, ${NEW_REF}). Check the token's organization.`);
-log(`source: ${oldP.name} (${OLD_REF}, ${oldP.status})`);
+need(newP, `Access token can't see the target project ${NEW_REF}. It must come from the account that owns it.`);
+log(`source: ${oldP ? `${oldP.name} (${OLD_REF}, ${oldP.status})` : `${OLD_REF} (not visible to this token; read via service key only)`}`);
 log(`target: ${newP.name} (${NEW_REF}, ${newP.status})`);
 need(newP.status === "ACTIVE_HEALTHY", `Target project is ${newP.status}; wait until it is ACTIVE_HEALTHY.`);
 
@@ -86,7 +86,7 @@ if (!NEW_KEY) NEW_KEY = targetKeys.find((k) => k.name === "service_role")?.api_k
 need(NEW_KEY, "Could not read the target project's service_role key; set NEW_SUPABASE_SERVICE_ROLE_KEY.");
 
 // ---------- 1. schema ----------
-const migrations = ["0001_portfolio.sql", "0002_chat_intake.sql"].map((f) => path.join("supabase", "migrations", f));
+const migrations = ["0001_portfolio.sql", "0002_chat_intake.sql", "0003_series.sql"].map((f) => path.join("supabase", "migrations", f));
 for (const file of migrations) {
   const body = readFileSync(file, "utf8");
   if (DRY) {
@@ -104,12 +104,12 @@ for (const file of migrations) {
 }
 
 // ---------- 2. expose schema `portfolio` through PostgREST ----------
-type Pg = { db_schema: string; max_rows: number; db_extra_search_path: string };
+type Pg = { db_schema: string };
 const pg = await mgmt<Pg>("GET", `/projects/${NEW_REF}/postgrest`);
 const schemas = pg.db_schema.split(",").map((s) => s.trim()).filter(Boolean);
 if (!schemas.includes("portfolio")) {
   const db_schema = [...schemas, "portfolio"].join(", ");
-  if (!DRY) await mgmt("PATCH", `/projects/${NEW_REF}/postgrest`, { ...pg, db_schema });
+  if (!DRY) await mgmt("PATCH", `/projects/${NEW_REF}/postgrest`, { db_schema });
   log(`exposed schema portfolio (db_schema = ${db_schema})`);
 } else log("schema portfolio already exposed");
 
@@ -228,4 +228,4 @@ if (DO_VERCEL) {
   log("redeploy production so the new values take effect (merge any PR, or `vercel redeploy <prod url>`).");
 }
 
-log(`done. Source project ${oldP.name} was not modified; drop its portfolio schema and bucket only after the live site is verified.`);
+log(`done. Source project ${OLD_REF} was not modified; drop its portfolio schema and bucket only after the live site is verified.`);

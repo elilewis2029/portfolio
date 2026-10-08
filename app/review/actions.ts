@@ -38,7 +38,7 @@ export async function updateProject(id: string, f: FormData) {
     if (label && url) links[label] = url;
   });
   const slug = slugify(String(f.get("slug") ?? "")) || undefined;
-  const { error } = await adminDb().from("projects").update({
+  const fields = {
     title: text(f, "title") ?? "Untitled",
     ...(slug ? { slug } : {}),
     tagline: text(f, "tagline"),
@@ -58,7 +58,14 @@ export async function updateProject(id: string, f: FormData) {
     skills: list(f, "skills"),
     audience: list(f, "audience").filter((a) => ["pd", "mech", "mfg"].includes(a)),
     links,
-  }).eq("id", id);
+  };
+  const seriesFields = {
+    series: text(f, "series"),
+    series_order: /^\d+$/.test(String(f.get("series_order") ?? "").trim()) ? Number(f.get("series_order")) : null,
+  };
+  // Series columns arrive with migration 0003; on a database without them, save everything else.
+  let { error } = await adminDb().from("projects").update({ ...fields, ...seriesFields }).eq("id", id);
+  if (error && /series/.test(error.message)) ({ error } = await adminDb().from("projects").update(fields).eq("id", id));
   if (error) {
     const cur = await projectByIdAdmin(id);
     redirect(`/work/${cur?.slug}?edit=1&error=${encodeURIComponent(error.message)}`);

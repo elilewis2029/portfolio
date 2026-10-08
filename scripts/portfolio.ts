@@ -39,7 +39,7 @@ const storage = db.storage.from("portfolio");
 
 const FIELDS = [
   "title", "tagline", "summary", "role_kind", "role", "goal_constraints", "process_md", "result_metric",
-  "lesson", "category", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era",
+  "lesson", "category", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era", "series", "series_order",
 ] as const;
 
 type Media = { id: string; path: string; original_path?: string | null; kind: string | null; caption: string | null; sort: number };

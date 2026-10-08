@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import { CATEGORIES, CATEGORY_LABEL, type Project } from "@/lib/types";
+import type { SeriesCard } from "./ProjectCard";
 
 /** Grid with skill + category filter chips driven by ?skill= and ?cat= (no client state). */
 export default function ProjectGrid({
@@ -11,6 +12,17 @@ export default function ProjectGrid({
   const shown = projects.filter(
     (p) => (!skill || p.skills.includes(skill)) && (!cat || p.category === cat),
   );
+  // Pages that share a series collapse into one card (the lead = lowest series_order among those shown).
+  const seen = new Set<string>();
+  const items = shown.flatMap((p): { p: Project; series?: SeriesCard }[] => {
+    if (!p.series) return [{ p }];
+    if (seen.has(p.series)) return [];
+    seen.add(p.series);
+    const members = shown
+      .filter((x) => x.series === p.series)
+      .sort((a, b) => (a.series_order ?? 99) - (b.series_order ?? 99));
+    return members.length > 1 ? [{ p: members[0], series: { name: p.series, members } }] : [{ p: members[0] }];
+  });
   const href = (next: { skill?: string; cat?: string }) => {
     const q = new URLSearchParams();
     if (next.skill) q.set("skill", next.skill);
@@ -44,7 +56,7 @@ export default function ProjectGrid({
         <p className="text-neutral-500">Nothing here yet.</p>
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((p) => <ProjectCard key={p.id} p={p} />)}
+          {items.map(({ p, series }) => <ProjectCard key={p.id} p={p} series={series} />)}
         </div>
       )}
     </>

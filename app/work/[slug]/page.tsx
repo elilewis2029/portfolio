@@ -5,7 +5,8 @@ import Md from "@/components/Md";
 import Lightbox from "@/components/Lightbox";
 import OwnerToolbar from "@/components/owner/OwnerToolbar";
 import ProjectEditor from "@/components/owner/ProjectEditor";
-import { contactEmail, projectBySlug, publicUrl } from "@/lib/projects";
+import { contactEmail, projectBySlug, publicUrl, seriesSiblings } from "@/lib/projects";
+import SeriesNav from "@/components/SeriesNav";
 import { isOwner } from "@/lib/owner";
 import { CATEGORY_LABEL, heroOf, type Media } from "@/lib/types";
 
@@ -54,6 +55,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const [{ slug }, { edit, saved, error }, owner] = await Promise.all([params, searchParams, isOwner()]);
   const p = await projectBySlug(slug, owner);
   if (!p) notFound();
+  const siblings = await seriesSiblings(p, owner);
   const editing = owner && edit === "1";
 
   const media = p.media ?? [];
@@ -87,6 +89,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{p.title}</h1>
             {p.tagline && <p className="mt-2 text-lg text-neutral-700 dark:text-neutral-300">{p.tagline}</p>}
+            {siblings.length > 1 && <SeriesNav current={p} siblings={siblings} />}
           </header>
 
           {/* 2. Hero */}
