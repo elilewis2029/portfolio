@@ -2,9 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { heroOf, type Project } from "@/lib/types";
 
-export default function ProjectCard({ p, priority = false, banner = false }: { p: Project; priority?: boolean; banner?: boolean }) {
+export type SeriesCard = { name: string; members: Project[] };
+
+export default function ProjectCard({
+  p, priority = false, banner = false, series,
+}: { p: Project; priority?: boolean; banner?: boolean; series?: SeriesCard }) {
   const hero = heroOf(p);
   const draft = p.status === "draft";
+  const title = series ? series.name : p.title;
+  const tagline = series ? series.members.map((m) => m.title).join(" · ") : p.tagline;
   return (
     <Link href={`/work/${p.slug}`} className={`group block ${banner ? "sm:col-span-2 lg:col-span-3" : ""}`}>
       <div className={`zoom relative overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10 ${banner ? "aspect-[4/3] sm:aspect-[21/9]" : "aspect-[4/3]"}`}>
@@ -26,11 +32,12 @@ export default function ProjectCard({ p, priority = false, banner = false }: { p
           </span>
         )}
       </div>
-      <h3 className={`mt-3 font-semibold leading-snug group-hover:text-accent ${banner ? "text-xl sm:text-2xl" : "text-base sm:text-lg"}`}>{p.title}</h3>
-      {p.tagline && <p className="mt-1 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-400">{p.tagline}</p>}
-      {p.skills.length > 0 && (
+      <h3 className={`mt-3 font-semibold leading-snug group-hover:text-accent ${banner ? "text-xl sm:text-2xl" : "text-base sm:text-lg"}`}>{title}</h3>
+      {tagline && <p className="mt-1 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-400">{tagline}</p>}
+      {(series || p.skills.length > 0) && (
         <div className="mt-2 flex flex-wrap gap-1.5">
-          {p.skills.slice(0, 3).map((s) => (
+          {series && <span className="chip chip-on">{series.members.length} parts</span>}
+          {p.skills.slice(0, series ? 2 : 3).map((s) => (
             <span key={s} className="chip">{s}</span>
           ))}
         </div>

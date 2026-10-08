@@ -37,6 +37,17 @@ export async function projectBySlug(slug: string, owner = false): Promise<Projec
   return data ? sortMedia([data as Project])[0] : null;
 }
 
+/** Other pages in the same series, in series_order (visitors only get published rows). Empty when the project has no series. */
+export async function seriesSiblings(p: Project, owner = false): Promise<Project[]> {
+  if (!p.series) return [];
+  const { data, error } = await (owner ? adminDb() : publicDb())
+    .from("projects").select(SELECT).eq("series", p.series)
+    .order("series_order", { ascending: true, nullsFirst: false })
+    .order("year", { ascending: true, nullsFirst: false });
+  if (error) console.error(error);
+  return sortMedia((data ?? []) as Project[]);
+}
+
 /** Owner-only: everything, drafts first. */
 export async function allProjectsAdmin(): Promise<Project[]> {
   const { data, error } = await adminDb()

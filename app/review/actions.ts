@@ -53,6 +53,8 @@ export async function updateProject(id: string, f: FormData) {
     process_md: text(f, "process_md"),
     result_metric: text(f, "result_metric"),
     lesson: text(f, "lesson"),
+    series: text(f, "series"),
+    series_order: /^\d+$/.test(String(f.get("series_order") ?? "").trim()) ? Number(f.get("series_order")) : null,
     body_md: text(f, "body_md"),
     tools: list(f, "tools"),
     skills: list(f, "skills"),

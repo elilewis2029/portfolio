@@ -96,6 +96,10 @@ export default function ProjectEditor({ p, saved, error }: { p: Project; saved?:
         <Field label="Audience" name="audience" value={p.audience.join(", ")} hint="pd, mech, mfg" />
         <Field label="Links" name="links" value={linksText} rows={2} hint="one per line: Label | https://…" />
         <Field label="Notes" name="body_md" value={p.body_md} rows={4} hint="optional free text" />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Series" name="series" value={p.series} hint="same name on each related page; they share one card on /work" />
+          <Field label="Series order" name="series_order" value={p.series_order?.toString()} hint="1 = lead page" />
+        </div>
         <Field label="Slug" name="slug" value={p.slug} hint="URL: /work/…" />
         <div className="sticky bottom-0 -mx-1 bg-white/90 px-1 py-3 pr-20 backdrop-blur sm:pr-1 dark:bg-neutral-950/90">
           <button className="btn btn-primary w-full sm:w-auto">Save</button>
