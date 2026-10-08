@@ -39,8 +39,8 @@ Every `[TODO]` on the site, in one place. Answer any item here in chat (or edit 
 
 Recruiters read a single project as a hobby site; three to five featured is the target. Each placeholder draft has an intake note saying what to photograph. Add photos with **+** and name the project in the note (e.g. “drill press pics”), or send the photos here.
 
-- [ ] **Ely Tool: shop relayout** (`/work/shop-relayout-sequenced-to-avoid-a-shutdown`, draft) — six photos and text are in; review and publish from `/review`
-- [ ] **Ely Tool: detail room + barcode prototype** (`/work/detail-room-storage-plan-and-barcode-prototype`, draft) — four images and text are in; still needs the "What I'd change" line, then review and publish
+- [ ] **Ely Tool: shop relayout** (`/work/shop-relayout-sequenced-to-avoid-a-shutdown`, published, featured) — part 1 of the Ely Tool series
+- [ ] **Ely Tool: detail room + barcode prototype** (`/work/detail-room-storage-plan-and-barcode-prototype`, draft) — part 2 of the Ely Tool series; still needs the "What I'd change" line, then publish
 - [ ] **Northwestern course or club project** (`/work/todo-northwestern-course-project`)
 - [ ] **1970s drill press restoration** (`/work/todo-drill-press-restoration`) — from the old Wix site
 - [ ] **Carbon Fiber Book 2** (`/work/carbon-fiber-book-2`) — photos of the build and of book 1 for comparison, one sentence on what changed
