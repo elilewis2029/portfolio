@@ -40,3 +40,7 @@ Decisions made while building, where CLAUDE.md / PLAN.md / RESEARCH.md left room
 ## 2026-10-06 — photos from the project page
 
 23. **"Add photos" on every project page** (owner toolbar, draft or published, viewing or editing). It uploads straight to that project through the same signed-URL path as the "+" intake, skips the AI, and appends the photos as `process` at the end; a project with no photos gets its first upload as the cover. The "+" sheet still decides new vs. append from the note.
+
+## 2026-10-08 — edits survive a stale tab
+
+24. **The project editor keeps unsaved edits in the browser** (`components/owner/DraftForm.tsx`). Every keystroke in the project fields or a photo's kind/caption is copied to `localStorage` until the server has the same values; reopening the editor after a reload, a discarded tab or an expired sign-in puts the text back with a "Restored unsaved changes" note and a Discard link. The saved version is read from the fields' server-rendered defaults, so a draft is dropped only once the page shows it as saved. Leaving the page with unsaved edits also triggers the browser's "leave site?" prompt. A Save that hits an expired sign-in now returns to the editor after login instead of the home page. Drafts are per browser; the "+" intake is not covered (photos are too big for local storage).
