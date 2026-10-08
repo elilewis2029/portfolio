@@ -133,7 +133,7 @@ export async function deleteProject(id: string) {
   }
   await db.from("projects").delete().eq("id", id);
   refresh(p?.slug);
-  redirect("/review");
+  redirect(`/review?deleted=${encodeURIComponent(p?.title ?? "")}`);
 }
 
 export async function moveMedia(projectId: string, mediaId: string, dir: -1 | 1) {

@@ -32,7 +32,17 @@ export async function verifyCode(formData: FormData) {
   redirect(next);
 }
 
+/** Pages only the owner can see; after signing out we go home instead of back to them. */
+const OWNER_ONLY = /^\/(review|add|login)(\/|$|\?)|[?&]edit=1/;
+
+/** Signs out and returns to the page the button was on, unless that page is owner-only. */
 export async function signOut() {
   await (await authClient()).auth.signOut();
-  redirect("/");
+  const h = await headers();
+  let back = "/";
+  try {
+    const ref = new URL(h.get("referer") ?? "");
+    if (ref.host === h.get("host") && !OWNER_ONLY.test(ref.pathname + ref.search)) back = ref.pathname + ref.search;
+  } catch { /* no usable referer */ }
+  redirect(back);
 }

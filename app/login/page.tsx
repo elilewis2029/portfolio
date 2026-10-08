@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { sendLink, verifyCode } from "./actions";
 
 export const metadata = { title: "Sign in", robots: { index: false } };
@@ -6,8 +7,11 @@ type SP = { next?: string; sent?: string; error?: string; email?: string };
 
 export default async function Login({ searchParams }: { searchParams: Promise<SP> }) {
   const { next = "/", sent, error, email = "" } = await searchParams;
+  // Where "Back" goes: the page you came from, unless it is owner-only (you'd just bounce back here).
+  const back = /^\/(review|add)(\/|$|\?)|[?&]edit=1/.test(next) ? "/" : next;
   return (
     <div className="mx-auto max-w-sm">
+      <p className="mb-4 text-sm"><Link href={back} className="inline-flex min-h-11 items-center text-accent hover:underline">← Back to the site</Link></p>
       <h1 className="mb-1 text-xl font-semibold">Owner sign-in</h1>
       <p className="mb-4 text-sm text-neutral-500">Only the site owner can sign in. Nothing here for visitors.</p>
       {next.includes("edit=1") && (

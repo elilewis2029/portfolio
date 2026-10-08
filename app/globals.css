@@ -10,17 +10,29 @@
 body { @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100; }
 :focus-visible { @apply outline-2 outline-offset-2 outline-accent; }
 
-.prose-lite ul { @apply list-disc space-y-1 pl-5; }
-.prose-lite ol { @apply list-decimal space-y-1 pl-5; }
-.prose-lite p + p { @apply mt-3; }
-.prose-lite a { @apply text-accent underline underline-offset-2; }
+/* In the components layer so a utility on the element (py-1.5, w-auto, border-accent) can override these. */
+@layer components {
+  .prose-lite ul { @apply list-disc space-y-1 pl-5; }
+  .prose-lite ol { @apply list-decimal space-y-1 pl-5; }
+  .prose-lite p + p { @apply mt-3; }
+  .prose-lite a { @apply text-accent underline underline-offset-2; }
+  
+  .chip { @apply inline-block rounded-full border border-neutral-300 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-neutral-700 dark:text-neutral-300; }
+  .chip-on { @apply border-accent bg-accent text-white; }
+  /* min-h-10 (40 px): close to the 44 pt / 48 dp touch-target guidance without making the buttons look bigger. */
+  .btn { @apply inline-flex min-h-10 items-center justify-center rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium hover:bg-neutral-100 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800; }
+  .btn-primary { @apply border-accent bg-accent text-white hover:bg-accent/90 dark:hover:bg-accent/90; }
+  .input { @apply w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700; }
+  mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
+}
 
-.chip { @apply inline-block rounded-full border border-neutral-300 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-neutral-700 dark:text-neutral-300; }
-.chip-on { @apply border-accent bg-accent text-white dark:text-white; }
-.btn { @apply inline-flex items-center justify-center rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium hover:bg-neutral-100 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800; }
-.btn-primary { @apply border-accent bg-accent text-white hover:bg-accent/90 dark:hover:bg-accent/90; }
-.input { @apply w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700; }
-mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
+/* Dark mode contrast (WCAG 1.4.3). On neutral-950 the accent reads 3.8:1 and neutral-500 4.2:1, both under 4.5:1.
+   The accent brightens to orange-500 (7.4:1); text drawn on an accent background turns dark; muted text steps up one shade. */
+@media (prefers-color-scheme: dark) {
+  :root { --color-accent: #f97316; --color-accent-soft: #2a1407; }
+  .btn-primary, .chip-on, .on-accent { color: #0a0a0a !important; }
+  .text-neutral-500 { color: oklch(70.8% 0 0); } /* = neutral-400, 7.8:1 */
+}
 
 /* Motion: small, CSS-only, and off for people who asked for less. */
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -33,6 +45,8 @@ mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
   .rise, .zoom img { animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important; }
 }
 dialog.lightbox[open] { animation: rise 0.2s ease-out both; }
+/* The page behind an open lightbox must not scroll (a swipe on the photo was scrolling the article underneath). */
+html:has(dialog.lightbox[open]) { overflow: hidden; }
 
 /* Owner-mode bottom sheet (native <dialog>) */
 dialog.sheet { max-height: 92vh; }

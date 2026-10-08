@@ -25,7 +25,9 @@ export default function AddForm({ supabaseUrl, anonKey, onDone }: { supabaseUrl:
     setResult(null);
     try {
       setBusy("Uploading photos…");
-      const { batch, uploads } = await prepareUploads(files.map((f) => f.name));
+      const prep = await prepareUploads(files.map((f) => f.name));
+      if ("error" in prep) { setResult({ ok: false, error: prep.error }); return; }
+      const { batch, uploads } = prep;
       await Promise.all(
         uploads.map(async (u, i) => {
           const { error } = await storage.uploadToSignedUrl(u.path, u.token, files[i], { contentType: files[i].type || "image/jpeg" });
@@ -97,8 +99,13 @@ export default function AddForm({ supabaseUrl, anonKey, onDone }: { supabaseUrl:
           <strong>{result.title}</strong>.{" "}
           <Link href={`/work/${result.slug}?edit=1`} className="text-accent underline" onClick={onDone}>Open →</Link>
         </div>
+      ) : result.error === "signed-out" ? (
+        <p className="rounded-md border border-yellow-500/60 p-3 text-sm" role="alert">
+          Your sign-in has expired, so nothing was sent. Your photos and note are still here:{" "}
+          <a href="/login?next=/add" target="_blank" rel="noreferrer" className="text-accent underline">sign in again in a new tab</a>, then press Send.
+        </p>
       ) : (
-        <p className="rounded-md border border-red-600/40 p-3 text-sm text-red-600">{result.error}</p>
+        <p className="rounded-md border border-red-600/40 p-3 text-sm text-red-600" role="alert">{result.error}</p>
       ))}
 
       <p className="pt-2 text-center text-sm"><Link href="/review" className="text-accent" onClick={onDone}>All drafts →</Link></p>
