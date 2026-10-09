@@ -26,7 +26,9 @@ import { processImage } from "../lib/images";
 import { slugify, uniqueSlug } from "../lib/slug";
 import { CATEGORIES, MEDIA_KINDS, READY_KINDS } from "../lib/types";
 
-config({ path: ".env.local" });
+// .env.local beats the shell: the cloud session-start hook pulls it from Vercel production, while the
+// environment's own variables can point at a retired project. Plain .env still only fills gaps.
+config({ path: ".env.local", override: true });
 config();
 
 // Tolerate a URL pasted with the REST path (".../rest/v1/"); supabase-js appends that itself.

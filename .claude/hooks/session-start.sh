@@ -26,16 +26,25 @@ if [ -n "${VERCEL_TOKEN:-}" ]; then
     mkdir -p .vercel
     printf '{"projectId":"prj_AgnVGOUb1RKL1MYERnteMk1ERs9T","orgId":"team_O10BQQMStMey48liCw1gSFXs","projectName":"portfolio"}\n' > .vercel/project.json
   fi
-  if $VERCEL env pull .env.local --environment=production --yes --token "$VERCEL_TOKEN" >/dev/null 2>&1; then
+  if pull_log=$($VERCEL env pull .env.local --environment=production --yes --token "$VERCEL_TOKEN" 2>&1); then
     for name in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY; do
       value=$(grep -E "^${name}=" .env.local | head -1 | cut -d= -f2- | tr -d '"')
-      if [ -n "$value" ] && [ -n "${CLAUDE_ENV_FILE:-}" ]; then
-        printf 'export %s=%q\n' "$name" "$value" >> "$CLAUDE_ENV_FILE"
+      if [ -n "$value" ]; then
+        export "$name=$value"
+        if [ -n "${CLAUDE_ENV_FILE:-}" ]; then printf 'export %s=%q\n' "$name" "$value" >> "$CLAUDE_ENV_FILE"; fi
       fi
     done
-    echo "session-start: Supabase keys synced from Vercel production ($(grep -oE 'https://[a-z]+\.supabase\.co' .env.local | head -1))"
+    echo "session-start: Supabase keys synced from Vercel production"
   else
-    echo "session-start: could not pull Vercel env; using the environment's variables"
+    echo "session-start: WARNING: could not pull Vercel production env; scripts fall back to the environment's variables" >&2
+    printf '%s\n' "$pull_log" | grep -iE 'error|not_linked|forbidden|invalid|token' | grep -v '=' | tail -3 | sed 's/^/session-start:   /' >&2 || true
   fi
+else
+  echo "session-start: WARNING: VERCEL_TOKEN not set; Supabase keys not synced from Vercel" >&2
 fi
+
+# Report which project the session will hit (host only; never print keys). scripts/portfolio.ts prefers .env.local.
+supabase_host=$(grep -oE 'https://[a-z0-9]+\.supabase\.co' .env.local 2>/dev/null | head -1 || true)
+supabase_host=${supabase_host:-$(printf '%s' "${NEXT_PUBLIC_SUPABASE_URL:-}" | grep -oE 'https://[^/]+' || true)}
+echo "session-start: Supabase host in use: ${supabase_host:-none (NEXT_PUBLIC_SUPABASE_URL unset)}"
 echo "session-start: done"
