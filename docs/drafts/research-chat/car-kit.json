@@ -1,0 +1,22 @@
+{
+  "slug": "snap-together-car-kit",
+  "category": "design-craft",
+  "year": 2024,
+  "era": "current",
+  "status": "draft",
+  "featured": false,
+  "audience": ["pd", "mech"],
+  "title": "Snap-together electric car kit for a kids' build party",
+  "tagline": "Six printed parts, a motor and a battery pack: a kit designed so 16 kids could assemble a working car in minutes and spend the rest of the time customizing it",
+  "summary": "A modular 3D-printed car kit I designed in Fusion 360 for a maker-themed birthday party, then reused in my after-school makerspace. The first version I'd built had kids spending the whole session assembling; this one assembles in a few steps so the time goes to making it their own.",
+  "role_kind": "solo",
+  "role": "I was responsible for the whole thing: client communication with the parent, budget and timeline, CAD, printing, the wheel system and running the build session.",
+  "duration": "2022 (v1), 2024 (v2)",
+  "tools": ["fusion-360", "fdm-3d-printing"],
+  "skills": ["design-for-assembly", "human-centered-design", "user-testing", "teaching", "project-planning"],
+  "goal_constraints": "- Assemble into a driving car with no instructions and no adult help, for kids around 8–10.\n- Cheap enough to print and kit for 16 participants on a parent's budget.\n- Leave most of the session for customization, not assembly.",
+  "process_md": "- Cut the base to six printed parts plus batteries, battery pack and motor; everything press-fits or snaps.\n- Designed pop-on wheel hubs so kids could cut their own wheels from cardboard and glue them to the hubs.\n- Modeled LEGO-compatible studs into the chassis so decorations attach without glue or mess.\n- Printed a kit per child, wrote a parts list and ran the build session (photo 2).",
+  "result_metric": "16 participants in one build session",
+  "lesson": "[TODO: what I'd change]",
+  "links": {}
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "handheld-tape-dispenser-patent",
+  "category": "engineering",
+  "year": 2024,
+  "era": "current",
+  "status": "draft",
+  "featured": false,
+  "audience": ["pd", "mech"],
+  "title": "Handheld tape dispenser, patent pending",
+  "tagline": "A one-piece, blade-free tape dispenser safe for young kids; sole inventor on US 2025/0368466 A1",
+  "summary": "A compact handheld dispenser built around a mostly single-piece plastic frame: snap-on clips hold the roll, grooves in the handle show how to hold it, and a single pointed plastic tip tears the tape instead of a metal blade. I filed it as sole inventor in May 2024, while in high school; the application published in December 2025 and is pending.",
+  "role_kind": "solo",
+  "role": "I was responsible for the concept, the CAD and prototypes, and the patent application. [TODO: name who helped with the filing, if anyone]",
+  "duration": "2023–2024",
+  "tools": ["fusion-360", "fdm-3d-printing"],
+  "skills": ["product-design", "design-for-safety", "design-for-manufacturing", "prototyping", "ip"],
+  "goal_constraints": "- Usable by young children and people with limited motor skills.\n- No metal blade; tape still tears cleanly.\n- As few parts as possible so it can be molded cheaply.",
+  "process_md": "- [TODO: 3–5 bullets on prototypes, tear-tip iterations, and testing with kids at the makerspace]",
+  "result_metric": "US patent application published Dec 2025 (US 2025/0368466 A1)",
+  "lesson": "[TODO: what I'd change]",
+  "links": {"patent": "https://patents.google.com/patent/US20250368466A1/en"}
+}
