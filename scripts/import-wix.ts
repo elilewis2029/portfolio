@@ -17,7 +17,9 @@ import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import exifr from "exifr";
 
-config({ path: ".env.local" });
+// .env.local beats the shell: the cloud session-start hook pulls it from Vercel production, while the
+// environment's own variables can point at a retired project. Plain .env still only fills gaps.
+config({ path: ".env.local", override: true });
 config();
 
 type Item = { kind: string; slug: string; title: string; date?: string | null; text?: string[]; local_images?: string[] };
