@@ -1,0 +1,24 @@
+{
+ "slug": "metal-notebook-v2",
+ "title": "Aluminum-shell notebook, V2",
+ "tagline": "1/8-in aluminum sheet, hinges and a lock, cut and finished entirely with hand tools",
+ "summary": "Second, more polished take on a lockable notebook, built for my sister. 1/8-inch aluminum sheet, standard hinges and a lock that happened to match. Every cut was by hacksaw; keeping those cuts straight was the hard part, and the whole build was hand tools only.",
+ "category": "design-craft",
+ "year": 2023,
+ "era": "archive",
+ "status": "draft",
+ "featured": false,
+ "role_kind": "solo",
+ "role": null,
+ "tools": [
+  "hacksaw",
+  "files",
+  "hand-tools"
+ ],
+ "skills": [
+  "sheet-metal",
+  "hand-fitting"
+ ],
+ "audience": [],
+ "links": {}
+}

@@ -1,0 +1,23 @@
+{
+ "slug": "drill-press-restoration",
+ "title": "1970s drill press restoration",
+ "tagline": "First tool restoration: rust removal, cleaning and repainting a 50-year-old press that now runs daily",
+ "summary": "Someone was getting rid of this press and I was looking for one. As my first restoration I kept it simple: rust removal by submerging the large castings (the hard part was finding a container big enough), cleaning, and repainting a few parts. It runs well and should last a long time.",
+ "category": "manufacturing-shop",
+ "year": 2022,
+ "era": "archive",
+ "status": "draft",
+ "featured": false,
+ "role_kind": "solo",
+ "role": null,
+ "tools": [
+  "hand-tools",
+  "rust-remover"
+ ],
+ "skills": [
+  "restoration",
+  "mechanical-disassembly"
+ ],
+ "audience": [],
+ "links": {}
+}
