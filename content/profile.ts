@@ -33,6 +33,8 @@ export const profile = {
   name: "Eli Lewis",
   /** Under the name on the home page and in share images. */
   headline: "Manufacturing & Design Engineering student, Northwestern ’29",
+  /** Quiet second line under the headline (home and About): current roles and the patent. */
+  subheadline: "Shop trainer, Segal Prototyping & Fabrication Lab · Continuous improvement intern, Ely Tool (summer 2026) · Sole inventor, US 2025/0368466 A1",
   /** The one-line pitch: what he builds. */
   tagline: "[TODO: one line in your own words about what you make, e.g. “I build things and document how they’re made.”]",
   /** The ask. Recruiters look for this first. */
@@ -42,6 +44,8 @@ export const profile = {
   /** Bucket path (bucket `portfolio`), e.g. "profile/headshot.jpg". null = show a placeholder to the owner. */
   headshot: null as string | null,
 
+  /** The short About paragraph on the home page. */
+  blurb: "I'm a manufacturing and design engineering student who has spent the last few years in shops: restoring machines, teaching kids to build, and most recently re-planning a custom-tooling shop floor and training students on mills and lathes. I like problems where the answer has to survive contact with real users, real tolerances and a real budget.",
   /** 3–5 short paragraphs, first person, in his own voice. */
   bio: [
     "[TODO: paragraph 1 — who you are and what you like building (2–3 sentences)]",
@@ -49,7 +53,7 @@ export const profile = {
     "[TODO: paragraph 3 — what you're doing now at Northwestern and what you want to work on next]",
   ],
   /** One line: what he's working on this quarter. */
-  currently: "[TODO: what you're working on right now, e.g. a class project, a club build]",
+  currently: "Shop trainer at Northwestern's Segal lab · applying for summer 2027 manufacturing and design engineering internships · building a workbench with my woodworking mentor",
   interests: ["[TODO: interests outside engineering, 3–5 words each]"],
 
   links: {

@@ -135,8 +135,9 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 4. Quick facts */}
           <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
             <Fact label="Role">
-              {p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : "—"}
-              {p.role && <span className="block text-neutral-600 dark:text-neutral-400">{p.role}</span>}
+              {/* Badge and sentence are separate elements with a gap, so they never read as one word ("SoloI was…"). */}
+              {p.role_kind ? <span className="chip">{p.role_kind === "team" ? "Team" : "Solo"}</span> : "—"}
+              {p.role && <p className="mt-1.5 text-neutral-600 dark:text-neutral-400">{p.role}</p>}
             </Fact>
             <Fact label="Duration">{p.duration || "—"}</Fact>
             <Fact label="Tools">{p.tools.length ? p.tools.join(", ") : "—"}</Fact>

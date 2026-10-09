@@ -28,6 +28,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
         <div className="rise max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{profile.name}</h1>
           <p className="mt-3 text-xl leading-snug text-neutral-800 dark:text-neutral-200">{profile.headline}</p>
+          {filled(profile.subheadline) && <p className="mt-2 text-sm text-neutral-500">{profile.subheadline}</p>}
           <p className="mt-3 text-neutral-600 dark:text-neutral-400"><Field value={profile.tagline} owner={owner} /></p>
           <p className="mt-3 font-medium text-accent">
             <Field value={profile.seeking} owner={owner} />
@@ -78,7 +79,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
         <div className="sm:col-span-2">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">About</h2>
           <p className="mt-3 text-neutral-700 dark:text-neutral-300">
-            {bio[0] ?? <Field value={profile.bio[0]} owner={owner} fallback={profile.headline} />}
+            {filled(profile.blurb) ?? bio[0] ?? <Field value={profile.bio[0]} owner={owner} fallback={profile.headline} />}
           </p>
           <p className="mt-3"><Link href="/about" className="text-accent hover:underline">More about me →</Link></p>
         </div>
