@@ -2,7 +2,9 @@
 # Cloud sessions: install dependencies and point the session at the same Supabase project production uses.
 set -euo pipefail
 
-if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
+# Run in any cloud container: web sessions set CLAUDE_CODE_REMOTE, desktop-app sessions in the same
+# environment do not, but both carry VERCEL_TOKEN. Eli's own machine has neither, so it skips this.
+if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ] && [ -z "${VERCEL_TOKEN:-}" ]; then
   exit 0
 fi
 
