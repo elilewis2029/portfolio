@@ -22,9 +22,9 @@ export default function OwnerToolbar({ p, editing }: { p: Project; editing: bool
         {todos > 0 && <mark className="todo text-xs">{todos} TODO</mark>}
         <span className="ml-auto flex flex-wrap gap-2">
           {editing ? (
-            <DoneEditingLink href={`/work/${p.slug}`} draftKey={`project:${p.id}`} />
+            <DoneEditingLink href={`/projects/${p.slug}`} draftKey={`project:${p.id}`} />
           ) : (
-            <Link href={`/work/${p.slug}?edit=1`} className="btn btn-primary">Edit</Link>
+            <Link href={`/projects/${p.slug}?edit=1`} className="btn btn-primary">Edit</Link>
           )}
           <AddPhotos projectId={p.id} supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!} anonKey={process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
           {p.status === "draft" ? (

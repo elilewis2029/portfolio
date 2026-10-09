@@ -110,7 +110,7 @@ export default async function About() {
               </div>
             ))}
           </dl>
-          <p className="mt-3 text-sm text-neutral-500">See them in use: <Link href="/work" className="text-accent hover:underline">filter projects by skill →</Link></p>
+          <p className="mt-3 text-sm text-neutral-500">See them in use: <Link href="/projects" className="text-accent hover:underline">filter projects by skill →</Link></p>
         </section>
       )}
 

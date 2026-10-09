@@ -8,5 +8,5 @@ export default async function EditAlias({ params }: { params: Promise<{ id: stri
   await requireOwner(`/review/${id}`);
   const p = await projectByIdAdmin(id);
   if (!p) notFound();
-  redirect(`/work/${p.slug}?edit=1`);
+  redirect(`/projects/${p.slug}?edit=1`);
 }

@@ -6,14 +6,14 @@ Next.js (App Router, TypeScript, Tailwind) on Vercel; data in Supabase schema `p
 | Route | What |
 | --- | --- |
 | `/` | Headline + up to 5 featured projects. `/?for=pd` · `mech` · `mfg` puts that audience's projects first (for tailored application links). |
-| `/work` | Published current projects, filter by category and skill |
-| `/work/[slug]` | Project page in the RESEARCH.md template order; prints to a 1–2 page PDF |
+| `/projects` (`/work` redirects) | Published current projects, filter by category and skill |
+| `/projects/[slug]` (`/work/[slug]` redirects) | Project page in the RESEARCH.md template order; prints to a 1–2 page PDF |
 | `/archive` | High-school / craft / scrap builds |
 | `/resume` | Redirects to `resume.pdf` in the bucket |
 | **Owner mode** | Sign in (footer link, magic link to `OWNER_EMAIL`). Then every page shows a floating **+** (photos + one sentence + Solo/Team · number · what you'd change → Claude draft, or *Save for chat*), draft cards with a **Draft** badge, and on each project page an owner bar: **Edit** (inline: all fields, photo kinds, captions, order, cover), Publish/Unpublish, Feature, Delete. |
 | `/add` | Alias of the + sheet as a full page (pin it to the phone home screen) |
 | `/review` | Alias list: drafts with TODO counts and "needs a process photo" badges, published, featured count |
-| `/review/[id]` | Redirects to `/work/[slug]?edit=1` |
+| `/review/[id]` | Redirects to `/projects/[slug]?edit=1` |
 | `/api/keepalive` | Daily cron (`vercel.json`) so a free-tier Supabase project is never paused |
 
 ## Setup (done once; here for a rebuild)

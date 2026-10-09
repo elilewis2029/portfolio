@@ -68,13 +68,13 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const links = Object.entries(p.links ?? {}).filter(([, url]) => typeof url === "string" && url);
   const email = contactEmail();
 
-  const backHref = p.era === "archive" ? "/archive" : "/work";
-  const backLabel = p.era === "archive" ? "Archive" : "Work";
+  const backHref = p.era === "archive" ? "/archive" : "/projects";
+  const backLabel = p.era === "archive" ? "Archive" : "Projects";
   const i = siblings.findIndex((s) => s.id === p.id);
 
   return (
     <article className="mx-auto max-w-4xl">
-      {/* Way back without the header tabs: a part of a series gets the Work / series / part breadcrumb, any other page "← Work". */}
+      {/* Way back without the header tabs: a part of a series gets the Projects / series / part breadcrumb, any other page "← Projects". */}
       {siblings.length > 1 && !editing ? (
         <SeriesCrumb current={p} siblings={siblings} />
       ) : (
@@ -95,7 +95,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
       ) : (
         <>
           <div className="print-only mb-3 text-xs">
-            Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
+            Eli Lewis · {email} · elilewisportfolio.info/projects/{p.slug}
             {siblings.length > 1 && (
               <> · Part {i + 1} of {siblings.length}, &ldquo;{p.series}&rdquo;: elilewisportfolio.info{seriesHref(p.series!)}</>
             )}

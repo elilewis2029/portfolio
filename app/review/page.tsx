@@ -18,7 +18,7 @@ function Row({ p }: { p: Project }) {
   const hero = heroOf(p);
   const ready = isFeatureReady(p);
   const n = todos(p);
-  const href = p.status === "draft" ? `/work/${p.slug}?edit=1` : `/work/${p.slug}`;
+  const href = p.status === "draft" ? `/projects/${p.slug}?edit=1` : `/projects/${p.slug}`;
   return (
     <li className="flex gap-3 border-b border-neutral-200 py-3 dark:border-neutral-800">
       <Link href={href} className="relative h-16 w-20 shrink-0 overflow-hidden rounded bg-neutral-100 dark:bg-neutral-900">
@@ -35,7 +35,7 @@ function Row({ p }: { p: Project }) {
           {p.role_kind === "team" && !p.role && <span className="chip border-yellow-500 text-yellow-700 dark:text-yellow-400">team project: say what you owned</span>}
           {n > 0 && <mark className="todo text-xs">{n} TODO</mark>}
         </div>
-        <Link href={`/work/${p.slug}?edit=1`} className="-ml-2 inline-flex min-h-11 items-center px-2 text-xs text-accent">Edit</Link>
+        <Link href={`/projects/${p.slug}?edit=1`} className="-ml-2 inline-flex min-h-11 items-center px-2 text-xs text-accent">Edit</Link>
       </div>
       <div className="flex shrink-0 flex-col gap-1">
         {p.status === "draft" ? (

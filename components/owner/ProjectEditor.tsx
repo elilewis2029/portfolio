@@ -35,7 +35,7 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
   ];
   const todoFields = textFields.filter(([, v]) => v && new RegExp(TODO_RE.source, "i").test(v));
   const nTodo = countTodos(...textFields.map(([, v]) => v));
-  const back = `/work/${p.slug}?edit=1`;
+  const back = `/projects/${p.slug}?edit=1`;
   const linksText = Object.entries(p.links ?? {}).map(([k, v]) => `${k} | ${v}`).join("\n");
 
   return (
@@ -94,7 +94,7 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
           <label className="block">
             <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Section</span>
             <select name="era" defaultValue={p.era} className="input">
-              <option value="current">Work</option><option value="archive">Archive</option>
+              <option value="current">Projects</option><option value="archive">Archive</option>
             </select>
           </label>
         </div>
@@ -108,10 +108,10 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
         <Field label="Links" name="links" value={linksText} rows={2} hint="one per line: Label | https://…" />
         <Field label="Notes" name="body_md" value={p.body_md} rows={4} hint="optional free text" />
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Series" name="series" value={p.series} hint="same name on each related page; they share one card on /work" />
+          <Field label="Series" name="series" value={p.series} hint="same name on each related page; they share one card on /projects" />
           <Field label="Series order" name="series_order" value={p.series_order?.toString()} hint="1 = lead page" numeric />
         </div>
-        <Field label="Slug" name="slug" value={p.slug} hint="URL: /work/…" />
+        <Field label="Slug" name="slug" value={p.slug} hint="URL: /projects/…" />
       </DraftForm>
     </div>
   );

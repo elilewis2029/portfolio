@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { href: "/work", label: "Work", match: ["/work", "/archive"] },
+  { href: "/projects", label: "Projects", match: ["/projects", "/archive"] },
   { href: "/experience", label: "Experience", match: ["/experience"] },
   { href: "/about", label: "About", match: ["/about"] },
 ];

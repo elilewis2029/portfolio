@@ -12,7 +12,7 @@ export default function ProjectCard({
   const hero = heroOf(p);
   const draft = p.status === "draft";
   return (
-    <Link href={`/work/${p.slug}`} className={`group block ${banner ? "sm:col-span-2 lg:col-span-3" : ""}`}>
+    <Link href={`/projects/${p.slug}`} className={`group block ${banner ? "sm:col-span-2 lg:col-span-3" : ""}`}>
       <div className={`zoom relative overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-neutral-900/5 dark:bg-neutral-900 dark:ring-white/10 ${banner ? "aspect-[4/3] sm:aspect-[21/9]" : "aspect-[4/3]"}`}>
         {hero ? (
           <Image
@@ -44,7 +44,7 @@ function DraftBadge() {
 }
 
 /**
- * A series on /work, drawn like an album cover: a static mosaic of the parts' photos (the lead part large,
+ * A series on /projects, drawn like an album cover: a static mosaic of the parts' photos (the lead part large,
  * the others in a column beside it), a stacked-squares badge with the part count, and the same
  * text grammar as every other card (title, one line, chips) so the grid still scans evenly. No motion:
  * auto-cycling photos can't be skimmed and need a pause control (WCAG 2.2.2). Links to the series overview.

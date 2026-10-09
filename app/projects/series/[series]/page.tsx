@@ -24,7 +24,7 @@ export default async function SeriesHub({ params }: Props) {
   const owner = await isOwner();
   const parts = await seriesByHubSlug(series, owner);
   if (parts.length === 0) notFound();
-  if (parts.length === 1) redirect(`/work/${parts[0].slug}`);
+  if (parts.length === 1) redirect(`/projects/${parts[0].slug}`);
   const name = parts[0].series!;
   const tools = [...new Set(parts.flatMap((p) => p.tools))];
   const skills = [...new Set(parts.flatMap((p) => p.skills))];
@@ -34,7 +34,7 @@ export default async function SeriesHub({ params }: Props) {
   return (
     <article className="mx-auto max-w-5xl">
       <nav aria-label="Breadcrumb" className="no-print mb-3 text-sm">
-        <Link href="/work" className="inline-flex min-h-11 items-center text-neutral-600 hover:text-accent dark:text-neutral-400">← Work</Link>
+        <Link href="/projects" className="inline-flex min-h-11 items-center text-neutral-600 hover:text-accent dark:text-neutral-400">← Projects</Link>
       </nav>
       <header className="rise mb-6">
         <p className="text-xs uppercase tracking-wide text-accent">
@@ -56,7 +56,7 @@ export default async function SeriesHub({ params }: Props) {
         <p className="mt-8 max-w-3xl text-sm text-neutral-600 dark:text-neutral-400"><span className="text-xs uppercase tracking-wide text-neutral-500">My part </span>{lead.role}</p>
       )}
       <p className="no-print mt-8 text-sm">
-        <Link href="/work" className="inline-flex min-h-11 items-center text-accent hover:underline">← Back to work</Link>
+        <Link href="/projects" className="inline-flex min-h-11 items-center text-accent hover:underline">← Back to projects</Link>
       </p>
     </article>
   );
@@ -66,7 +66,7 @@ function PartTile({ p, n }: { p: Project; n: number }) {
   const hero = heroOf(p);
   return (
     <li className="avoid-break">
-      <Link href={`/work/${p.slug}`} className="group block h-full rounded-2xl ring-1 ring-neutral-200 transition-shadow hover:shadow-lg hover:ring-accent dark:ring-neutral-800">
+      <Link href={`/projects/${p.slug}`} className="group block h-full rounded-2xl ring-1 ring-neutral-200 transition-shadow hover:shadow-lg hover:ring-accent dark:ring-neutral-800">
         <div className="zoom relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-neutral-100 dark:bg-neutral-900">
           {hero ? (
             <Image src={hero.path} alt={hero.caption || p.title} fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" priority={n === 1} />

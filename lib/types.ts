@@ -51,7 +51,7 @@ export type Project = {
   skills: string[];
   audience: string[];
   links: Record<string, string>;
-  /** Pages with the same series collapse into one card on /work and link to each other. */
+  /** Pages with the same series collapse into one card on /projects and link to each other. */
   series: string | null;
   series_order: number | null;
   needs_drafting: boolean;

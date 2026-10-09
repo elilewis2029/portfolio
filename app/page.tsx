@@ -34,7 +34,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
             <Field value={profile.seeking} owner={owner} />
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Link href="/work" className="btn btn-primary">See the work</Link>
+            <Link href="/projects" className="btn btn-primary">See the projects</Link>
             <Link href="/about" className="btn">About me</Link>
             <a href="/resume" className="btn">Résumé</a>
             {email && <a href={`mailto:${email}`} className="btn">Email</a>}
@@ -55,9 +55,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
       <section>
         <div className="mb-4 flex items-baseline gap-4">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
-            {featured.length >= 3 ? "Featured work" : "Work"}
+            {featured.length >= 3 ? "Featured projects" : "Projects"}
           </h2>
-          <Link href="/work" className="ml-auto text-sm text-accent hover:underline">All work →</Link>
+          <Link href="/projects" className="ml-auto text-sm text-accent hover:underline">All projects →</Link>
         </div>
         {featured.length === 0 ? (
           <p className="text-neutral-500">

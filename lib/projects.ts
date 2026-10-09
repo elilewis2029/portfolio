@@ -72,9 +72,9 @@ export function publicUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio/${path}`;
 }
 
-/** URL of a series' overview page (prototype C): /work/series/<slugified series name>. No schema change. */
+/** URL of a series' overview page (prototype C): /projects/series/<slugified series name>. No schema change. */
 export function seriesHref(series: string) {
-  return `/work/series/${slugify(series)}`;
+  return `/projects/series/${slugify(series)}`;
 }
 
 /** Every visible page of the series whose slugified name is `slug`, in series_order; [] when there is no such series. */
