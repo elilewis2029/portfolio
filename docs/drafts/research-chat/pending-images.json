@@ -404,5 +404,6 @@
    "kind": "hero",
    "caption": ""
   }
- ]
+ ],
+ "done": "2026-10-09: all rows applied (see docs/DECISIONS.md item 38); carbon-fiber-journal rows were duplicates of existing photos and were skipped."
 }
