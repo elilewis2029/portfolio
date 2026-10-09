@@ -29,6 +29,16 @@ export type Education = {
 
 export type Involvement = { org: string; role: string; dates: string; note?: string };
 
+export type Patent = {
+  /** e.g. "U.S. Patent Application Pub. No. 2025/0368466 A1" */
+  number: string;
+  title: string;
+  role: string;
+  /** e.g. "Filed May 2024, published Dec 2025, pending" */
+  status: string;
+  url?: string;
+};
+
 export const profile = {
   name: "Eli Lewis",
   /** Under the name on the home page and in share images. */
@@ -48,9 +58,7 @@ export const profile = {
   blurb: "I'm a manufacturing and design engineering student who has spent the last few years in shops: restoring machines, teaching kids to build, and most recently re-planning a custom-tooling shop floor and training students on mills and lathes. I like problems where the answer has to survive contact with real users, real tolerances and a real budget.",
   /** 3–5 short paragraphs, first person, in his own voice. */
   bio: [
-    "[TODO: paragraph 1 — who you are and what you like building (2–3 sentences)]",
-    "[TODO: paragraph 2 — how you got into making things; the shop, restorations, electronics]",
-    "[TODO: paragraph 3 — what you're doing now at Northwestern and what you want to work on next]",
+    "I'm a manufacturing and design engineering student who has spent the last few years in shops: restoring machines, teaching kids to build, and most recently re-planning a custom-tooling shop floor and training students on mills and lathes. I like problems where the answer has to survive contact with real users, real tolerances and a real budget. Outside the shop I'm out with the Outing Club, restoring old hand tools, or fixing fountain pens.",
   ],
   /** One line: what he's working on this quarter. */
   currently: "Shop trainer at Northwestern's Segal lab · applying for summer 2027 manufacturing and design engineering internships · building a workbench with my woodworking mentor",
@@ -99,7 +107,55 @@ export const profile = {
         "Reorganized the saw room, power tools and material storage using 5S, and set up Airtable-based tracking.",
       ],
     },
+    {
+      org: "Recirclable (reusable take-out container service)",
+      title: "Product Feedback & Prototyping Intern",
+      dates: "Summer 2024",
+      location: "Newton, MA",
+      bullets: [
+        "Prototyped a hybrid portable/stationary card-scanning device in Fusion 360 and 3D printing so staff could scan at the table or the front desk.",
+        "Interviewed 6 current and prospective restaurant partners and fed the findings into the design.",
+      ],
+    },
+    {
+      org: "JCC Greater Boston",
+      title: "Makerspace Lead",
+      dates: "Aug 2022 – May 2025",
+      location: "Needham, MA",
+      bullets: [
+        "Built and ran a bi-weekly after-school makerspace for up to 16 kids, using upcycled materials and salvaged electronics.",
+        "Set up the storage system for hundreds of materials and tools; ran the summer-camp version for older kids.",
+      ],
+    },
+    {
+      org: "Brimmer and May School",
+      title: "VEX V5 Robotics Team Captain",
+      dates: "Fall 2023 – Winter 2025",
+      location: "Newton, MA",
+      bullets: [
+        "Led a team of 5 through research, design and assembly of a competition robot.",
+        "Reorganized supplies and inventory; assembly time roughly halved.",
+      ],
+    },
+    {
+      org: "Private",
+      title: "3D Printing & STEM Tutor",
+      dates: "2021 – present",
+      bullets: [
+        "One-on-one 3D printing, CAD and printer troubleshooting; weekly engineering activities for kids with behavioral challenges using household materials.",
+      ],
+    },
   ] as Experience[],
+
+  patents: [
+    {
+      number: "U.S. Patent Application Pub. No. 2025/0368466 A1",
+      title: "Handheld Tape Dispenser and Methods of Use Thereof",
+      role: "Sole inventor",
+      status: "Filed May 2024, published Dec 2025, pending",
+      url: "https://patents.google.com/patent/US20250368466A1/en",
+    },
+  ] as Patent[],
 
   /** Grouped skills, honest proficiency. Empty groups are hidden. */
   skills: {
@@ -111,14 +167,19 @@ export const profile = {
   } as Record<string, string[]>,
 
   involvement: [
-    { org: "[TODO: clubs/teams at Northwestern — Formula Racing, Baja, robotics, Segal design groups…]", role: "[TODO: role]", dates: "[TODO: dates]" },
+    {
+      org: "Peer Tutoring Program, Brimmer and May School",
+      role: "Co-founder & co-head",
+      dates: "May 2023 – May 2025",
+      note: "Designed a system supporting 15+ tutors with self-serve scheduling; set criteria, reviewed applications and coordinated faculty referrals.",
+    },
+    { org: "[TODO: confirm which to list — Northwestern: ASME, NUOC (Northwestern Outing Club)]", role: "[TODO: role]", dates: "[TODO: dates]" },
     {
       org: "Fine-woodworking mentorship with John Hartman, professional woodworker",
       role: "Mentee",
       dates: "Spring 2025 – present",
       note: "Began with my hand-plane senior project; now working on a workbench and other furniture projects. Taught me to plan the order of operations, keep setups and reference surfaces consistent, and account for grain direction and wood movement, habits that carry straight into machining.",
     },
-    { org: "[TODO: community makerspace from high school]", role: "[TODO: role, e.g. leadership / teaching]", dates: "[TODO: dates]" },
   ] as Involvement[],
 
   awards: ["[TODO: awards, competition placings, certifications (e.g. CSWA) — or leave empty]"],

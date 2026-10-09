@@ -95,6 +95,28 @@ export default async function About() {
         </div>
       </section>
 
+      {profile.patents.length > 0 && (
+        <section className="mb-10">
+          <H2>Patents</H2>
+          <ul className="space-y-3">
+            {profile.patents.map((pt, i) => (
+              <li key={i} className="grid gap-1 sm:grid-cols-[9rem_1fr]">
+                <div className="text-sm text-neutral-500">{pt.role}</div>
+                <div>
+                  <p className="font-semibold">
+                    {pt.url ? <a href={pt.url} className="hover:text-accent">&ldquo;{pt.title}&rdquo;</a> : <>&ldquo;{pt.title}&rdquo;</>}
+                  </p>
+                  <p className="text-sm text-neutral-700 dark:text-neutral-300">{pt.number}</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    {pt.status}{pt.url && <> · <a href={pt.url} className="text-accent hover:underline">Google Patents</a></>}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {skills.length > 0 && (
         <section className="mb-10">
           <H2>Skills</H2>
