@@ -12,7 +12,7 @@ export default async function Experience() {
       <h1 className="text-3xl font-bold tracking-tight">Experience</h1>
       <div className="mb-8 mt-3 flex flex-wrap items-center gap-4 text-sm">
         <a href="/resume" className="btn">Résumé (PDF)</a>
-        <Link href="/work" className="text-accent hover:underline">See the projects →</Link>
+        <Link href="/projects" className="text-accent hover:underline">See the projects →</Link>
       </div>
       {any ? <ExperienceList owner={owner} /> : <p className="text-neutral-500">Coming soon.</p>}
     </div>

@@ -137,7 +137,7 @@ export async function submitIntake(input: {
       const rows = mediaRows(target.id, (last?.sort ?? -1) + 1).map((m) => ({ ...m, kind: m.kind === "hero" ? "after" : m.kind }));
       const { error } = await db.from("media").insert(rows);
       if (error) throw new Error(error.message);
-      revalidatePath(`/work/${target.slug}`);
+      revalidatePath(`/projects/${target.slug}`);
       return { ok: true, action: "append", projectId: target.id, slug: target.slug, title: target.title, photos: rows.length };
     }
 

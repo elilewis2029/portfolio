@@ -97,7 +97,7 @@ export default function AddForm({ supabaseUrl, anonKey, onDone }: { supabaseUrl:
           {result.note && <span className="block text-neutral-500">{result.note}</span>}
           {result.action === "new" ? "New draft: " : result.action === "saved" ? "Saved for chat: " : `Added ${result.photos} photo(s) to `}
           <strong>{result.title}</strong>.{" "}
-          <Link href={`/work/${result.slug}?edit=1`} className="text-accent underline" onClick={onDone}>Open →</Link>
+          <Link href={`/projects/${result.slug}?edit=1`} className="text-accent underline" onClick={onDone}>Open →</Link>
         </div>
       ) : result.error === "signed-out" ? (
         <p className="rounded-md border border-yellow-500/60 p-3 text-sm" role="alert">

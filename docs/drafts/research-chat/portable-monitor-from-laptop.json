@@ -1,0 +1,23 @@
+{
+ "slug": "portable-monitor-from-laptop",
+ "title": "Portable monitor from a scrapped laptop",
+ "tagline": "Laptop LCD, an LCD controller board and speakers from a karaoke machine, fitted into the original chassis",
+ "summary": "The laptop was saved from my grandparents' trash for a Wii-laptop idea that didn't fit. Instead I found a matching LCD controller board, pulled speakers from my sister's old karaoke machine, and fitted everything back into the laptop shell as a portable monitor.",
+ "category": "electronics",
+ "year": 2022,
+ "era": "archive",
+ "status": "draft",
+ "featured": false,
+ "role_kind": "solo",
+ "role": null,
+ "tools": [
+  "soldering-iron",
+  "hand-tools"
+ ],
+ "skills": [
+  "electronics-assembly",
+  "salvage"
+ ],
+ "audience": [],
+ "links": {}
+}

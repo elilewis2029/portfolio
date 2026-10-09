@@ -1,0 +1,22 @@
+{
+  "slug": "jcc-community-makerspace",
+  "category": "design-craft",
+  "year": 2023,
+  "era": "current",
+  "status": "draft",
+  "featured": false,
+  "audience": ["pd"],
+  "title": "Running a scrap-powered kids' makerspace for three years",
+  "tagline": "Built and led a bi-weekly after-school makerspace at JCC Greater Boston: salvaged electronics, cardboard, and up to 16 kids per session",
+  "summary": "From 2022 to 2025 I ran the JCC's after-school makerspace and its summer-camp version. The room ran on upcycled materials and a steady supply of old electronics from the local recycling center, which the kids took apart for parts. I designed the activities, organized the storage for hundreds of materials and tools, and kept the program running week to week.",
+  "role_kind": "solo",
+  "role": "I was responsible for the program: planning activities, sourcing and organizing materials, supervising sessions and documenting the work.",
+  "duration": "Aug 2022 – May 2025",
+  "tools": ["hand-tools", "soldering-iron", "3d-printer"],
+  "skills": ["teaching", "program-design", "inventory-systems", "leadership"],
+  "goal_constraints": "- Keep every session open-ended: kids pick the project, I supply materials and help.\n- Near-zero materials budget, so the room runs on donations and scrap.\n- Findable storage so a 9-year-old can get what they need without asking.",
+  "process_md": "- Collected a room's worth of old printers, toys and appliances from the recycling center for \"take-apart\" sessions, which became the main parts supply.\n- Built a cardboard \"rec wall\" where group builds could stay up and grow week to week.\n- Ran the summer-camp version with older kids and fewer material limits (the stick fort got large).\n- Designed the car kit (separate entry) when one regular asked for a maker-themed birthday party.\n- Organized the storage by material and size so sessions started with building, not searching.",
+  "result_metric": "3 school years, up to 16 kids per session",
+  "lesson": "[TODO: what I'd change]",
+  "links": {}
+}

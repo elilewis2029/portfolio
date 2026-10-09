@@ -1,0 +1,408 @@
+{
+ "blocked_host": "static.wixstatic.com",
+ "written": "2026-10-09",
+ "how": "curl each url into .intake/<slug>/NN.<ext>, look at each, then `npm run portfolio -- add-photos <slug> <files in order>` and set kinds/captions with `update` (media ids from `show`). Then set status published (and featured on the car kit) per the research-chat instructions.",
+ "images": [
+  {
+   "slug": "snap-together-car-kit",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_afca522d76844b8b83eed8d00459f1d4~mv2.jpg",
+   "kind": "hero",
+   "caption": "The kit: chassis, axles, hubs, motor and battery pack"
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_5223c87dbfec42d4849cf78b4ba841e0~mv2.jpeg",
+   "kind": "process",
+   "caption": "Build session at the party"
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_65a3bdff94034b558d41e8a96849bca3~mv2.jpg",
+   "kind": "after",
+   "caption": "Finished, customized cars"
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_ab4765d15d4b42c8b8488e1f0bc88abf~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 5,
+   "url": "https://static.wixstatic.com/media/6d294d_4f8c4d13583f4841894a4e033fd5bcb0~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 6,
+   "url": "https://static.wixstatic.com/media/6d294d_b5814d12e28b42c88d3e491d635a3ec6~mv2.jpeg",
+   "kind": "after",
+   "caption": ""
+  },
+  {
+   "slug": "snap-together-car-kit",
+   "order": 7,
+   "url": "https://static.wixstatic.com/media/6d294d_a078dc810bbe40de8c81a711d8578621~mv2.jpeg",
+   "kind": "after",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_57fb1950141449b0a9b5ecfe4dab6c8f~mv2.png",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_9a1d020ebee24a0792b5ac89f77d7d73~mv2.jpg",
+   "kind": "process",
+   "caption": "Printer teardown: the parts supply"
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_b5c677c0e6344f76ad02960fd68f9677~mv2.jpeg",
+   "kind": "process",
+   "caption": "The cardboard rec wall going up"
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_725786d9466d42c68d3bea4b91465c8c~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 5,
+   "url": "https://static.wixstatic.com/media/6d294d_e886417f23df4838afd688af072bc787~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 6,
+   "url": "https://static.wixstatic.com/media/6d294d_4723bf4694f54c3c8ee5f70c66e2afcc~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 7,
+   "url": "https://static.wixstatic.com/media/6d294d_ea32af7676d94b3abf0fd68783f2a857~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 8,
+   "url": "https://static.wixstatic.com/media/6d294d_66f70aa704434c20bac5ccddcca55f55~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 9,
+   "url": "https://static.wixstatic.com/media/6d294d_8c06c7394ea64291a417d00e3e3f1d96~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 10,
+   "url": "https://static.wixstatic.com/media/6d294d_c1f44a5c9c334865a675458dd32cddfe~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 11,
+   "url": "https://static.wixstatic.com/media/6d294d_1f4ce003c71c437aa4b0756390d9bb6e~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 12,
+   "url": "https://static.wixstatic.com/media/6d294d_d51d46d741044dacba560d66f4acc45d~mv2.png",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 13,
+   "url": "https://static.wixstatic.com/media/6d294d_d66fa1de72d34606a7274c617cd6c45d~mv2.jpeg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "jcc-community-makerspace",
+   "order": 14,
+   "url": "https://static.wixstatic.com/media/6d294d_05dd46c0899547eba893873723269b3f~mv2.jpg",
+   "kind": "process",
+   "caption": ""
+  },
+  {
+   "slug": "carbon-fiber-journal",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_3711c25fc521443e875aede7e01d17aa~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Record already has 4 photos (hero, 2 cad, drawing). Download, compare visually, add only the ones not already there; keep the existing hero."
+  },
+  {
+   "slug": "carbon-fiber-journal",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_81fa60857bae4015b5f4757e74abd378~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Record already has 4 photos (hero, 2 cad, drawing). Download, compare visually, add only the ones not already there; keep the existing hero."
+  },
+  {
+   "slug": "carbon-fiber-journal",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_5698a34e988c47a2921791df42c19901~mv2.png",
+   "kind": "process",
+   "caption": "",
+   "note": "Record already has 4 photos (hero, 2 cad, drawing). Download, compare visually, add only the ones not already there; keep the existing hero."
+  },
+  {
+   "slug": "carbon-fiber-journal",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_94291ce4f8be423fa4c41aa1d4fe700e~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Record already has 4 photos (hero, 2 cad, drawing). Download, compare visually, add only the ones not already there; keep the existing hero."
+  },
+  {
+   "slug": "drill-press-restoration",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_96dd561d46d440a4800532fc4b5bb0e1~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "drill-press-restoration",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_2bd941cb2fe6494facaa89f958f4239c~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "drill-press-restoration",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_38cf4b0c22bd4aeea4c1da3834d5b318~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "drill-press-restoration",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_a8ea7c4f2a12433387b202a7ac461533~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "metal-notebook-v2",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_8ed415d0a69b4879b3dec0c8f8dda1d0~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "metal-notebook-v2",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_dae40b1b6f964dbfaa82aef947f02971~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "metal-notebook-v2",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_36223ed053094d1ead4c8cbd2fcca043~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "metal-notebook-v2",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_1a269578845c4119829f71b16650b6ef~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "portable-monitor-from-laptop",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_c11f42661ad44820aa80c43b55645678~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "portable-monitor-from-laptop",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_b3bdb32287df40bda20b4a2d97c0b0a2~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "portable-monitor-from-laptop",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_185647d7783442f3aa47eeb14e3a2f5d~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "portable-monitor-from-laptop",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_bdbebbdd0ba04eea9f3d5f6a5bc84581~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "scrap-side-monitor",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_130e07205cb14343b188c04d5c9ed692~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "scrap-side-monitor",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_010aa2820f30491687340ba236abb280~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "speaker-stands",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_739b2523f8ad443da426fe341bd15793~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "speaker-stands",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_08288d4876c04721a77b9f63a8b16e76~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "speaker-stands",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_792a73de08ef47e1a707652331b3d36c~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "speaker-stands",
+   "order": 4,
+   "url": "https://static.wixstatic.com/media/6d294d_c274dad168ea40adaede77c48d239d03~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "resin-pour-table",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_8b20aebe9466437598ffbc5054a92a96~mv2.jpg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "resin-pour-table",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_a77513d390fc4182871798472d670a0b~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "resin-pour-table",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_b2b8db03b9ab44afb0650a6dc9bf07dc~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "antique-pen-restoration",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_23fef9d9f0ea4f6ebc0d1c6feecdc30d~mv2.jpeg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "antique-pen-restoration",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_2fc4138cee554e0d98c6425b55336f71~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "antique-pen-restoration",
+   "order": 3,
+   "url": "https://static.wixstatic.com/media/6d294d_f7f7d33d21174310b669b224df63de57~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "leather-pen-sheath",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_d6d3f3c51044434c90fa2ce241fc2fd3~mv2.jpg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "leather-pen-sheath",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_2dc5921dc0fc48168603d3b7efe8e564~mv2.jpg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "mini-sketchbook",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_87c4eab2fab5445fb392151180b58574~mv2.jpg",
+   "kind": "hero",
+   "caption": ""
+  },
+  {
+   "slug": "mini-sketchbook",
+   "order": 2,
+   "url": "https://static.wixstatic.com/media/6d294d_60080b4769034b43bcc9a58c99bc74bc~mv2.jpeg",
+   "kind": "process",
+   "caption": "",
+   "note": "Archive short format: caption from what the photo shows; kind process unless it is plainly a before/after."
+  },
+  {
+   "slug": "the-knobber",
+   "order": 1,
+   "url": "https://static.wixstatic.com/media/6d294d_dd93e12415414bebb90958181cd51558~mv2.jpg",
+   "kind": "hero",
+   "caption": ""
+  }
+ ]
+}

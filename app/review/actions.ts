@@ -11,7 +11,7 @@ import { processImage } from "@/lib/images";
 function refresh(slug?: string) {
   revalidatePath("/", "layout");
   revalidatePath("/review");
-  if (slug) revalidatePath(`/work/${slug}`);
+  if (slug) revalidatePath(`/projects/${slug}`);
 }
 
 const text = (f: FormData, k: string) => {
@@ -44,7 +44,7 @@ export async function updateProject(id: string, f: FormData) {
   if (slug) {
     const { data: taken } = await db.from("projects").select("id").eq("slug", slug).neq("id", id).maybeSingle();
     if (taken) {
-      warning = `The URL /work/${slug} is already used by another project, so the URL was not changed. Everything else was saved.`;
+      warning = `The URL /projects/${slug} is already used by another project, so the URL was not changed. Everything else was saved.`;
       slug = undefined;
     }
   }
@@ -78,7 +78,7 @@ export async function updateProject(id: string, f: FormData) {
   if (error && /series/.test(error.message)) ({ error } = await db.from("projects").update(fields).eq("id", id));
   if (error) {
     const cur = await projectByIdAdmin(id);
-    redirect(`/work/${cur?.slug}?edit=1&error=${encodeURIComponent(`Not saved: ${error.message}`)}`);
+    redirect(`/projects/${cur?.slug}?edit=1&error=${encodeURIComponent(`Not saved: ${error.message}`)}`);
   }
   // Photo kinds and captions are fields of the same form (media_kind:<id>, media_caption:<id>).
   const mediaIds = [...f.keys()].filter((k) => k.startsWith("media_kind:")).map((k) => k.slice("media_kind:".length));
@@ -95,7 +95,7 @@ export async function updateProject(id: string, f: FormData) {
   refresh(p?.slug);
   // `saved` is a fresh value on every Save, so the editor knows this Save (not an earlier one) went through.
   const extra = warning ? `&error=${encodeURIComponent(warning)}` : "";
-  redirect(`/work/${p?.slug ?? slug}?edit=1&saved=${Date.now()}${extra}`);
+  redirect(`/projects/${p?.slug ?? slug}?edit=1&saved=${Date.now()}${extra}`);
 }
 
 export async function setStatus(id: string, status: "draft" | "published") {
@@ -112,7 +112,7 @@ export async function setFeatured(id: string, featured: boolean) {
   const db = adminDb();
   if (featured) {
     const p = await projectByIdAdmin(id);
-    const fail = (msg: string) => redirect(`/work/${p?.slug}?error=${encodeURIComponent(msg)}`);
+    const fail = (msg: string) => redirect(`/projects/${p?.slug}?error=${encodeURIComponent(msg)}`);
     if (!p) redirect("/review");
     if (!isFeatureReady(p)) fail("Needs a process, CAD or drawing photo before it can be featured.");
     if (p.status !== "published") fail("Publish it first.");

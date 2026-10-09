@@ -13,7 +13,9 @@
  *
  * Entry JSON uses the fields in prompts/intake.md (title, tagline, summary, role_kind, role, goal_constraints,
  * process_md, result_metric, lesson, category, tools, skills, audience, year, duration, links, body_md, era),
- * plus media: [{ id?, kind, caption }] (id when updating; in photo order when creating).
+ * plus media: [{ id?, kind, caption }] (id when updating; in photo order when creating). `slug`, `status` and
+ * `featured` may be set too (a new entry without a slug gets one from its title; `new` always starts as a draft
+ * unless the entry says otherwise). Featuring still needs a process/cad/drawing photo (CLAUDE.md rule 7).
  */
 import { config } from "dotenv";
 import fs from "node:fs/promises";
@@ -21,8 +23,8 @@ import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import { processImage } from "../lib/images";
-import { uniqueSlug } from "../lib/slug";
-import { CATEGORIES, MEDIA_KINDS } from "../lib/types";
+import { slugify, uniqueSlug } from "../lib/slug";
+import { CATEGORIES, MEDIA_KINDS, READY_KINDS } from "../lib/types";
 
 config({ path: ".env.local" });
 config();
@@ -40,6 +42,7 @@ const storage = db.storage.from("portfolio");
 const FIELDS = [
   "title", "tagline", "summary", "role_kind", "role", "goal_constraints", "process_md", "result_metric",
   "lesson", "category", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era", "series", "series_order",
+  "slug", "status", "featured",
 ] as const;
 
 type Media = { id: string; path: string; original_path?: string | null; kind: string | null; caption: string | null; sort: number };
@@ -72,6 +75,9 @@ function pickFields(entry: Record<string, unknown>) {
   for (const f of FIELDS) if (f in entry) row[f] = entry[f] === "" ? null : entry[f];
   if (row.category && !CATEGORIES.includes(row.category as never)) throw new Error(`Bad category ${row.category}`);
   if (row.role_kind && !["solo", "team"].includes(row.role_kind as string)) throw new Error("role_kind must be solo or team");
+  if (row.status && !["draft", "published"].includes(row.status as string)) throw new Error("status must be draft or published");
+  if (row.era && !["current", "archive"].includes(row.era as string)) throw new Error("era must be current or archive");
+  if (row.slug) row.slug = slugify(String(row.slug));
   return row;
 }
 
@@ -136,9 +142,14 @@ async function main() {
     case "update": {
       const p = await find(a);
       const entry = await readJson(b);
-      const { error } = await db.from("projects").update({ ...pickFields(entry), needs_drafting: false }).eq("id", p.id);
-      if (error) throw new Error(error.message);
+      const row = pickFields(entry);
       if (Array.isArray(entry.media)) await applyMedia(p.id, entry.media, p.media.map((m: Media) => m.id));
+      if (row.featured === true) {
+        const { data: kinds } = await db.from("media").select("kind").eq("project_id", p.id);
+        if (!(kinds ?? []).some((m) => READY_KINDS.includes(m.kind as never))) throw new Error(`${p.slug} needs a process, cad or drawing photo before it can be featured`);
+      }
+      const { error } = await db.from("projects").update({ ...row, needs_drafting: false }).eq("id", p.id);
+      if (error) throw new Error(error.message);
       console.log(`updated ${p.slug} -> /review/${p.id}`);
       break;
     }
@@ -146,8 +157,9 @@ async function main() {
       const entry = await readJson(a);
       const files = [b, ...rest].filter(Boolean);
       const { data: existing } = await db.from("projects").select("slug");
-      const slug = uniqueSlug(entry.title ?? "project", new Set((existing ?? []).map((r) => r.slug)));
-      const { data: p, error } = await db.from("projects").insert({ ...pickFields(entry), slug, status: "draft" }).select("id").single();
+      const taken = new Set((existing ?? []).map((r) => r.slug));
+      const slug = entry.slug ? uniqueSlug(String(entry.slug), taken) : uniqueSlug(entry.title ?? "project", taken);
+      const { data: p, error } = await db.from("projects").insert({ status: "draft", ...pickFields(entry), slug }).select("id").single();
       if (error || !p) throw new Error(error?.message);
       const ids = await uploadPhotos(p.id, slug, files, 0);
       if (Array.isArray(entry.media)) await applyMedia(p.id, entry.media, ids);

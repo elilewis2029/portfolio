@@ -1,0 +1,22 @@
+{
+ "slug": "speaker-stands",
+ "title": "Adjustable speaker stands from leftover railing extrusion",
+ "tagline": "3D-printed brackets turn scrap aluminum box extrusion into adjustable stands",
+ "summary": "Free speakers took up too much bench space, and there was leftover aluminum box extrusion from a railing install. Printed brackets joined the two into adjustable stands: the kind of one-off part 3D printing is best at.",
+ "category": "design-craft",
+ "year": 2022,
+ "era": "archive",
+ "status": "draft",
+ "featured": false,
+ "role_kind": "solo",
+ "role": null,
+ "tools": [
+  "fusion-360",
+  "fdm-3d-printing"
+ ],
+ "skills": [
+  "design-for-assembly"
+ ],
+ "audience": [],
+ "links": {}
+}

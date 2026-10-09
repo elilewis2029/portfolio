@@ -68,13 +68,13 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const links = Object.entries(p.links ?? {}).filter(([, url]) => typeof url === "string" && url);
   const email = contactEmail();
 
-  const backHref = p.era === "archive" ? "/archive" : "/work";
-  const backLabel = p.era === "archive" ? "Archive" : "Work";
+  const backHref = p.era === "archive" ? "/archive" : "/projects";
+  const backLabel = p.era === "archive" ? "Archive" : "Projects";
   const i = siblings.findIndex((s) => s.id === p.id);
 
   return (
     <article className="mx-auto max-w-4xl">
-      {/* Way back without the header tabs: a part of a series gets the Work / series / part breadcrumb, any other page "← Work". */}
+      {/* Way back without the header tabs: a part of a series gets the Projects / series / part breadcrumb, any other page "← Projects". */}
       {siblings.length > 1 && !editing ? (
         <SeriesCrumb current={p} siblings={siblings} />
       ) : (
@@ -95,7 +95,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
       ) : (
         <>
           <div className="print-only mb-3 text-xs">
-            Eli Lewis · {email} · elilewisportfolio.info/work/{p.slug}
+            Eli Lewis · {email} · elilewisportfolio.info/projects/{p.slug}
             {siblings.length > 1 && (
               <> · Part {i + 1} of {siblings.length}, &ldquo;{p.series}&rdquo;: elilewisportfolio.info{seriesHref(p.series!)}</>
             )}
@@ -135,8 +135,9 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 4. Quick facts */}
           <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
             <Fact label="Role">
-              {p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : "—"}
-              {p.role && <span className="block text-neutral-600 dark:text-neutral-400">{p.role}</span>}
+              {/* Badge and sentence are separate elements with a gap, so they never read as one word ("SoloI was…"). */}
+              {p.role_kind ? <span className="chip">{p.role_kind === "team" ? "Team" : "Solo"}</span> : "—"}
+              {p.role && <p className="mt-1.5 text-neutral-600 dark:text-neutral-400">{p.role}</p>}
             </Fact>
             <Fact label="Duration">{p.duration || "—"}</Fact>
             <Fact label="Tools">{p.tools.length ? p.tools.join(", ") : "—"}</Fact>

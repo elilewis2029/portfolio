@@ -45,6 +45,7 @@ export default async function About() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{profile.name}</h1>
           <p className="mt-1 text-lg text-neutral-700 dark:text-neutral-300">{profile.headline}</p>
+          {filled(profile.subheadline) && <p className="mt-1 text-sm text-neutral-500">{profile.subheadline}</p>}
           {show(profile.location) && <p className="mt-1 text-sm text-neutral-500"><Field value={profile.location} owner={owner} /></p>}
           <p className="mt-3 font-medium text-accent"><Field value={profile.seeking} owner={owner} /></p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
@@ -94,6 +95,28 @@ export default async function About() {
         </div>
       </section>
 
+      {profile.patents.length > 0 && (
+        <section className="mb-10">
+          <H2>Patents</H2>
+          <ul className="space-y-3">
+            {profile.patents.map((pt, i) => (
+              <li key={i} className="grid gap-1 sm:grid-cols-[9rem_1fr]">
+                <div className="text-sm text-neutral-500">{pt.role}</div>
+                <div>
+                  <p className="font-semibold">
+                    {pt.url ? <a href={pt.url} className="hover:text-accent">&ldquo;{pt.title}&rdquo;</a> : <>&ldquo;{pt.title}&rdquo;</>}
+                  </p>
+                  <p className="text-sm text-neutral-700 dark:text-neutral-300">{pt.number}</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    {pt.status}{pt.url && <> · <a href={pt.url} className="text-accent hover:underline">Google Patents</a></>}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {skills.length > 0 && (
         <section className="mb-10">
           <H2>Skills</H2>
@@ -109,7 +132,7 @@ export default async function About() {
               </div>
             ))}
           </dl>
-          <p className="mt-3 text-sm text-neutral-500">See them in use: <Link href="/work" className="text-accent hover:underline">filter projects by skill →</Link></p>
+          <p className="mt-3 text-sm text-neutral-500">See them in use: <Link href="/projects" className="text-accent hover:underline">filter projects by skill →</Link></p>
         </section>
       )}
 
