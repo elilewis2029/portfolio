@@ -10,6 +10,12 @@ import ConfirmSubmit from "@/components/owner/ConfirmSubmit";
 export const metadata = { title: "Review", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
+/** Reminder until the résumé PDF in the bucket is replaced; delete this once a newer PDF is uploaded. */
+const RESUME_NOTE = {
+  text: "Résumé PDF is the January 2026 version; upload a new one when ready.",
+  href: "https://github.com/elilewis2029/portfolio/blob/main/docs/RESUME-UPDATE.md",
+};
+
 function todos(p: Project) {
   return countTodos(p.title, p.tagline, p.summary, p.role, p.goal_constraints, p.process_md, p.result_metric, p.lesson, p.body_md);
 }
@@ -79,6 +85,11 @@ export default async function Review({ searchParams }: { searchParams: Promise<{
         <Link href="/add" className="btn btn-primary ml-auto">+ Add</Link>
       </div>
       {deleted && <p role="status" className="mb-4 rounded-md border border-green-600/40 p-2 text-sm">Deleted &ldquo;{deleted}&rdquo;.</p>}
+      {RESUME_NOTE && (
+        <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-400">
+          {RESUME_NOTE.text} <a href={RESUME_NOTE.href} className="text-accent hover:underline">Bullets to add →</a>
+        </p>
+      )}
       <h2 className="mb-1 font-semibold">Drafts ({drafts.length})</h2>
       {drafts.length === 0 && <p className="mb-6 text-sm text-neutral-500">No drafts. Tap + on any page to add one from photos.</p>}
       <ul className="mb-10">{drafts.map((p) => <Row key={p.id} p={p} />)}</ul>
