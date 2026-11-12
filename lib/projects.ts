@@ -10,13 +10,49 @@ function sortMedia(list: Project[]) {
   return list;
 }
 
+const TODO = /\[TODO[^\]]*\]/gi;
+
+/** Text with every [TODO…] marker removed; null when nothing real is left. Markdown bullets left empty are dropped. */
+export function scrubTodo(v: string | null | undefined): string | null {
+  if (!v) return v ?? null;
+  if (!/\[TODO/i.test(v)) return v;
+  const out = v
+    .replace(TODO, "")
+    .split("\n")
+    .map((l) => l.replace(/[ \t]+$/, "").replace(/\s+([.,;:])/g, "$1"))
+    .filter((l) => !/^\s*([-*•]|\d+[.)])?\s*$/.test(l) || l === "")
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return out && /[A-Za-z0-9]/.test(out) ? out : null;
+}
+
+const TEXT_FIELDS = ["title", "tagline", "summary", "body_md", "role", "goal_constraints", "process_md", "result_metric", "lesson", "duration"] as const;
+
+/**
+ * What visitors get: no [TODO…] placeholder ever reaches a public page. A field that was only a placeholder
+ * becomes null, so its section is not drawn at all; captions get the same treatment. The owner sees raw rows.
+ */
+function forVisitors(list: Project[]): Project[] {
+  for (const p of list) {
+    const r = p as unknown as Record<string, unknown>;
+    for (const f of TEXT_FIELDS) if (typeof r[f] === "string") r[f] = scrubTodo(r[f] as string);
+    if (!p.title) p.title = "Untitled project";
+    p.media?.forEach((m) => { m.caption = scrubTodo(m.caption); });
+    p.tools = (p.tools ?? []).filter((t) => !/\[TODO/i.test(t));
+    p.skills = (p.skills ?? []).filter((t) => !/\[TODO/i.test(t));
+  }
+  return list;
+}
+const shape = (list: Project[], owner: boolean) => (owner ? sortMedia(list) : forVisitors(sortMedia(list)));
+
 export async function featuredProjects(): Promise<Project[]> {
   const { data, error } = await publicDb()
     .from("projects").select(SELECT)
     .eq("status", "published").eq("featured", true)
     .order("year", { ascending: false, nullsFirst: false }).limit(5);
   if (error) console.error(error);
-  return sortMedia((data ?? []) as Project[]);
+  return shape((data ?? []) as Project[], false);
 }
 
 /** Published projects of an era; in owner mode drafts are included (first, so they get finished). */
@@ -29,13 +65,13 @@ export async function listProjects(era: "current" | "archive", owner = false): P
     .order("year", { ascending: false, nullsFirst: false })
     .order("updated_at", { ascending: false });
   if (error) console.error(error);
-  return sortMedia((data ?? []) as Project[]);
+  return shape((data ?? []) as Project[], owner);
 }
 
 /** A project by slug. Visitors only ever get published rows (RLS); the owner also sees drafts. */
 export async function projectBySlug(slug: string, owner = false): Promise<Project | null> {
   const { data } = await (owner ? adminDb() : publicDb()).from("projects").select(SELECT).eq("slug", slug).maybeSingle();
-  return data ? sortMedia([data as Project])[0] : null;
+  return data ? shape([data as Project], owner)[0] : null;
 }
 
 /** Other pages in the same series, in series_order (visitors only get published rows). Empty when the project has no series. */
@@ -46,7 +82,7 @@ export async function seriesSiblings(p: Project, owner = false): Promise<Project
     .order("series_order", { ascending: true, nullsFirst: false })
     .order("year", { ascending: true, nullsFirst: false });
   if (error) console.error(error);
-  return sortMedia((data ?? []) as Project[]);
+  return shape((data ?? []) as Project[], owner);
 }
 
 /** Owner-only: everything, drafts first. */
@@ -84,5 +120,5 @@ export async function seriesByHubSlug(slug: string, owner = false): Promise<Proj
     .order("series_order", { ascending: true, nullsFirst: false })
     .order("year", { ascending: true, nullsFirst: false });
   if (error) console.error(error);
-  return sortMedia(((data ?? []) as Project[]).filter((p) => p.series && slugify(p.series) === slug));
+  return shape(((data ?? []) as Project[]).filter((p) => p.series && slugify(p.series) === slug), owner);
 }
