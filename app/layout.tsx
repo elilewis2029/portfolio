@@ -42,10 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <header className="site no-print sticky top-0 z-30 border-b border-rule bg-paper/95 backdrop-blur-sm">
           <div className="mx-auto flex max-w-6xl items-center gap-x-3 px-4 py-1 sm:gap-x-8 sm:px-6">
-            <Link href="/" className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap font-semibold tracking-[-0.02em]">
-              <span aria-hidden="true" className="hidden size-3 grid-cols-2 gap-px min-[400px]:grid">{["engineering", "manufacturing-shop", "electronics", "design-craft"].map((c) => <span key={c} style={{ background: `var(--color-cat-${c})` }} />)}</span>
-              {profile.name}
-            </Link>
+            <Link href="/" className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-semibold tracking-[-0.02em]">{profile.name}</Link>
             <NavTabs />
             <div className="ml-auto flex items-center gap-4">
               <SocialLinks className="hidden sm:flex" />
