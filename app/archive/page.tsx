@@ -10,7 +10,7 @@ export default async function Archive({ searchParams }: { searchParams: Promise<
   const projects = await listProjects("archive", owner);
   return (
     <>
-      <h1 className="text-2xl font-bold tracking-tight">Archive</h1>
+      <h1 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">Archive</h1>
       <p className="mb-6 mt-2 text-neutral-600 dark:text-neutral-400">
         High-school, craft and scrap builds, kept here for history.
       </p>

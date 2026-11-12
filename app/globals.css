@@ -1,37 +1,60 @@
 @import "tailwindcss";
+@import "@fontsource-variable/archivo";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* Light only: the photography is judged against one controlled background. `dark:` utilities never fire. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-accent: #c2410c;
-  --color-accent-soft: #fff1e8;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Greyscale system. Ink is the only "brand" colour; links, focus and primary buttons use it. */
+  --color-accent: #111111;
+  --color-accent-soft: #ededed;
+  --color-ink: #111111;
+  --color-paper: #ffffff;
+  --color-wash: #f1f1f0;
+  --color-rule: #d6d6d4;
+
+  /* One accent per discipline. Colour is information (what kind of work), never decoration. */
+  --color-cat-engineering: #2f5bd3;
+  --color-cat-manufacturing-shop: #f0b400;
+  --color-cat-electronics: #13915a;
+  --color-cat-design-craft: #e0432c;
+
+  --font-sans: "Archivo Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Square corners everywhere (rounded-full stays for the few true circles). */
+  --radius-xs: 0; --radius-sm: 0; --radius-md: 0; --radius-lg: 0; --radius-xl: 0; --radius-2xl: 0; --radius-3xl: 0; --radius: 0;
 }
 
-:root { color-scheme: light dark; }
-body { @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100; }
-:focus-visible { @apply outline-2 outline-offset-2 outline-accent; }
+:root { color-scheme: light; }
+/* The home page's selected-work band is full-bleed (w-screen); clip keeps it from adding a sideways scroll. */
+html, body { overflow-x: clip; }
+body { @apply bg-paper text-ink antialiased; font-feature-settings: "ss01"; }
+:focus-visible { @apply outline-2 outline-offset-2 outline-ink; }
 
-/* In the components layer so a utility on the element (py-1.5, w-auto, border-accent) can override these. */
 @layer components {
   .prose-lite ul { @apply list-disc space-y-1 pl-5; }
   .prose-lite ol { @apply list-decimal space-y-1 pl-5; }
   .prose-lite p + p { @apply mt-3; }
-  .prose-lite a { @apply text-accent underline underline-offset-2; }
-  
-  .chip { @apply inline-block rounded-full border border-neutral-300 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-neutral-700 dark:text-neutral-300; }
-  .chip-on { @apply border-accent bg-accent text-white; }
-  /* min-h-10 (40 px): close to the 44 pt / 48 dp touch-target guidance without making the buttons look bigger. */
-  .btn { @apply inline-flex min-h-10 items-center justify-center rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium hover:bg-neutral-100 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800; }
-  .btn-primary { @apply border-accent bg-accent text-white hover:bg-accent/90 dark:hover:bg-accent/90; }
-  .input { @apply w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700; }
-  mark.todo { @apply rounded bg-yellow-200 px-0.5 text-neutral-900; }
-}
+  .prose-lite a { @apply underline decoration-1 underline-offset-2 hover:decoration-2; }
 
-/* Dark mode contrast (WCAG 1.4.3). On neutral-950 the accent reads 3.8:1 and neutral-500 4.2:1, both under 4.5:1.
-   The accent brightens to orange-500 (7.4:1); text drawn on an accent background turns dark; muted text steps up one shade. */
-@media (prefers-color-scheme: dark) {
-  :root { --color-accent: #f97316; --color-accent-soft: #2a1407; }
-  .btn-primary, .chip-on, .on-accent { color: #0a0a0a !important; }
-  .text-neutral-500 { color: oklch(70.8% 0 0); } /* = neutral-400, 7.8:1 */
+  /* Small mono label: metadata, section kickers, tags. */
+  .label { @apply font-mono text-[11px] font-medium uppercase tracking-[0.08em]; }
+  .chip { @apply inline-flex items-center gap-1.5 border border-rule px-2 py-0.5 font-mono text-[11px] uppercase tracking-[0.06em] text-neutral-700; }
+  .chip:hover { @apply border-ink text-ink; }
+  .chip-on { @apply border-ink bg-ink text-white; }
+  .chip-on:hover { @apply text-white; }
+  /* min-h-10 (40 px): close to the 44 pt / 48 dp touch-target guidance without making the buttons look bigger. */
+  .btn { @apply inline-flex min-h-10 items-center justify-center gap-2 border border-ink px-4 py-1.5 text-sm font-medium hover:bg-ink hover:text-white disabled:opacity-50; }
+  .btn-primary { @apply bg-ink text-white hover:bg-neutral-700; }
+  .input { @apply w-full border border-rule bg-transparent px-3 py-2 text-sm focus:border-ink; }
+  .rule { @apply border-rule; }
+  mark.todo { @apply bg-yellow-200 px-0.5 text-neutral-900; }
+
+  /* Category swatch: a small filled square in the discipline's colour. */
+  .swatch { @apply inline-block size-2.5 shrink-0; }
 }
 
 /* Motion: small, CSS-only, and off for people who asked for less. */

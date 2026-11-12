@@ -10,7 +10,11 @@ export default async function Projects({ searchParams }: { searchParams: Promise
   const projects = await listProjects("current", owner);
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold tracking-tight">Projects</h1>
+      <header className="mb-8 border-b border-ink pb-6 pt-4">
+        <p className="label text-neutral-500">Index</p>
+        <h1 className="mt-2 text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">Projects</h1>
+        <p className="mt-3 max-w-xl text-neutral-600">Everything I&apos;ve built, coded by discipline. The home page shows a selected few.</p>
+      </header>
       <ProjectGrid projects={projects} base="/projects" skill={skill} cat={cat} />
     </>
   );
