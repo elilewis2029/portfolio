@@ -4,7 +4,7 @@ import { CATEGORY_LABEL, categoryColor, heroOf, type Category, type Project } fr
 
 /**
  * Selected work on the home page: a dark band, every project given the same row (same photo size,
- * same text slots, same number style), so none outranks another. Deliberately unlike the light
+ * same text slots, same number style), so none outranks another. Rows alternate photo left / right. Deliberately unlike the light
  * /projects grid: rows, an index number and the outcome line read as a curated set, not a catalogue.
  */
 export default function FeaturedList({ projects }: { projects: Project[] }) {
@@ -23,10 +23,11 @@ function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: bool
   const hero = heroOf(p);
   const color = categoryColor(p.category);
   const cat = p.category ? CATEGORY_LABEL[p.category as Category] ?? p.category : null;
+  const flip = n % 2 === 0; // even rows put the photo on the right, so the list alternates
   const meta = [cat, p.year, p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : null].filter(Boolean).join(" · ");
   return (
     <Link href={`/projects/${p.slug}`} className="group grid gap-5 py-8 sm:grid-cols-12 sm:gap-8 sm:py-10">
-      <div className="zoom relative aspect-[3/2] overflow-hidden bg-neutral-800 sm:col-span-7">
+      <div className={`zoom relative aspect-[3/2] overflow-hidden bg-neutral-800 sm:col-span-7 ${flip ? "sm:order-2" : ""}`}>
         {hero ? (
           <Image
             src={hero.path}
@@ -39,9 +40,9 @@ function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: bool
         ) : (
           <div className="label flex h-full items-center justify-center text-neutral-500">No photo yet</div>
         )}
-        <span aria-hidden="true" className="absolute inset-y-0 left-0 z-10 w-1.5" style={{ background: color }} />
+        <span aria-hidden="true" className={`absolute inset-y-0 left-0 z-10 w-1.5 ${flip ? "sm:left-auto sm:right-0" : ""}`} style={{ background: color }} />
       </div>
-      <div className="flex flex-col sm:col-span-5 sm:py-1">
+      <div className={`flex flex-col sm:col-span-5 sm:py-1 ${flip ? "sm:order-1" : ""}`}>
         <div className="flex items-baseline gap-4">
           <span className="font-mono text-sm text-neutral-500">{String(n).padStart(2, "0")}</span>
           <p className="label flex items-center gap-2 text-neutral-400">
