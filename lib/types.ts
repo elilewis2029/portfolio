@@ -14,6 +14,18 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   "design-craft": "Design & craft",
 };
 
+/** Each discipline's accent (CSS variable from globals.css). Colour codes the kind of work, so the range shows at a glance. */
+export const CATEGORY_COLOR: Record<Category, string> = {
+  engineering: "var(--color-cat-engineering)",
+  "manufacturing-shop": "var(--color-cat-manufacturing-shop)",
+  electronics: "var(--color-cat-electronics)",
+  "design-craft": "var(--color-cat-design-craft)",
+};
+
+export function categoryColor(c: string | null | undefined): string {
+  return (c && CATEGORY_COLOR[c as Category]) || "var(--color-ink)";
+}
+
 export type Media = {
   id: string;
   project_id: string;

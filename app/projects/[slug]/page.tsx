@@ -9,7 +9,7 @@ import ProjectEditor from "@/components/owner/ProjectEditor";
 import { contactEmail, projectBySlug, publicUrl, seriesHref, seriesSiblings } from "@/lib/projects";
 import { SeriesCrumb, SeriesPager } from "@/components/SeriesNav";
 import { isOwner } from "@/lib/owner";
-import { CATEGORY_LABEL, heroOf, type Media } from "@/lib/types";
+import { CATEGORY_LABEL, heroOf, type Media, categoryColor } from "@/lib/types";
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ edit?: string; saved?: string; error?: string }> };
 
@@ -27,7 +27,7 @@ function Figure({ m, sizes }: { m: Media; sizes: string }) {
   return (
     <figure className="avoid-break">
       <Lightbox src={publicUrl(m.original_path ?? m.path)} alt={m.caption || ""}>
-        <span className="zoom block overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
+        <span className="zoom block overflow-hidden bg-wash">
           <Image
             src={m.path}
             alt={m.caption || ""}
@@ -46,7 +46,7 @@ function Figure({ m, sizes }: { m: Media; sizes: string }) {
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs uppercase tracking-wide text-neutral-500">{label}</dt>
+      <dt className="label text-neutral-500">{label}</dt>
       <dd className="mt-0.5 text-sm">{children}</dd>
     </div>
   );
@@ -103,12 +103,13 @@ export default async function ProjectPage({ params, searchParams }: Props) {
 
           {/* 1. Impact title + tagline */}
           <header className="rise mb-6">
-            <p className="text-xs uppercase tracking-wide text-accent">
-              {siblings.length > 1 && <span className="on-accent mr-2 rounded bg-accent px-1.5 py-0.5 text-white">Part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length}</span>}
+            <p className="label flex flex-wrap items-center gap-2 text-neutral-600">
+              {siblings.length > 1 && <span className="mr-1 bg-ink px-1.5 py-0.5 text-white">Part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length}</span>}
+              <span className="swatch" style={{ background: categoryColor(p.category) }} aria-hidden="true" />
               {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
             </p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{p.title}</h1>
-            {p.tagline && <p className="mt-2 text-lg text-neutral-700 dark:text-neutral-300">{p.tagline}</p>}
+            <h1 className="mt-3 text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl">{p.title}</h1>
+            {p.tagline && <p className="mt-4 max-w-3xl text-lg leading-snug text-neutral-700 sm:text-xl">{p.tagline}</p>}
           </header>
 
           {/* 2. Hero */}
@@ -122,10 +123,10 @@ export default async function ProjectPage({ params, searchParams }: Props) {
                   height={hero.height ?? 1200}
                   priority
                   sizes="(min-width: 1024px) 896px, 100vw"
-                  className="h-auto w-full rounded-2xl bg-neutral-100 dark:bg-neutral-900"
+                  className="h-auto w-full bg-wash"
                 />
               </Lightbox>
-              {hero.caption && <p className="mt-2 text-sm text-neutral-500">{hero.caption}</p>}
+              {hero.caption && <p className="mt-2 text-sm text-neutral-600">{hero.caption}</p>}
             </div>
           )}
 
@@ -133,7 +134,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {p.summary && <p className="rise rise-3 mb-6 max-w-3xl text-lg leading-relaxed sm:text-xl">{p.summary}</p>}
 
           {/* 4. Quick facts */}
-          <dl className="avoid-break mb-8 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4 sm:grid-cols-4 dark:border-neutral-800">
+          <dl className="avoid-break mb-10 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-ink py-5 sm:grid-cols-4">
             <Fact label="Role">
               {/* Badge and sentence are separate elements with a gap, so they never read as one word ("SoloI was…"). */}
               {p.role_kind ? <span className="chip">{p.role_kind === "team" ? "Team" : "Solo"}</span> : "—"}
@@ -147,7 +148,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 5. Goal & constraints */}
           {p.goal_constraints && (
             <section className="mb-8">
-              <h2 className="mb-2 text-lg font-semibold">Goal &amp; constraints</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Goal &amp; constraints</h2>
               <Md>{p.goal_constraints}</Md>
             </section>
           )}
@@ -155,7 +156,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 6. Process */}
           {(p.process_md || process.length > 0) && (
             <section className="mb-8">
-              <h2 className="mb-2 text-lg font-semibold">Process</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Process</h2>
               <Md>{p.process_md}</Md>
               {process.length > 0 && (
                 <div className="print-grid mt-5 grid gap-5 sm:grid-cols-2">
@@ -172,9 +173,9 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 7. Result: a clear break from the process photos, the metric first, then before/after pairs */}
           {(p.result_metric || results.length > 0) && (
             <section className="mb-8 border-t border-neutral-200 pt-8 dark:border-neutral-800">
-              <h2 className="mb-2 text-lg font-semibold">Result</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Result</h2>
               {p.result_metric && (
-                <p className="inline-block rounded-md bg-accent-soft px-3 py-2 text-xl font-semibold text-accent dark:bg-accent/15">
+                <p className="border-l-4 bg-wash px-4 py-3 text-xl font-semibold tracking-[-0.01em]" style={{ borderColor: categoryColor(p.category) }}>
                   {p.result_metric}
                 </p>
               )}
@@ -199,7 +200,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 8. What I'd change */}
           {p.lesson && (
             <section className="mb-8">
-              <h2 className="mb-2 text-lg font-semibold">What I&rsquo;d change</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">What I&rsquo;d change</h2>
               <p>{p.lesson}</p>
             </section>
           )}
@@ -207,7 +208,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* Optional free text (e.g. imported write-ups) */}
           {p.body_md && (
             <section className="mb-8">
-              <h2 className="mb-2 text-lg font-semibold">Notes</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Notes</h2>
               <Md>{p.body_md}</Md>
             </section>
           )}
@@ -215,7 +216,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
           {/* 9. Links */}
           {links.length > 0 && (
             <section className="mb-8">
-              <h2 className="mb-2 text-lg font-semibold">Links</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Links</h2>
               <ul className="flex flex-wrap gap-4">
                 {links.map(([label, url]) => (
                   <li key={label}><a href={url} className="text-accent underline underline-offset-2">{label}</a></li>

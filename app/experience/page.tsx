@@ -9,7 +9,7 @@ export default async function Experience() {
   const any = visibleExperience(owner).length > 0;
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="text-3xl font-bold tracking-tight">Experience</h1>
+      <h1 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">Experience</h1>
       <div className="mb-8 mt-3 flex flex-wrap items-center gap-4 text-sm">
         <a href="/resume" className="btn">Résumé (PDF)</a>
         <Link href="/projects" className="text-accent hover:underline">See the projects →</Link>

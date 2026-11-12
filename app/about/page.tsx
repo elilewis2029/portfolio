@@ -12,7 +12,7 @@ import { filled, filledList, isTodo } from "@/lib/profile";
 export const metadata = { title: "About", description: "Who I am, what I’ve built, and what I’m looking for." };
 
 function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-500">{children}</h2>;
+  return <h2 className="label mb-3 border-b border-ink pb-2 text-neutral-600">{children}</h2>;
 }
 
 export default async function About() {
@@ -43,7 +43,7 @@ export default async function About() {
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{profile.name}</h1>
+          <h1 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">{profile.name}</h1>
           <p className="mt-1 text-lg text-neutral-700 dark:text-neutral-300">{profile.headline}</p>
           {filled(profile.subheadline) && <p className="mt-1 text-sm text-neutral-500">{profile.subheadline}</p>}
           {show(profile.location) && <p className="mt-1 text-sm text-neutral-500"><Field value={profile.location} owner={owner} /></p>}
