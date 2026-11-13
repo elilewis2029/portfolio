@@ -3,7 +3,7 @@ import { profile } from "@/content/profile";
 import { filled } from "@/lib/profile";
 
 export const runtime = "edge";
-export const alt = `${profile.name} — Engineering portfolio`;
+export const alt = `${profile.name} Portfolio`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
