@@ -17,9 +17,9 @@ export const SITE_URL = "https://elilewisportfolio.info";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${profile.name} — Engineering portfolio`, template: `%s · ${profile.name}` },
+  title: { default: `${profile.name} Portfolio`, template: `%s · ${profile.name}` },
   description: [profile.headline, filled(profile.tagline)].filter(Boolean).join(". "),
-  openGraph: { type: "website", siteName: `${profile.name} — Engineering portfolio`, locale: "en_US" },
+  openGraph: { type: "website", siteName: `${profile.name} Portfolio`, locale: "en_US" },
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: profile.name, statusBarStyle: "default" },
   icons: { apple: "/icon-192.png" },
