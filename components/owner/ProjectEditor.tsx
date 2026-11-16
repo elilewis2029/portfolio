@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CATEGORIES, CATEGORY_LABEL, MEDIA_KINDS, heroOf, type Project } from "@/lib/types";
+import { MEDIA_KINDS, STRENGTHS, STRENGTH_LABEL, heroOf, strengthsOf, type Project } from "@/lib/types";
 import { HighlightTodo, TODO_RE, countTodos } from "@/components/Todo";
 import { deleteMedia, moveMedia, setCover, updateProject } from "@/app/review/actions";
 import ConfirmSubmit from "./ConfirmSubmit";
@@ -73,11 +73,21 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
         <Field label="Title" name="title" value={p.title} hint="impact-style, 2–7 words" />
         <Field label="Tagline" name="tagline" value={p.tagline} hint="names the skill or process" />
         <Field label="Summary" name="summary" value={p.summary} rows={3} hint="2 sentences: what, how it performed, your part" />
-        <div className="grid gap-4 sm:grid-cols-2">
+        {/* Two selects rather than checkboxes: the order matters (the main strength sets the colour), and selects
+            keep their value in the unsaved-draft store, which checkboxes don't. */}
+        <div className="grid gap-4 sm:grid-cols-3">
           <label className="block">
-            <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Category</span>
-            <select name="category" defaultValue={p.category} className="input">
-              {CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
+            <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Main strength</span>
+            <select name="strength_1" defaultValue={strengthsOf(p)[0] ?? ""} className="input">
+              <option value="">—</option>
+              {STRENGTHS.map((c) => <option key={c} value={c}>{STRENGTH_LABEL[c]}</option>)}
+            </select>
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Second strength</span>
+            <select name="strength_2" defaultValue={strengthsOf(p)[1] ?? ""} className="input" aria-describedby="strength-hint">
+              <option value="">None</option>
+              {STRENGTHS.map((c) => <option key={c} value={c}>{STRENGTH_LABEL[c]}</option>)}
             </select>
           </label>
           <label className="block">
@@ -87,6 +97,7 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
             </select>
           </label>
         </div>
+        <p id="strength-hint" className="-mt-2 text-xs text-neutral-500">Only add a second strength if the project really shows it. Teaching &amp; communication is for teaching roles, or work that depended on presenting it.</p>
         <Field label="Role" name="role" value={p.role} hint="“I was responsible for…”" />
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label="Year" name="year" value={p.year?.toString()} numeric />

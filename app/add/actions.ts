@@ -153,6 +153,7 @@ export async function submitIntake(input: {
       tagline: r.tagline || null,
       summary: r.summary || null,
       category: r.category,
+      strengths: r.strengths,
       role_kind: r.role_kind,
       role: r.role,
       goal_constraints: r.goal_constraints,

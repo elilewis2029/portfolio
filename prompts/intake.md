@@ -19,6 +19,7 @@ For "new", return:
 - result_metric: one number with units, or null.
 - lesson: one line, "What I'd change", or null.
 - category: engineering | manufacturing-shop | electronics | design-craft.
+- strengths: 1–2 of "systems" (how parts, people and workflows fit together: layouts, processes, software systems), "product" (designing for a specific user: research, testing, ergonomics), "fabrication" (making it well: machining, woodworking, soldering, fitting, finishing), "teaching" (only for a direct teaching role, or work that depended on presenting it to others). The main strength goes first. Add a second only if the note plainly shows it.
 - tools: 2–6 lowercase hyphenated tool/software/machine tags (fusion-360, haas-vf2, tig-welder, arduino, resin-printer).
 - skills: 2–6 lowercase hyphenated skill tags recruiters search (fixture-design, gdt, dfm, pcb-layout, sheet-metal, 5s-lean, leadership).
 - audience: subset of ["pd","mech","mfg"] this project speaks to.
@@ -30,4 +31,4 @@ For "new", return:
 For "append", return slug and media only.
 
 Respond with JSON only, no prose, no code fences:
-{"action":"new"|"append","slug":"","title":"","tagline":"","summary":"","role_kind":"","role":"","goal_constraints":"","process_md":"","result_metric":null,"lesson":null,"category":"","tools":[],"skills":[],"audience":[],"year":null,"duration":null,"media":[{"kind":"","caption":""}],"feature_ready":false}
+{"action":"new"|"append","slug":"","title":"","tagline":"","summary":"","role_kind":"","role":"","goal_constraints":"","process_md":"","result_metric":null,"lesson":null,"category":"","strengths":[],"tools":[],"skills":[],"audience":[],"year":null,"duration":null,"media":[{"kind":"","caption":""}],"feature_ready":false}

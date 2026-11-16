@@ -4,7 +4,7 @@ import FeaturedList from "@/components/FeaturedList";
 import { Field } from "@/components/Todo";
 import { contactEmail, featuredProjects, listProjects } from "@/lib/projects";
 import { isOwner } from "@/lib/owner";
-import { CATEGORIES, CATEGORY_LABEL, categoryColor } from "@/lib/types";
+import { STRENGTHS, STRENGTH_LABEL, strengthColor, strengthsOf } from "@/lib/types";
 import { profile } from "@/content/profile";
 import { filled, filledList } from "@/lib/profile";
 
@@ -21,13 +21,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
   const email = filled(profile.links.email) ?? contactEmail();
   const latestJob = profile.experience.find((e) => filled(e.org));
   const bio = filledList(profile.bio);
-  // Range: how the published work splits across the four disciplines.
-  const range = CATEGORIES.map((c) => ({ c, n: all.filter((p) => p.category === c).length })).filter((r) => r.n > 0);
-  const total = range.reduce((s, r) => s + r.n, 0);
+  // Strengths: how often each one shows up across the published work. A project can count under two, so the
+  // bar shows the mix of strengths, and the label counts projects, not tags.
+  const range = STRENGTHS.map((c) => ({ c, n: all.filter((p) => strengthsOf(p).includes(c)).length })).filter((r) => r.n > 0);
+  const total = all.filter((p) => strengthsOf(p).length > 0).length;
 
   return (
     <>
-      {/* Hero: name, headline, a spec-sheet column, the range bar, CTAs */}
+      {/* Hero: name, headline, a spec-sheet column, the strengths bar, CTAs */}
       <section className="grid gap-10 border-b border-rule pb-12 pt-6 lg:grid-cols-12 lg:gap-12 lg:pt-12">
         <div className="rise lg:col-span-7">
           <p className="label text-neutral-500">Portfolio · {new Date().getFullYear()}</p>
@@ -56,16 +57,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
           </dl>
           {total > 0 && (
             <div className="mt-6">
-              <p className="label text-neutral-500">Range · {total} projects</p>
-              <div className="mt-2 flex h-2 w-full gap-px" role="img" aria-label={range.map((r) => `${CATEGORY_LABEL[r.c]}: ${r.n}`).join(", ")}>
-                {range.map((r) => <span key={r.c} style={{ flexGrow: r.n, background: categoryColor(r.c) }} />)}
+              <p className="label text-neutral-500">Strengths · across {total} projects</p>
+              <div className="mt-2 flex h-2 w-full gap-px" role="img" aria-label={range.map((r) => `${STRENGTH_LABEL[r.c]}: ${r.n} projects`).join(", ")}>
+                {range.map((r) => <span key={r.c} style={{ flexGrow: r.n, background: strengthColor(r.c) }} />)}
               </div>
               <ul className="mt-3 grid gap-x-4 gap-y-1.5 sm:grid-cols-2">
                 {range.map((r) => (
                   <li key={r.c}>
-                    <Link href={`/projects?cat=${r.c}`} className="label flex items-center gap-2 text-neutral-700 hover:text-ink hover:underline">
-                      <span className="swatch" style={{ background: categoryColor(r.c) }} aria-hidden="true" />
-                      {CATEGORY_LABEL[r.c]} <span className="text-neutral-400">{r.n}</span>
+                    <Link href={`/projects?strength=${r.c}`} className="label flex items-center gap-2 text-neutral-700 hover:text-ink hover:underline">
+                      <span className="swatch" style={{ background: strengthColor(r.c) }} aria-hidden="true" />
+                      {STRENGTH_LABEL[r.c]} <span className="text-neutral-400">{r.n}</span>
                     </Link>
                   </li>
                 ))}

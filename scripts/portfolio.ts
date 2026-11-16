@@ -12,7 +12,7 @@
  *   npm run portfolio -- delete <slug|id>           delete a draft and its photos (refuses published projects)
  *
  * Entry JSON uses the fields in prompts/intake.md (title, tagline, summary, role_kind, role, goal_constraints,
- * process_md, result_metric, lesson, category, tools, skills, audience, year, duration, links, body_md, era),
+ * process_md, result_metric, lesson, category, strengths, tools, skills, audience, year, duration, links, body_md, era),
  * plus media: [{ id?, kind, caption }] (id when updating; in photo order when creating). `slug`, `status` and
  * `featured` may be set too (a new entry without a slug gets one from its title; `new` always starts as a draft
  * unless the entry says otherwise). Featuring still needs a process/cad/drawing photo (CLAUDE.md rule 7).
@@ -24,7 +24,7 @@ import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import { processImage } from "../lib/images";
 import { slugify, uniqueSlug } from "../lib/slug";
-import { CATEGORIES, MEDIA_KINDS, READY_KINDS } from "../lib/types";
+import { CATEGORIES, MEDIA_KINDS, READY_KINDS, STRENGTHS } from "../lib/types";
 
 config({ path: ".env.local" });
 config();
@@ -41,7 +41,7 @@ const storage = db.storage.from("portfolio");
 
 const FIELDS = [
   "title", "tagline", "summary", "role_kind", "role", "goal_constraints", "process_md", "result_metric",
-  "lesson", "category", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era", "series", "series_order",
+  "lesson", "category", "strengths", "tools", "skills", "audience", "year", "duration", "links", "body_md", "era", "series", "series_order",
   "slug", "status", "featured",
 ] as const;
 
@@ -74,6 +74,11 @@ function pickFields(entry: Record<string, unknown>) {
   const row: Record<string, unknown> = {};
   for (const f of FIELDS) if (f in entry) row[f] = entry[f] === "" ? null : entry[f];
   if (row.category && !CATEGORIES.includes(row.category as never)) throw new Error(`Bad category ${row.category}`);
+  if (row.strengths !== undefined) {
+    const list = Array.isArray(row.strengths) ? row.strengths : [];
+    if (list.length > 2 || list.some((x) => !STRENGTHS.includes(x as never))) throw new Error(`strengths: up to two of ${STRENGTHS.join(", ")}`);
+    row.strengths = list;
+  }
   if (row.role_kind && !["solo", "team"].includes(row.role_kind as string)) throw new Error("role_kind must be solo or team");
   if (row.status && !["draft", "published"].includes(row.status as string)) throw new Error("status must be draft or published");
   if (row.era && !["current", "archive"].includes(row.era as string)) throw new Error("era must be current or archive");
