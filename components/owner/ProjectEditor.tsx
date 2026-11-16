@@ -31,7 +31,7 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
   const textFields: [string, string | null][] = [
     ["Title", p.title], ["Tagline", p.tagline], ["Summary", p.summary], ["Role", p.role],
     ["Goal & constraints", p.goal_constraints], ["Process", p.process_md], ["Result", p.result_metric],
-    ["What I'd change", p.lesson], ["Notes", p.body_md],
+    ["What I learned & what I'd change", p.lesson], ["Notes", p.body_md],
   ];
   const todoFields = textFields.filter(([, v]) => v && new RegExp(TODO_RE.source, "i").test(v));
   const nTodo = countTodos(...textFields.map(([, v]) => v));
@@ -112,7 +112,7 @@ export default function ProjectEditor({ p, savedAt, error }: { p: Project; saved
         <Field label="Goal & constraints" name="goal_constraints" value={p.goal_constraints} rows={3} hint="markdown bullets" />
         <Field label="Process" name="process_md" value={p.process_md} rows={6} hint="3–5 markdown bullets" />
         <Field label="Result" name="result_metric" value={p.result_metric} hint="one real number with units" />
-        <Field label="What I'd change" name="lesson" value={p.lesson} />
+        <Field label="What I learned & what I'd change" name="lesson" value={p.lesson} />
         <Field label="Tools" name="tools" value={p.tools.join(", ")} hint="comma-separated" />
         <Field label="Skills" name="skills" value={p.skills.join(", ")} hint="comma-separated" />
         <Field label="Audience" name="audience" value={p.audience.join(", ")} hint="pd, mech, mfg" />
