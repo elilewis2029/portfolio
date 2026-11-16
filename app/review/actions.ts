@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { adminDb } from "@/lib/supabase";
 import { requireOwner } from "@/lib/owner";
 import { projectByIdAdmin } from "@/lib/projects";
-import { CATEGORIES, MEDIA_KINDS, isFeatureReady, type Category, type MediaKind } from "@/lib/types";
+import { MEDIA_KINDS, STRENGTHS, isFeatureReady, type MediaKind, type Strength } from "@/lib/types";
 import { slugify } from "@/lib/slug";
 import { processImage } from "@/lib/images";
 
@@ -29,7 +29,8 @@ const returnTo = (f: FormData) => {
 
 export async function updateProject(id: string, f: FormData) {
   await requireOwner(returnTo(f));
-  const category = String(f.get("category"));
+  const strengths = [...new Set([f.get("strength_1"), f.get("strength_2")].map(String))]
+    .filter((x): x is Strength => (STRENGTHS as readonly string[]).includes(x));
   const roleKind = String(f.get("role_kind"));
   const yearStr = String(f.get("year") ?? "").trim();
   const links: Record<string, string> = {};
@@ -53,7 +54,7 @@ export async function updateProject(id: string, f: FormData) {
     ...(slug ? { slug } : {}),
     tagline: text(f, "tagline"),
     summary: text(f, "summary"),
-    category: CATEGORIES.includes(category as Category) ? category : "engineering",
+    strengths,
     role_kind: roleKind === "solo" || roleKind === "team" ? roleKind : null,
     role: text(f, "role"),
     duration: text(f, "duration"),

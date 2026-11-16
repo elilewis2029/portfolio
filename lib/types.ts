@@ -14,17 +14,37 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   "design-craft": "Design & craft",
 };
 
-/** Each discipline's accent (CSS variable from globals.css). Colour codes the kind of work, so the range shows at a glance. */
-export const CATEGORY_COLOR: Record<Category, string> = {
-  engineering: "var(--color-cat-engineering)",
-  "manufacturing-shop": "var(--color-cat-manufacturing-shop)",
-  electronics: "var(--color-cat-electronics)",
-  "design-craft": "var(--color-cat-design-craft)",
+/**
+ * Strengths: what a project shows Eli is good at, not what it is made of. Up to two per project, the first is the
+ * main one and sets the project's colour. Teaching & communication is kept strict: direct teaching roles, or work
+ * that rested on presenting it (docs/DECISIONS.md 40).
+ */
+export const STRENGTHS = ["systems", "product", "fabrication", "teaching"] as const;
+export type Strength = (typeof STRENGTHS)[number];
+
+export const STRENGTH_LABEL: Record<Strength, string> = {
+  systems: "System design",
+  product: "User & product design",
+  fabrication: "Building & fabrication",
+  teaching: "Teaching & communication",
 };
 
-export function categoryColor(c: string | null | undefined): string {
-  return (c && CATEGORY_COLOR[c as Category]) || "var(--color-ink)";
+export const STRENGTH_COLOR: Record<Strength, string> = {
+  systems: "var(--color-s-systems)",
+  product: "var(--color-s-product)",
+  fabrication: "var(--color-s-fabrication)",
+  teaching: "var(--color-s-teaching)",
+};
+
+export function strengthsOf(p: { strengths?: string[] | null }): Strength[] {
+  return (p.strengths ?? []).filter((s): s is Strength => (STRENGTHS as readonly string[]).includes(s)).slice(0, 2);
 }
+
+/** The project's colour: its main strength's accent, ink when it has none. */
+export function strengthColor(s: string | null | undefined): string {
+  return (s && STRENGTH_COLOR[s as Strength]) || "var(--color-ink)";
+}
+export const projectColor = (p: { strengths?: string[] | null }) => strengthColor(strengthsOf(p)[0]);
 
 export type Media = {
   id: string;
@@ -47,6 +67,7 @@ export type Project = {
   summary: string | null;
   body_md: string | null;
   category: Category;
+  strengths: Strength[];
   year: number | null;
   status: "draft" | "published";
   era: "current" | "archive";

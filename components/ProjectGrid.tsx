@@ -1,16 +1,18 @@
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
-import { CATEGORIES, CATEGORY_LABEL, categoryColor, type Project } from "@/lib/types";
+import { STRENGTHS, STRENGTH_LABEL, strengthColor, strengthsOf, type Project, type Strength } from "@/lib/types";
 import type { SeriesCard } from "./ProjectCard";
 
-/** Grid with skill + category filter chips driven by ?skill= and ?cat= (no client state). */
+/** Grid with strength + skill filter chips driven by ?strength= and ?skill= (no client state). A project shows under each of its strengths. */
 export default function ProjectGrid({
-  projects, base, skill, cat,
-}: { projects: Project[]; base: string; skill?: string; cat?: string }) {
+  projects, base, skill, strength,
+}: { projects: Project[]; base: string; skill?: string; strength?: string }) {
   const skills = [...new Set(projects.flatMap((p) => p.skills))].sort();
-  const cats = CATEGORIES.filter((c) => projects.some((p) => p.category === c));
+  const has = (p: Project, s: string) => strengthsOf(p).includes(s as Strength);
+  const cat = strength && (STRENGTHS as readonly string[]).includes(strength) ? (strength as Strength) : undefined;
+  const cats = STRENGTHS.filter((c) => projects.some((p) => has(p, c)));
   const shown = projects.filter(
-    (p) => (!skill || p.skills.includes(skill)) && (!cat || p.category === cat),
+    (p) => (!skill || p.skills.includes(skill)) && (!cat || has(p, cat)),
   );
   // Pages that share a series collapse into one card (the lead = lowest series_order among those shown).
   const seen = new Set<string>();
@@ -26,7 +28,7 @@ export default function ProjectGrid({
   const href = (next: { skill?: string; cat?: string }) => {
     const q = new URLSearchParams();
     if (next.skill) q.set("skill", next.skill);
-    if (next.cat) q.set("cat", next.cat);
+    if (next.cat) q.set("strength", next.cat);
     const s = q.toString();
     return s ? `${base}?${s}` : base;
   };
@@ -41,8 +43,8 @@ export default function ProjectGrid({
           <Link href={href({ skill })} className={chip(!cat)} aria-current={!cat ? "true" : undefined}>All · {projects.length}</Link>
           {cats.map((c) => (
             <Link key={c} href={href({ skill, cat: c === cat ? undefined : c })} className={chip(c === cat)} aria-current={c === cat ? "true" : undefined}>
-              <span className="swatch" style={{ background: categoryColor(c) }} aria-hidden="true" />
-              {CATEGORY_LABEL[c]} · {projects.filter((p) => p.category === c).length}
+              <span className="swatch" style={{ background: strengthColor(c) }} aria-hidden="true" />
+              {STRENGTH_LABEL[c]} · {projects.filter((p) => has(p, c)).length}
             </Link>
           ))}
         </div>
@@ -68,7 +70,7 @@ export default function ProjectGrid({
         <p className="label mb-6 flex flex-wrap items-center gap-x-4 text-neutral-600" role="status">
           <span>
             {items.length} {items.length === 1 ? "project" : "projects"}
-            {cat ? ` in ${CATEGORY_LABEL[cat as keyof typeof CATEGORY_LABEL] ?? cat}` : ""}{skill ? ` tagged ${skill}` : ""}
+            {cat ? ` showing ${STRENGTH_LABEL[cat]}` : ""}{skill ? ` tagged ${skill}` : ""}
           </span>
           <Link href={base} className="inline-flex min-h-11 items-center text-ink underline">Clear filters ×</Link>
         </p>

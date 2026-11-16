@@ -2,7 +2,7 @@ import "server-only";
 import fs from "node:fs/promises";
 import path from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
-import { CATEGORIES, MEDIA_KINDS, type Category, type MediaKind } from "./types";
+import { CATEGORIES, MEDIA_KINDS, STRENGTHS, type Category, type MediaKind, type Strength } from "./types";
 
 export const INTAKE_MODEL = "claude-sonnet-4-6";
 
@@ -21,6 +21,7 @@ export type IntakeResult = {
   result_metric: string | null;
   lesson: string | null;
   category: Category;
+  strengths: Strength[];
   tools: string[];
   skills: string[];
   audience: string[];
@@ -137,6 +138,7 @@ export async function runIntake(input: {
     result_metric: grounded(str(raw.result_metric), source) ?? (taps.metric.trim() || null),
     lesson: str(raw.lesson) ?? (taps.change.trim() || null),
     category,
+    strengths: [...new Set(tags(raw.strengths))].filter((s): s is Strength => (STRENGTHS as readonly string[]).includes(s)).slice(0, 2),
     tools: tags(raw.tools),
     skills: tags(raw.skills),
     audience: tags(raw.audience).filter((a) => ["pd", "mech", "mfg"].includes(a)),

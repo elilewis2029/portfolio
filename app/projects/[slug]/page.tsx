@@ -9,7 +9,8 @@ import ProjectEditor from "@/components/owner/ProjectEditor";
 import { contactEmail, projectBySlug, publicUrl, seriesHref, seriesSiblings } from "@/lib/projects";
 import { SeriesCrumb, SeriesPager } from "@/components/SeriesNav";
 import { isOwner } from "@/lib/owner";
-import { CATEGORY_LABEL, heroOf, type Media, categoryColor } from "@/lib/types";
+import { heroOf, type Media, projectColor } from "@/lib/types";
+import StrengthTag from "@/components/StrengthTag";
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ edit?: string; saved?: string; error?: string }> };
 
@@ -103,11 +104,10 @@ export default async function ProjectPage({ params, searchParams }: Props) {
 
           {/* 1. Impact title + tagline */}
           <header className="rise mb-6">
-            <p className="label flex flex-wrap items-center gap-2 text-neutral-600">
-              {siblings.length > 1 && <span className="mr-1 bg-ink px-1.5 py-0.5 text-white">Part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length}</span>}
-              <span className="swatch" style={{ background: categoryColor(p.category) }} aria-hidden="true" />
-              {CATEGORY_LABEL[p.category]}{p.year ? ` · ${p.year}` : ""}
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              {siblings.length > 1 && <span className="label bg-ink px-1.5 py-0.5 text-white">Part {siblings.findIndex((s) => s.id === p.id) + 1} of {siblings.length}</span>}
+              <StrengthTag p={p} extra={[p.year]} />
+            </div>
             <h1 className="mt-3 text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl">{p.title}</h1>
             {p.tagline && <p className="mt-4 max-w-3xl text-lg leading-snug text-neutral-700 sm:text-xl">{p.tagline}</p>}
           </header>
@@ -175,7 +175,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
             <section className="mb-8 border-t border-neutral-200 pt-8 dark:border-neutral-800">
               <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Result</h2>
               {p.result_metric && (
-                <p className="border-l-4 bg-wash px-4 py-3 text-xl font-semibold tracking-[-0.01em]" style={{ borderColor: categoryColor(p.category) }}>
+                <p className="border-l-4 bg-wash px-4 py-3 text-xl font-semibold tracking-[-0.01em]" style={{ borderColor: projectColor(p) }}>
                   {p.result_metric}
                 </p>
               )}

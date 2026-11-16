@@ -4,7 +4,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { seriesByHubSlug } from "@/lib/projects";
 import { isOwner } from "@/lib/owner";
-import { CATEGORY_LABEL, heroOf, type Project } from "@/lib/types";
+import { heroOf, type Project } from "@/lib/types";
+import StrengthTag from "@/components/StrengthTag";
 
 type Props = { params: Promise<{ series: string }> };
 
@@ -77,7 +78,7 @@ function PartTile({ p, n }: { p: Project; n: number }) {
           {p.status === "draft" && <span className="absolute right-3 top-3 z-10 rounded-md bg-yellow-400 px-2 py-0.5 text-xs font-semibold text-neutral-900 shadow">Draft</span>}
         </div>
         <div className="p-4">
-          <p className="text-xs uppercase tracking-wide text-neutral-500">{CATEGORY_LABEL[p.category]}{p.duration ? ` · ${p.duration}` : ""}</p>
+          <StrengthTag p={p} extra={[p.duration]} tone="text-neutral-500" />
           <h2 className="mt-1 text-lg font-semibold leading-snug group-hover:text-accent sm:text-xl">{p.title}</h2>
           {p.tagline && <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{p.tagline}</p>}
           {p.summary && <p className="mt-3 line-clamp-3 text-sm leading-relaxed">{p.summary}</p>}

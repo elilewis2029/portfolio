@@ -16,10 +16,10 @@
   --color-rule: #d6d6d4;
 
   /* One accent per discipline. Colour is information (what kind of work), never decoration. */
-  --color-cat-engineering: #2f5bd3;
-  --color-cat-manufacturing-shop: #f0b400;
-  --color-cat-electronics: #13915a;
-  --color-cat-design-craft: #e0432c;
+  --color-s-systems: #2f5bd3;
+  --color-s-fabrication: #f0b400;
+  --color-s-teaching: #13915a;
+  --color-s-product: #e0432c;
 
   --font-sans: "Archivo Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;

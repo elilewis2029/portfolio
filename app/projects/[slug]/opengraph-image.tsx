@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 import { projectBySlug, publicUrl } from "@/lib/projects";
-import { heroOf, CATEGORY_LABEL } from "@/lib/types";
+import { heroOf, STRENGTH_LABEL, strengthsOf } from "@/lib/types";
 import { profile } from "@/content/profile";
 
 export const alt = "Project";
@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     }
   }
   const title = p?.title ?? profile.name;
-  const sub = p ? (p.tagline ?? CATEGORY_LABEL[p.category]) : profile.headline;
+  const sub = p ? (p.tagline ?? strengthsOf(p).map((s) => STRENGTH_LABEL[s]).join(" · ")) : profile.headline;
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", background: "#171717", color: "white", fontFamily: "sans-serif" }}>
