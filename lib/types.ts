@@ -24,7 +24,7 @@ export type Strength = (typeof STRENGTHS)[number];
 
 export const STRENGTH_LABEL: Record<Strength, string> = {
   systems: "System design",
-  product: "User & product design",
+  product: "Product design",
   fabrication: "Building & fabrication",
   teaching: "Teaching & communication",
 };

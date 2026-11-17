@@ -1,6 +1,6 @@
 import { STRENGTH_LABEL, strengthColor, strengthsOf } from "@/lib/types";
 
-/** Mono line with a colour square per strength: "2026 · ■ SYSTEM DESIGN  ■ USER & PRODUCT DESIGN" (year first, so a wrap falls between strengths). */
+/** Mono line with a colour square per strength: "2026 · ■ SYSTEM DESIGN  ■ PRODUCT DESIGN" (year first, so a wrap falls between strengths). */
 export default function StrengthTag({
   p, extra, className = "", tone = "text-neutral-600",
 }: { p: { strengths?: string[] | null }; extra?: (string | number | null | undefined)[]; className?: string; tone?: string }) {
