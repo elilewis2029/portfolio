@@ -197,10 +197,10 @@ export default async function ProjectPage({ params, searchParams }: Props) {
             </section>
           )}
 
-          {/* 8. What I learned & what I'd change */}
+          {/* 8. Lessons & next steps */}
           {p.lesson && (
             <section className="mb-8">
-              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">What I learned &amp; what I&rsquo;d change</h2>
+              <h2 className="mb-3 text-lg font-semibold tracking-[-0.01em]">Lessons &amp; next steps</h2>
               <p>{p.lesson}</p>
             </section>
           )}
