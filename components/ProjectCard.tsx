@@ -7,7 +7,7 @@ import { seriesHref } from "@/lib/projects";
 export type SeriesCard = { name: string; members: Project[] };
 
 /**
- * Gallery tile on /projects: photo, a colour bar in the discipline's accent that runs out on hover,
+ * Gallery tile on /projects: photo, a short colour bar in the discipline's accent (static, no hover motion),
  * then the mono strengths line, the title and two lines of tagline. Square corners, no chips:
  * the filters above the grid carry the skills, the card carries the work.
  */
@@ -40,12 +40,12 @@ export default function ProjectCard({ p, priority = false, series }: { p: Projec
   );
 }
 
-/** Hairline in the main strength's colour along the photo's bottom edge; widens on hover. */
+/** Short hairline in the main strength's colour at the photo's bottom-left edge. Static: it no longer widens on hover. */
 export function AccentBar({ color }: { color: string }) {
   return (
     <span
       aria-hidden="true"
-      className="absolute inset-x-0 bottom-0 z-10 h-1 origin-left scale-x-[0.18] transition-transform duration-300 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
+      className="absolute bottom-0 left-0 z-10 h-1 w-[18%]"
       style={{ background: color }}
     />
   );
