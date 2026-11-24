@@ -104,3 +104,21 @@ export function heroOf(p: Project): Media | undefined {
 export function isFeatureReady(p: Project): boolean {
   return (p.media ?? []).some((m) => m.kind && READY_KINDS.includes(m.kind));
 }
+
+/**
+ * Collapse pages that share a series into one entry, the way /projects shows them: the lead is the member with the
+ * lowest series_order, `members` lists them all. Use the length of the result wherever the site counts projects, so
+ * every count matches the number of cards a visitor sees (a two-part series is one card, one project).
+ */
+export function collapseSeries(list: Project[]): { p: Project; members?: Project[] }[] {
+  const seen = new Set<string>();
+  return list.flatMap((p) => {
+    if (!p.series) return [{ p }];
+    if (seen.has(p.series)) return [];
+    seen.add(p.series);
+    const members = list
+      .filter((x) => x.series === p.series)
+      .sort((a, b) => (a.series_order ?? 99) - (b.series_order ?? 99));
+    return members.length > 1 ? [{ p: members[0], members }] : [{ p: members[0] }];
+  });
+}

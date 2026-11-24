@@ -51,7 +51,8 @@ function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: bool
         {p.tagline && <p className="mt-3 line-clamp-3 text-[15px] leading-relaxed text-neutral-300">{p.tagline}</p>}
         {p.result_metric && (
           <p className="mt-5 border-l-2 pl-3 text-[15px] text-white" style={{ borderColor: color }}>
-            <span className="label block text-neutral-500">Result</span>
+            {/* The space keeps the label and the metric apart in copied text and reader views ("Result 0 mm", not "Result0 mm"). */}
+            <span className="label block text-neutral-500">Result</span>{" "}
             {p.result_metric}
           </p>
         )}

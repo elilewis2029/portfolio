@@ -4,7 +4,7 @@ import FeaturedList from "@/components/FeaturedList";
 import { Field } from "@/components/Todo";
 import { contactEmail, featuredProjects, listProjects } from "@/lib/projects";
 import { isOwner } from "@/lib/owner";
-import { STRENGTHS, STRENGTH_LABEL, strengthColor, strengthsOf } from "@/lib/types";
+import { STRENGTHS, STRENGTH_LABEL, collapseSeries, strengthColor, strengthsOf } from "@/lib/types";
 import { profile } from "@/content/profile";
 import { filled, filledList } from "@/lib/profile";
 
@@ -22,9 +22,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
   const latestJob = profile.experience.find((e) => filled(e.org));
   const bio = filledList(profile.bio);
   // Strengths: how often each one shows up across the published work. A project can count under two, so the
-  // bar shows the mix of strengths, and the label counts projects, not tags.
-  const range = STRENGTHS.map((c) => ({ c, n: all.filter((p) => strengthsOf(p).includes(c)).length })).filter((r) => r.n > 0);
-  const total = all.filter((p) => strengthsOf(p).length > 0).length;
+  // bar shows the mix of strengths, and the label counts projects, not tags. A series counts once, as on /projects,
+  // so these numbers match the cards and filter chips there.
+  const count = (list: typeof all) => collapseSeries(list).length;
+  const range = STRENGTHS.map((c) => ({ c, n: count(all.filter((p) => strengthsOf(p).includes(c))) })).filter((r) => r.n > 0);
+  const total = count(all.filter((p) => strengthsOf(p).length > 0));
 
   return (
     <>
