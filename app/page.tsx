@@ -57,7 +57,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ f
           </dl>
           {total > 0 && (
             <div className="mt-6">
-              <p className="label text-neutral-500">Strengths · across {total} projects</p>
+              <p className="label text-neutral-500">What I do</p>
               <div className="mt-2 flex h-2 w-full gap-px" role="img" aria-label={range.map((r) => `${STRENGTH_LABEL[r.c]}: ${r.n} projects`).join(", ")}>
                 {range.map((r) => <span key={r.c} style={{ flexGrow: r.n, background: strengthColor(r.c) }} />)}
               </div>
