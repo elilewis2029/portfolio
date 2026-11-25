@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import StrengthTag from "./StrengthTag";
-import { heroOf, projectColor, type Project } from "@/lib/types";
+import { heroOf, projectBar, projectColor, type Project } from "@/lib/types";
 
 /**
  * Selected work on the home page: a dark band, every project given the same row (same photo size,
@@ -40,7 +40,7 @@ function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: bool
         ) : (
           <div className="label flex h-full items-center justify-center text-neutral-500">No photo yet</div>
         )}
-        <span aria-hidden="true" className={`absolute inset-y-0 left-0 z-10 w-1.5 ${flip ? "sm:left-auto sm:right-0" : ""}`} style={{ background: color }} />
+        <span aria-hidden="true" className={`absolute inset-y-0 left-0 z-10 w-1.5 ${flip ? "sm:left-auto sm:right-0" : ""}`} style={{ background: projectBar(p, "to bottom") }} />
       </div>
       <div className={`flex flex-col sm:col-span-5 sm:py-1 ${flip ? "sm:order-1" : ""}`}>
         <div className="flex items-baseline gap-4">
