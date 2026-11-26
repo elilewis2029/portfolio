@@ -43,7 +43,7 @@ export const profile = {
   name: "Eli Lewis",
   /** Under the name on the home page and in share images. */
   headline: "Manufacturing & Design Engineering student, Northwestern ’29",
-  /** Quiet second line under the headline (home and About): current roles and the patent. */
+  /** Quiet second line under the headline on About: current roles and the patent. */
   subheadline: "Shop trainer, Segal Prototyping & Fabrication Lab · Continuous improvement intern, Ely Tool (summer 2026) · Sole inventor, US 2025/0368466 A1",
   /** The one-line pitch: what he builds. */
   tagline: "[TODO: one line in your own words about what you make, e.g. “I build things and document how they’re made.”]",
@@ -54,7 +54,7 @@ export const profile = {
   /** Bucket path (bucket `portfolio`), e.g. "profile/headshot.jpg". null = show a placeholder to the owner. */
   headshot: null as string | null,
 
-  /** The short About paragraph on the home page. */
+  /** Short About paragraph (no longer shown on the home page, which is name, headline and the "What I do" legend). */
   blurb: "I'm a manufacturing and design engineering student who has spent the last few years in shops: restoring machines, teaching kids to build, and most recently re-planning a custom-tooling shop floor and training students on mills and lathes. I like problems where the answer has to survive contact with real users, real tolerances and a real budget.",
   /** 3–5 short paragraphs, first person, in his own voice. */
   bio: [

@@ -45,6 +45,7 @@ export default async function About() {
         <div>
           <h1 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">{profile.name}</h1>
           <p className="mt-1 text-lg text-neutral-700 dark:text-neutral-300">{profile.headline}</p>
+          {show(profile.tagline) && <p className="mt-1 text-neutral-700 dark:text-neutral-300"><Field value={profile.tagline} owner={owner} /></p>}
           {filled(profile.subheadline) && <p className="mt-1 text-sm text-neutral-500">{profile.subheadline}</p>}
           {show(profile.location) && <p className="mt-1 text-sm text-neutral-500"><Field value={profile.location} owner={owner} /></p>}
           <p className="mt-3 font-medium text-accent"><Field value={profile.seeking} owner={owner} /></p>

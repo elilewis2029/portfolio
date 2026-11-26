@@ -46,6 +46,19 @@ export function strengthColor(s: string | null | undefined): string {
 }
 export const projectColor = (p: { strengths?: string[] | null }) => strengthColor(strengthsOf(p)[0]);
 
+/**
+ * Background for a project's colour bar, split into equal hard-edged bands, one per strength, in order (main first),
+ * so a project tagged with two strengths shows both colours. One strength is a plain colour; none is ink.
+ * `dir` follows the bar: "to right" for the horizontal bar under card photos, "to bottom" for the vertical one on featured rows.
+ */
+export function strengthBar(list: readonly string[], dir: "to right" | "to bottom" = "to right"): string {
+  const colors = [...new Set(list)].map(strengthColor);
+  if (colors.length <= 1) return colors[0] ?? strengthColor(null);
+  const step = 100 / colors.length;
+  return `linear-gradient(${dir}, ${colors.map((c, i) => `${c} ${+(i * step).toFixed(3)}% ${+((i + 1) * step).toFixed(3)}%`).join(", ")})`;
+}
+export const projectBar = (p: { strengths?: string[] | null }, dir?: "to right" | "to bottom") => strengthBar(strengthsOf(p), dir);
+
 export type Media = {
   id: string;
   project_id: string;

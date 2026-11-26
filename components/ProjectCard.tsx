@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import StrengthTag from "./StrengthTag";
-import { heroOf, projectColor, type Project } from "@/lib/types";
+import { heroOf, projectBar, strengthBar, strengthsOf, type Project } from "@/lib/types";
 import { seriesHref } from "@/lib/projects";
 
 export type SeriesCard = { name: string; members: Project[] };
@@ -31,7 +31,7 @@ export default function ProjectCard({ p, priority = false, series }: { p: Projec
           <div className="label flex h-full items-center justify-center text-neutral-400">No photo yet</div>
         )}
         {draft && <DraftBadge />}
-        <AccentBar color={projectColor(p)} />
+        <AccentBar color={projectBar(p)} />
       </div>
       <StrengthTag p={p} extra={[p.year]} className="mt-3" />
       <h3 className="mt-1.5 text-[17px] font-semibold leading-snug tracking-[-0.01em] group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">{p.title}</h3>
@@ -89,7 +89,8 @@ function SeriesTile({ series }: { series: SeriesCard }) {
         ))}
         <span className="label absolute bottom-1 right-0 z-20 bg-ink px-2 py-1 text-white">{members.length} parts</span>
         {anyDraft && <DraftBadge />}
-        <AccentBar color={projectColor(lead.m)} />
+        {/* A series shows every strength across its parts, the lead part's first */}
+        <AccentBar color={strengthBar(members.flatMap((m) => strengthsOf(m)))} />
       </div>
       <StrengthTag p={lead.m} extra={["Series"]} className="mt-3" />
       <h3 className="mt-1.5 text-[17px] font-semibold leading-snug tracking-[-0.01em] group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">{series.name}</h3>
