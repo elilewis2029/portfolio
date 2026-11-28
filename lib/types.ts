@@ -73,6 +73,8 @@ export type Project = {
   era: "current" | "archive";
   featured: boolean;
   cover_media: string | null;
+  /** Optional photo that fades in over the cover on hover (render on the card, the real build on hover). */
+  hover_media: string | null;
   role: string | null;
   role_kind: "solo" | "team" | null;
   goal_constraints: string | null;
@@ -99,6 +101,12 @@ export type Project = {
 export function heroOf(p: Project): Media | undefined {
   const m = [...(p.media ?? [])].sort((a, b) => a.sort - b.sort);
   return m.find((x) => x.id === p.cover_media) ?? m.find((x) => x.kind === "hero") ?? m[0];
+}
+
+/** The hover photo, if it is set and isn't the cover itself. */
+export function hoverOf(p: Project): Media | undefined {
+  const hero = heroOf(p);
+  return (p.media ?? []).find((x) => x.id === p.hover_media && x.id !== hero?.id);
 }
 
 export function isFeatureReady(p: Project): boolean {

@@ -160,6 +160,14 @@ export async function setCover(projectId: string, mediaId: string) {
   refresh(p?.slug);
 }
 
+/** Pick (or clear, with null) the photo that fades in over the cover on hover. */
+export async function setHover(projectId: string, mediaId: string | null) {
+  await requireOwner();
+  await adminDb().from("projects").update({ hover_media: mediaId }).eq("id", projectId);
+  const p = await projectByIdAdmin(projectId);
+  refresh(p?.slug);
+}
+
 export async function deleteMedia(projectId: string, mediaId: string) {
   await requireOwner();
   const db = adminDb();
@@ -167,6 +175,7 @@ export async function deleteMedia(projectId: string, mediaId: string) {
   if (m) await db.storage.from("portfolio").remove([m.path, m.original_path].filter((x): x is string => !!x));
   await db.from("media").delete().eq("id", mediaId).eq("project_id", projectId);
   await db.from("projects").update({ cover_media: null }).eq("id", projectId).eq("cover_media", mediaId);
+  await db.from("projects").update({ hover_media: null }).eq("id", projectId).eq("hover_media", mediaId);
   const p = await projectByIdAdmin(projectId);
   if (p?.featured && !isFeatureReady(p)) await db.from("projects").update({ featured: false }).eq("id", projectId);
   refresh(p?.slug);

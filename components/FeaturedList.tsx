@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import StrengthTag from "./StrengthTag";
-import { heroOf, projectColor, type Project } from "@/lib/types";
+import HoverPhoto from "./HoverPhoto";
+import { heroOf, hoverOf, projectColor, type Project } from "@/lib/types";
 
 /**
  * Selected work on the home page: a dark band, every project given the same row (same photo size,
@@ -22,6 +23,7 @@ export default function FeaturedList({ projects }: { projects: Project[] }) {
 
 function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: boolean }) {
   const hero = heroOf(p);
+  const hover = hoverOf(p);
   const color = projectColor(p);
   const flip = n % 2 === 0; // even rows put the photo on the right, so the list alternates
   const meta = [p.year, p.role_kind === "team" ? "Team" : p.role_kind === "solo" ? "Solo" : null];
@@ -40,6 +42,7 @@ function FeaturedRow({ p, n, priority }: { p: Project; n: number; priority: bool
         ) : (
           <div className="label flex h-full items-center justify-center text-neutral-500">No photo yet</div>
         )}
+        {hover && <HoverPhoto m={hover} sizes="(min-width: 1280px) 700px, (min-width: 640px) 58vw, 100vw" />}
         <span aria-hidden="true" className={`absolute inset-y-0 left-0 z-10 w-1.5 ${flip ? "sm:left-auto sm:right-0" : ""}`} style={{ background: color }} />
       </div>
       <div className={`flex flex-col sm:col-span-5 sm:py-1 ${flip ? "sm:order-1" : ""}`}>

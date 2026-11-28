@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { MEDIA_KINDS, STRENGTHS, STRENGTH_LABEL, heroOf, strengthsOf, type Project } from "@/lib/types";
 import { HighlightTodo, TODO_RE, countTodos } from "@/components/Todo";
-import { deleteMedia, moveMedia, setCover, updateProject } from "@/app/review/actions";
+import { deleteMedia, moveMedia, setCover, setHover, updateProject } from "@/app/review/actions";
 import ConfirmSubmit from "./ConfirmSubmit";
 import DraftForm from "./DraftForm";
 
@@ -133,13 +133,14 @@ function Photos({ p, heroId }: { p: Project; heroId?: string }) {
   return (
     <>
       <h2 className="mb-1 mt-10 font-semibold">Photos ({p.media?.length ?? 0})</h2>
-      <p className="mb-3 text-sm text-neutral-500">Kind and caption are saved with <strong>Save</strong>. The arrows, Make cover and Remove apply straight away.</p>
+      <p className="mb-3 text-sm text-neutral-500">Kind and caption are saved with <strong>Save</strong>. The arrows, Make cover, Show on hover and Remove apply straight away. &ldquo;Show on hover&rdquo; fades that photo in over the cover on project cards, e.g. a render as the cover and the real build on hover.</p>
       <ul className="space-y-4">
         {(p.media ?? []).map((m, i, all) => (
           <li key={m.id} className="flex gap-3 border-b border-neutral-200 pb-4 dark:border-neutral-800">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded bg-neutral-100 sm:w-32 dark:bg-neutral-900">
               <Image src={m.path} alt="" fill sizes="128px" className="object-cover" />
               {heroId === m.id && <span className="absolute left-1 top-1 on-accent rounded bg-accent px-1 text-[10px] text-white">cover</span>}
+              {p.hover_media === m.id && <span className="absolute bottom-1 left-1 bg-ink px-1 text-[10px] text-white">hover</span>}
             </div>
             <div className="min-w-0 flex-1 space-y-2">
               <div className="flex flex-wrap gap-2">
@@ -153,6 +154,9 @@ function Photos({ p, heroId }: { p: Project; heroId?: string }) {
                 <form action={moveMedia.bind(null, p.id, m.id, -1)}><button className="btn" disabled={i === 0} aria-label="Move up">↑</button></form>
                 <form action={moveMedia.bind(null, p.id, m.id, 1)}><button className="btn" disabled={i === all.length - 1} aria-label="Move down">↓</button></form>
                 {heroId !== m.id && <form action={setCover.bind(null, p.id, m.id)}><button className="btn">Make cover</button></form>}
+                {heroId !== m.id && (p.hover_media === m.id
+                  ? <form action={setHover.bind(null, p.id, null)}><button className="btn">Stop showing on hover</button></form>
+                  : <form action={setHover.bind(null, p.id, m.id)}><button className="btn">Show on hover</button></form>)}
                 <form action={deleteMedia.bind(null, p.id, m.id)}>
                   <ConfirmSubmit message="Remove this photo?" className="btn text-red-600">Remove</ConfirmSubmit>
                 </form>

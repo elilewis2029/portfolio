@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import StrengthTag from "./StrengthTag";
-import { heroOf, projectColor, type Project } from "@/lib/types";
+import HoverPhoto from "./HoverPhoto";
+import { heroOf, hoverOf, projectColor, type Project } from "@/lib/types";
 import { seriesHref } from "@/lib/projects";
 
 export type SeriesCard = { name: string; members: Project[] };
@@ -14,6 +15,7 @@ export type SeriesCard = { name: string; members: Project[] };
 export default function ProjectCard({ p, priority = false, series }: { p: Project; priority?: boolean; series?: SeriesCard }) {
   if (series) return <SeriesTile series={series} />;
   const hero = heroOf(p);
+  const hover = hoverOf(p);
   const draft = p.status === "draft";
   return (
     <Link href={`/projects/${p.slug}`} className="group block min-w-0">
@@ -30,6 +32,7 @@ export default function ProjectCard({ p, priority = false, series }: { p: Projec
         ) : (
           <div className="label flex h-full items-center justify-center text-neutral-400">No photo yet</div>
         )}
+        {hover && <HoverPhoto m={hover} sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />}
         {draft && <DraftBadge />}
         <AccentBar color={projectColor(p)} />
       </div>
