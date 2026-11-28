@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
-import { STRENGTHS, STRENGTH_LABEL, strengthColor, strengthsOf, type Project, type Strength } from "@/lib/types";
+import { STRENGTHS, STRENGTH_LABEL, collapseSeries, strengthColor, strengthsOf, type Project, type Strength } from "@/lib/types";
 import type { SeriesCard } from "./ProjectCard";
 
 /** Grid with strength + skill filter chips driven by ?strength= and ?skill= (no client state). A project shows under each of its strengths. */
@@ -15,16 +15,11 @@ export default function ProjectGrid({
     (p) => (!skill || p.skills.includes(skill)) && (!cat || has(p, cat)),
   );
   // Pages that share a series collapse into one card (the lead = lowest series_order among those shown).
-  const seen = new Set<string>();
-  const items = shown.flatMap((p): { p: Project; series?: SeriesCard }[] => {
-    if (!p.series) return [{ p }];
-    if (seen.has(p.series)) return [];
-    seen.add(p.series);
-    const members = shown
-      .filter((x) => x.series === p.series)
-      .sort((a, b) => (a.series_order ?? 99) - (b.series_order ?? 99));
-    return members.length > 1 ? [{ p: members[0], series: { name: p.series, members } }] : [{ p: members[0] }];
-  });
+  const items = collapseSeries(shown).map(({ p, members }): { p: Project; series?: SeriesCard } =>
+    members ? { p, series: { name: p.series!, members } } : { p },
+  );
+  // Counts on the chips are cards, not pages, so "All · N" matches what the grid shows.
+  const count = (list: Project[]) => collapseSeries(list).length;
   const href = (next: { skill?: string; cat?: string }) => {
     const q = new URLSearchParams();
     if (next.skill) q.set("skill", next.skill);
@@ -40,11 +35,11 @@ export default function ProjectGrid({
     <>
       {cats.length > 1 && (
         <div className="mb-3 flex flex-wrap gap-2">
-          <Link href={href({ skill })} className={chip(!cat)} aria-current={!cat ? "true" : undefined}>All · {projects.length}</Link>
+          <Link href={href({ skill })} className={chip(!cat)} aria-current={!cat ? "true" : undefined}>All · {count(projects)}</Link>
           {cats.map((c) => (
             <Link key={c} href={href({ skill, cat: c === cat ? undefined : c })} className={chip(c === cat)} aria-current={c === cat ? "true" : undefined}>
               <span className="swatch" style={{ background: strengthColor(c) }} aria-hidden="true" />
-              {STRENGTH_LABEL[c]} · {projects.filter((p) => has(p, c)).length}
+              {STRENGTH_LABEL[c]} · {count(projects.filter((p) => has(p, c)))}
             </Link>
           ))}
         </div>
