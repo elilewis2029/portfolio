@@ -64,8 +64,12 @@ body { @apply bg-paper text-ink antialiased; font-feature-settings: "ss01"; }
 /* No scroll-triggered reveals: they can leave photos invisible, and recruiters skim fast. */
 .zoom img { @apply transition-transform duration-500 ease-out; }
 .zoom:hover img { transform: scale(1.03); }
+/* A project's hover photo (render on the card, the real build on hover): hidden until the card is hovered or focused. */
+.hover-swap { opacity: 0; transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+.group:hover .hover-swap, .group:focus-visible .hover-swap { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .rise, .zoom img { animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important; }
+  .rise, .zoom img:not(.hover-swap) { animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important; }
+  .hover-swap { transition: none !important; transform: none !important; }
 }
 dialog.lightbox[open] { animation: rise 0.2s ease-out both; }
 /* The page behind an open lightbox must not scroll (a swipe on the photo was scrolling the article underneath). */
